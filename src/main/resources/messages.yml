@@ -1,0 +1,163 @@
+# 消息前缀，所有用户可见消息通过 <prefix> 引用。
+prefix: '<#7DD3FC>Moon<#F9A8D4>Life <#94A3B8>» '
+
+# 命令消息根节点。
+command:
+  # 权限不足提示。
+  no-permission: '<prefix><#FCA5A5>星界低语：你没有足够的权限触碰此法则。'
+  # 仅玩家可执行提示。
+  player-only: '<prefix><#FCA5A5>时空排斥：该指令仅限实体玩家执行。'
+  # 未知子命令提示。
+  unknown: '<prefix><#FCA5A5>未知的星象指令。'
+  # 无可用世界提示。
+  no-world: '<prefix><#FCA5A5>当前维度没有可观测的生态世界。'
+  # 世界不存在提示。
+  world-not-found: '<prefix><#FCA5A5>感知不到世界 <#FFFFFF><world></#FFFFFF> 的存在。'
+  # 重载命令消息根节点。
+  reload:
+    # 重载成功提示。
+    success: '<prefix><#86EFAC>生态法则已重新编织，配置热重载完成。'
+    # 重载失败提示。
+    failed: '<prefix><#FCA5A5>时空乱流导致重载失败，已回溯至上一个稳定版本。详见控制台。'
+  # 调试命令消息根节点。
+  debug:
+    # 调试摘要提示。
+    summary: '<prefix><#E0F2FE>生态视界：已收录 <#FFFFFF><spawn_rules></#FFFFFF> 道生息法则，<#FFFFFF><crop_rules></#FFFFFF> 种草木枯荣，<#FFFFFF><buff_rules></#FFFFFF> 层赐福状态。'
+  # 设置月相命令消息根节点。
+  setmoon:
+    # 月相参数无效提示。
+    invalid: '<prefix><#FCA5A5>无效的月相坐标。可用值：NEW_MOON, WAXING_CRESCENT, FIRST_QUARTER, WAXING_GIBBOUS, FULL_MOON, WANING_GIBBOUS, LAST_QUARTER, WANING_CRESCENT。'
+    # 月相设置成功提示。
+    success: '<prefix><#C4B5FD>世界 <#FFFFFF><world></#FFFFFF> 的夜幕已被强行改写，当前月相：<#FFFFFF><phase></#FFFFFF>。'
+  # 设置日相命令消息根节点。
+  setsolar:
+    # 日相参数无效提示。
+    invalid: '<prefix><#FCA5A5>无效的日相坐标。可用值：DAWN, DAY, DUSK, NIGHT, MIDNIGHT。'
+    # 日相设置成功提示。
+    success: '<prefix><#FDBA74>世界 <#FFFFFF><world></#FFFFFF> 的天轨已被拨动，当前日相：<#FFFFFF><phase></#FFFFFF>。'
+  # 月相查询命令消息根节点。
+  lunarphase:
+    # 月相查询结果。
+    info: '<prefix><#E0F2FE>星象观测：<world> 当前的月相为 <#FFFFFF><phase></#FFFFFF>。'
+  # 日相查询命令消息根节点。
+  solarphase:
+    # 日相查询结果。
+    info: '<prefix><#E0F2FE>天轨观测：<world> 当前的日相为 <#FFFFFF><phase></#FFFFFF>。'
+  # 生态信息命令消息根节点。
+  info:
+    # 当前生态摘要。
+    summary: '<prefix><#E0F2FE><world> 生态流转：空中悬挂 <#FFFFFF><moon></#FFFFFF>，天光正值 <#FFFFFF><solar></#FFFFFF>，天气表现为 <#FFFFFF><weather></#FFFFFF>。'
+  # 预览命令消息根节点。
+  preview:
+    # 预览命中规则数量。
+    header: '<prefix><#BAE6FD>你所在之地的气场，汇聚了 <#FFFFFF><count></#FFFFFF> 种潜在的生息法则：'
+    # 预览命中规则条目。
+    entry: '<#94A3B8> - <#FFFFFF><id></#FFFFFF> <#CBD5E1><target></#CBD5E1> 权重=<#FFFFFF><weight></#FFFFFF>'
+  # 测试刷怪命令消息根节点。
+  testspawn:
+    # 测试刷怪已提交提示。
+    queued: '<prefix><#86EFAC>已在你的周围注入魔力，强制触发一次生态刷新。'
+  # 测试增益命令消息根节点。
+  testbuff:
+    # 测试增益摘要。
+    summary: '<prefix><#86EFAC>灵光一闪，测试 Buff 结算完毕，你共鸣了法则：<#FFFFFF><rules></#FFFFFF>。'
+  # 帮助菜单消息列表。
+  help:
+    # 帮助菜单：查看生态状态。
+    - '<prefix><#E0F2FE>/ecology info <#94A3B8>- 观测当前的生态流转状态'
+    # 帮助菜单：预览刷怪规则。
+    - '<prefix><#E0F2FE>/ecology preview <#94A3B8>- 洞悉当前区域的潜在生息法则'
+    # 帮助菜单：重载配置。
+    - '<prefix><#E0F2FE>/ecology reload <#94A3B8>- 重新编织并热重载生态配置'
+    # 帮助菜单：调试状态。
+    - '<prefix><#E0F2FE>/ecology debug <#94A3B8>- 查看底层法则与规则缓存'
+    # 帮助菜单：设置月相。
+    - '<prefix><#E0F2FE>/ecology setmoon <phase> [world] <#94A3B8>- 强行干涉并覆盖世界月相'
+    # 帮助菜单：设置日相。
+    - '<prefix><#E0F2FE>/ecology setsolar <phase> [world] <#94A3B8>- 强行干涉并拨动世界日相'
+    # 帮助菜单：测试刷怪。
+    - '<prefix><#E0F2FE>/ecology testspawn <#94A3B8>- 强制执行一次实地刷新测试'
+    # 帮助菜单：测试增益。
+    - '<prefix><#E0F2FE>/ecology testbuff <#94A3B8>- 强制进行一次 Buff 状态结算'
+
+# 月相消息根节点。
+moon:
+  # 月相变化消息根节点。
+  changed:
+    # 月相变化广播。
+    broadcast: '<prefix><#C4B5FD>夜幕低垂，<world> 的月相已悄然转为 <#FFFFFF><phase></#FFFFFF>。阴影中的生息正在涌动...'
+    # 月相变化 ActionBar。
+    actionbar: '<#C4B5FD>当空皓月：<#FFFFFF><phase></#FFFFFF>'
+    # 月相变化 Title 主标题。
+    title: '<#C4B5FD><phase>'
+    # 月相变化 Title 副标题。
+    subtitle: '<#E0E7FF>万物蛰伏，夜色中的生态正悄然重塑'
+    # 月相变化 BossBar。
+    bossbar: '<#C4B5FD>月相推移 ☾ <#FFFFFF><phase></#FFFFFF>'
+
+# 日相消息根节点。
+solar:
+  # 日相变化消息根节点。
+  changed:
+    # 日相变化广播。
+    broadcast: '<prefix><#FDBA74>天光流转，<world> 迎来了 <#FFFFFF><phase></#FFFFFF>。'
+    # 日相变化 ActionBar。
+    actionbar: '<#FDBA74>天际流光：<#FFFFFF><phase></#FFFFFF>'
+    # 日相变化 Title 主标题。
+    title: '<#FDBA74><phase>'
+    # 日相变化 Title 副标题。
+    subtitle: '<#FFEDD5>晨昏交替，大地的律动已然改变'
+    # 日相变化 BossBar。
+    bossbar: '<#FDBA74>天轨推移 ☼ <#FFFFFF><phase></#FFFFFF>'
+
+# 玩家增益消息根节点。
+buff:
+  # 玩家增益变化消息根节点。
+  changed:
+    # 玩家增益变化 ActionBar。
+    actionbar: '<#A7F3D0>法则赐福：<#FFFFFF><rules></#FFFFFF>'
+  # 玩家增益测试消息根节点。
+  test:
+    # 玩家增益测试应用提示。
+    applied: '<prefix><#86EFAC>已向你降下测试赐福：<#FFFFFF><rules></#FFFFFF>。'
+
+# 刷怪消息根节点。
+spawn:
+  # 刷怪调试消息根节点。
+  debug:
+    # 性能保护跳过提示。
+    skipped-performance: '<prefix><#FDE68A>世界魔力过载（服务器负载偏高），本轮生态刷新已跳过。'
+    # 刷怪成功调试提示。
+    spawned: '<prefix><#BAE6FD>遵循法则 <#FFFFFF><rule></#FFFFFF>，已在世间凝聚出 <#FFFFFF><target></#FFFFFF>。'
+
+# 月相显示名根节点。
+moon-phase:
+  # 新月显示名。
+  new_moon: '<#6B7280>新月'
+  # 娥眉月显示名。
+  waxing_crescent: '<#A5B4FC>峨眉月'
+  # 上弦月显示名。
+  first_quarter: '<#BFDBFE>上弦月'
+  # 盈凸月显示名。
+  waxing_gibbous: '<#C4B5FD>盈凸月'
+  # 满月显示名。
+  full_moon: '<#F9A8D4>满月'
+  # 亏凸月显示名。
+  waning_gibbous: '<#DDD6FE>亏凸月'
+  # 下弦月显示名。
+  last_quarter: '<#93C5FD>下弦月'
+  # 残月显示名。
+  waning_crescent: '<#CBD5E1>残月'
+
+# 日相显示名根节点。
+solar-phase:
+  # 黎明显示名。
+  dawn: '<#FDBA74>黎明'
+  # 白昼显示名。
+  day: '<#86EFAC>白昼'
+  # 黄昏显示名。
+  dusk: '<#F0ABFC>黄昏'
+  # 夜晚显示名。
+  night: '<#93C5FD>夜晚'
+  # 午夜显示名。
+  midnight: '<#C4B5FD>午夜'

@@ -1,0 +1,61 @@
+# 是否开启调试输出，生产服建议保持 false。
+debug: false
+# 检查月相和日相变化的间隔 tick，低频世界级任务，不做每 tick 扫描。
+phase-check-interval-ticks: 1200
+
+# 性能保护配置根节点。
+performance:
+  # 是否根据 TPS/MSPT 自动跳过高成本生态逻辑。
+  enabled: true
+  # 允许执行生态刷新逻辑的最低 TPS。
+  min-tps: 18.5
+  # 允许执行生态刷新逻辑的最高 MSPT。
+  max-mspt: 55.0
+
+# 荒野判定配置根节点。
+wilderness:
+  # 是否启用荒野判定，关闭后所有位置都视为荒野。
+  enabled: true
+  # 是否接入 WorldGuard 区域判断，插件不存在时会自动跳过。
+  respect-worldguard: true
+  # 是否预留常见领地插件判断，当前为软 Hook，不强依赖。
+  respect-residence-plugins: true
+  # 不做荒野判定的世界列表。
+  disabled-worlds: []
+
+# 野外刷新运行时配置根节点。
+spawn:
+  # 是否启用生态刷怪服务。
+  enabled: true
+  # 是否强制怪物完全依赖 MythicMobs，开启后 VANILLA 规则会被跳过。
+  mythic-mobs-only: true
+  # 每轮玩家附近抽样刷新间隔 tick。
+  interval-ticks: 200
+  # 每轮最多抽样多少名玩家，避免百人服全量遍历。
+  max-player-samples-per-cycle: 24
+  # 每名被抽样玩家每轮尝试多少个候选位置。
+  attempts-per-player: 2
+  # 候选刷新半径配置根节点。
+  spawn-radius:
+    # 候选点距离玩家的最小半径。
+    min: 24
+    # 候选点距离玩家的最大半径。
+    max: 72
+  # 清理失效追踪实体缓存的间隔 tick。
+  cleanup-interval-ticks: 1200
+
+# 作物系统运行时配置根节点。
+crop:
+  # 是否启用作物生态成长服务。
+  enabled: true
+  # 单次作物成长事件最多追加多少步额外成长。
+  max-bonus-steps-per-event: 2
+
+# 玩家增益系统运行时配置根节点。
+buff:
+  # 是否启用玩家生态状态服务。
+  enabled: true
+  # 玩家状态缓存刷新间隔 tick。
+  refresh-interval-ticks: 100
+  # 药水剩余时间高于该值时不重复刷新，避免视觉闪烁。
+  potion-refresh-threshold-ticks: 80

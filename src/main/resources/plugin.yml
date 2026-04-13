@@ -1,0 +1,96 @@
+# 插件名称，服务器用于识别插件。
+name: Moonlife
+# 插件版本，由 Gradle 在打包时替换。
+version: '${version}'
+# 插件主类入口。
+main: ym.moonlife.Moonlife
+# 插件描述。
+description: Moon phase, solar phase and wilderness ecology system for survival servers.
+# 目标 Paper API 版本。
+api-version: '26.1.2'
+# 插件作者列表。
+authors: [ ymxc ]
+# 插件项目网站。
+website: https://example.com/moonlife
+# 软依赖列表，缺失时插件仍会正常启动。
+softdepend: [ MythicMobs, PlaceholderAPI, WorldGuard ]
+
+# 命令注册根节点。
+commands:
+  # 主生态管理命令。
+  ecology:
+    # 主命令描述。
+    description: Main Moonlife ecology command.
+    # 主命令用法。
+    usage: /ecology
+    # 主命令别名。
+    aliases: [ moonlife, mleco ]
+    # 主命令默认权限。
+    permission: ecology.info
+  # 月相查询快捷命令。
+  lunarphase:
+    # 月相命令描述。
+    description: Show current lunar phase.
+    # 月相命令用法。
+    usage: /lunarphase
+    # 月相命令默认权限。
+    permission: ecology.info
+  # 日相查询快捷命令。
+  solarphase:
+    # 日相命令描述。
+    description: Show current solar phase.
+    # 日相命令用法。
+    usage: /solarphase
+    # 日相命令默认权限。
+    permission: ecology.info
+
+# 权限注册根节点。
+permissions:
+  # 管理员总权限。
+  ecology.admin:
+    # 管理员总权限描述。
+    description: Grants all Moonlife administrative permissions.
+    # 管理员总权限默认授予 OP。
+    default: op
+    # 管理员总权限包含的子权限。
+    children:
+      # 允许重载配置。
+      ecology.reload: true
+      # 允许使用调试命令。
+      ecology.debug: true
+      # 允许设置月相和日相。
+      ecology.setphase: true
+      # 允许查看生态信息。
+      ecology.info: true
+      # 允许预览生态规则。
+      ecology.preview: true
+  # 重载配置权限。
+  ecology.reload:
+    # 重载配置权限描述。
+    description: Reload Moonlife configuration.
+    # 重载配置权限默认授予 OP。
+    default: op
+  # 调试命令权限。
+  ecology.debug:
+    # 调试命令权限描述。
+    description: Use Moonlife debug commands.
+    # 调试命令权限默认授予 OP。
+    default: op
+  # 设置相位权限。
+  ecology.setphase:
+    # 设置相位权限描述。
+    description: Override moon and solar phases.
+    # 设置相位权限默认授予 OP。
+    default: op
+  # 查看生态信息权限。
+  ecology.info:
+    # 查看生态信息权限描述。
+    description: View Moonlife phase information.
+    # 查看生态信息权限默认所有玩家可用。
+    default: true
+  # 预览生态规则权限。
+  ecology.preview:
+    # 预览生态规则权限描述。
+    description: Preview active ecology rules.
+    # 预览生态规则权限默认授予 OP。
+    default: op

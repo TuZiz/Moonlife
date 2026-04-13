@@ -1,0 +1,115 @@
+# 作物规则配置根节点，作物系统只响应事件，不扫描农田。
+rules:
+  # 晴天白昼作物成长加速规则。
+  sunny_day_growth:
+    # 规则唯一 id，用于调试和统计。
+    id: sunny_day_growth
+    # 是否启用该规则。
+    enable: true
+    # 该规则匹配的作物方块类型列表。
+    crop-types:
+      # 小麦。
+      - WHEAT
+      # 胡萝卜。
+      - CARROTS
+      # 马铃薯。
+      - POTATOES
+      # 甜菜。
+      - BEETROOTS
+      # 南瓜茎。
+      - PUMPKIN_STEM
+      # 西瓜茎。
+      - MELON_STEM
+      # 地狱疣。
+      - NETHER_WART
+    # 允许触发该规则的世界列表，留空表示任意世界。
+    worlds:
+      # 主世界示例。
+      - world
+    # 允许触发该规则的生物群系列表，留空表示任意群系。
+    biomes: []
+    # 允许触发该规则的月相列表，留空表示任意月相。
+    moon-phases: []
+    # 允许触发该规则的日相列表。
+    solar-phases:
+      # 白昼。
+      - DAY
+    # 允许触发该规则的天气列表。
+    weather:
+      # 晴天。
+      - CLEAR
+    # 允许触发该规则的方块光照范围。
+    light-range: [9, 15]
+    # 允许触发该规则的下方土壤类型列表。
+    soil-types:
+      # 湿润或未湿润耕地。
+      - FARMLAND
+      # 地狱疣使用的灵魂沙。
+      - SOUL_SAND
+    # 耕地湿润度范围，非耕地作物按兼容值处理。
+    moisture: [5, 7]
+    # 成长倍率，小于 1 会概率抑制，大于 1 会概率追加成长。
+    growth-multiplier: 1.35
+    # 额外成长概率。
+    bonus-growth-chance: 0.12
+    # 成熟收获时额外掉落概率。
+    extra-harvest-chance: 0.06
+    # 成长时变异概率。
+    mutation-chance: 0.005
+    # 变异目标方块，留空表示不替换。
+    mutation-material: ''
+    # 是否允许骨粉触发该规则。
+    bone-meal-interaction: true
+    # 自动化触发是否应用该规则。
+    automation-apply: true
+    # 规则优先级，高优先级优先生效。
+    priority: 20
+
+  # 满月时地狱疣轻微强化规则。
+  fullmoon_nether_wart:
+    # 规则唯一 id，用于调试和统计。
+    id: fullmoon_nether_wart
+    # 是否启用该规则。
+    enable: true
+    # 该规则匹配的作物方块类型列表。
+    crop-types:
+      # 地狱疣。
+      - NETHER_WART
+    # 允许触发该规则的世界列表。
+    worlds:
+      # 下界示例。
+      - world_nether
+    # 允许触发该规则的生物群系列表，留空表示任意群系。
+    biomes: []
+    # 允许触发该规则的月相列表。
+    moon-phases:
+      # 满月。
+      - FULL_MOON
+    # 允许触发该规则的日相列表，留空表示任意日相。
+    solar-phases: []
+    # 允许触发该规则的天气列表，留空表示任意天气。
+    weather: []
+    # 允许触发该规则的方块光照范围。
+    light-range: [0, 15]
+    # 允许触发该规则的下方土壤类型列表。
+    soil-types:
+      # 灵魂沙。
+      - SOUL_SAND
+    # 湿润度范围，地狱疣使用兼容范围。
+    moisture: [0, 7]
+    # 成长倍率。
+    growth-multiplier: 1.15
+    # 额外成长概率。
+    bonus-growth-chance: 0.05
+    # 成熟收获时额外掉落概率。
+    extra-harvest-chance: 0.04
+    # 成长时变异概率。
+    mutation-chance: 0.0
+    # 变异目标方块，留空表示不替换。
+    mutation-material: ''
+    # 是否允许骨粉触发该规则。
+    bone-meal-interaction: true
+    # 自动化触发是否应用该规则。
+    automation-apply: true
+    # 规则优先级，高优先级优先生效。
+    priority: 10

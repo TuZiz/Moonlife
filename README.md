@@ -1,0 +1,249 @@
+# Moonlife
+
+Moonlife 是一个面向 Paper / Folia / Spigot 的月相、日相、昼夜生态玩法插件。插件负责生态调度、规则判断、性能保护和玩家反馈；怪物表现完全交给 MythicMobs 定义。
+
+## 环境
+
+- Minecraft / Paper API: `26.1.2`
+- Kotlin JVM
+- JDK: `25`
+- 构建: Gradle Kotlin DSL
+- 兼容: Paper / Folia / Spigot
+- 强依赖: 无
+- 软依赖: MythicMobs, PlaceholderAPI, WorldGuard
+
+## 设计边界
+
+- Moonlife 不使用 NMS。
+- Moonlife 不做跨服同步，不接 Redis / MySQL / PostgreSQL。
+- Monster 生态刷新默认完全依靠 MythicMobs。
+- `config.yml` 中 `spawn.mythic-mobs-only` 默认为 `true`，误配的 `VANILLA` 刷怪规则会被跳过。
+- Moonlife 不替代 MythicMobs，不定义完整怪物技能系统。
+- MythicMobs 负责怪物实体、技能、AI、装备、掉落表现。
+- Moonlife 负责月相、日相、天气、群系、地形、荒野、冷却、权重、限速和刷新触发条件。
+
+## 默认 MythicMobs 怪物
+
+默认 `spawn-rules.yml` 使用以下 MythicMobs 内部怪物名：
+
+| 规则 | MythicMobs ID | 触发环境 |
+| --- | --- | --- |
+| `fullmoon_zombie_knight` | `FullMoonZombieKnight` | 满月夜晚 / 午夜 |
+| `newmoon_shadow_beast` | `ShadowBeast` | 新月午夜，黑森林 / 沼泽 / 红树林沼泽 |
+| `thunder_night_raider` | `StormboneRaider` | 雷雨夜晚 / 午夜 |
+
+你需要在 MythicMobs 中创建这些 mob，或者把 `mythic-mob-id` 改成你已有的内部怪物名。
+
+## 默认月相与日相功能
+
+下面描述的是当前默认配置直接启用的功能，不是理论能力上限。
+
+### 默认月相功能
+
+| 月相 | 默认功能 |
+| --- | --- |
+| `NEW_MOON` 新月 | 在 `MIDNIGHT` 且满足群系与环境条件时，野外会刷新 MythicMobs 怪物 `ShadowBeast` |
+| `FULL_MOON` 满月 | 在 `NIGHT` / `MIDNIGHT` 时，野外会刷新 MythicMobs 怪物 `FullMoonZombieKnight`；下界 `NETHER_WART` 获得轻微成长和收获加成 |
+| `WAXING_CRESCENT` 娥眉月 | 默认配置中没有额外功能，预留给后续规则扩展 |
+| `FIRST_QUARTER` 上弦月 | 默认配置中没有额外功能，预留给后续规则扩展 |
+| `WAXING_GIBBOUS` 盈凸月 | 默认配置中没有额外功能，预留给后续规则扩展 |
+| `WANING_GIBBOUS` 亏凸月 | 默认配置中没有额外功能，预留给后续规则扩展 |
+| `LAST_QUARTER` 下弦月 | 默认配置中没有额外功能，预留给后续规则扩展 |
+| `WANING_CRESCENT` 残月 | 默认配置中没有额外功能，预留给后续规则扩展 |
+
+### 默认日相功能
+
+| 日相 | 默认功能 |
+| --- | --- |
+| `DAWN` 黎明 | 默认配置中没有独立功能，预留给后续规则扩展 |
+| `DAY` 白昼 | 晴天时农作物成长加速，影响小麦、胡萝卜、马铃薯、甜菜、南瓜茎、西瓜茎、地狱疣 |
+| `DUSK` 黄昏 | 玩家在野外会获得默认黄昏增益：采集加速、轻微移速提升、经验倍率提升、掉落倍率提升 |
+| `NIGHT` 夜晚 | 满月夜会刷新 `FullMoonZombieKnight`；雷雨夜会刷新 `StormboneRaider`，同时玩家在野外承受更高危险并获得更高经验/掉落收益 |
+| `MIDNIGHT` 午夜 | 新月午夜会刷新 `ShadowBeast`；满月午夜会刷新 `FullMoonZombieKnight`；雷雨午夜同样会触发 `StormboneRaider` 和危险状态规则 |
+
+### 默认天气联动
+
+| 天气 | 默认功能 |
+| --- | --- |
+| `CLEAR` 晴天 | 配合 `DAY` 触发作物成长加速 |
+| `RAIN` 雨天 | 配合 `DUSK` 仍可触发黄昏采集增益 |
+| `THUNDER` 雷暴 | 配合 `NIGHT` / `MIDNIGHT` 提高野外危险度，刷新 `StormboneRaider`，并给玩家更高风险收益状态 |
+
+### 默认功能速览
+
+- 农业向：`DAY + CLEAR`
+- 采集向：`DUSK + CLEAR/RAIN`
+- 危险探索向：`NIGHT/MIDNIGHT + THUNDER`
+- 满月精英怪：`FULL_MOON + NIGHT/MIDNIGHT`
+- 新月暗影怪：`NEW_MOON + MIDNIGHT`
+
+## 安装
+
+1. 将 `build/libs/Moonlife-1.0-SNAPSHOT.jar` 放入服务器 `plugins` 目录。
+2. 安装 MythicMobs。
+3. 可选安装 PlaceholderAPI 和 WorldGuard。
+4. 启动服务器生成默认配置。
+5. 修改 `plugins/Moonlife/spawn-rules.yml` 中的 `mythic-mob-id`。
+6. 执行 `/ecology reload` 热重载配置。
+
+## 构建
+
+当前工程使用 Gradle Kotlin DSL：
+
+```powershell
+gradle build
+```
+
+如果没有全局 Gradle，可以使用本机 Gradle wrapper 分发或 IDE 的 Gradle 面板执行 `build`。
+
+## 命令
+
+| 命令 | 说明 | 权限 |
+| --- | --- | --- |
+| `/lunarphase` | 查看当前世界月相 | `ecology.info` |
+| `/solarphase` | 查看当前世界日相 | `ecology.info` |
+| `/ecology` | 查看帮助菜单 | `ecology.info` |
+| `/ecology info` | 查看世界、月相、日相、天气 | `ecology.info` |
+| `/ecology preview` | 预览当前位置命中的刷怪规则 | `ecology.preview` |
+| `/ecology reload` | 校验并热重载配置 | `ecology.reload` |
+| `/ecology debug` | 查看规则缓存数量 | `ecology.debug` |
+| `/ecology setmoon <phase> [world]` | 手动覆盖月相 | `ecology.setphase` |
+| `/ecology setsolar <phase> [world]` | 手动覆盖日相 | `ecology.setphase` |
+| `/ecology testspawn` | 在附近执行一次测试刷新 | `ecology.debug` |
+| `/ecology testbuff` | 对自己执行一次 Buff 规则测试 | `ecology.debug` |
+
+## 权限
+
+| 权限 | 默认 | 说明 |
+| --- | --- | --- |
+| `ecology.admin` | OP | 管理员总权限 |
+| `ecology.reload` | OP | 允许重载配置 |
+| `ecology.debug` | OP | 允许调试和测试命令 |
+| `ecology.setphase` | OP | 允许覆盖月相 / 日相 |
+| `ecology.info` | 所有人 | 允许查看生态信息 |
+| `ecology.preview` | OP | 允许预览生态规则 |
+
+## PlaceholderAPI 变量
+
+变量前缀为 `%moonlife_<变量>%`。
+
+### 基础状态
+
+| 变量 | 输出 |
+| --- | --- |
+| `%moonlife_world%` | 当前世界名 |
+| `%moonlife_weather%` | 当前天气：`CLEAR` / `RAIN` / `THUNDER` |
+| `%moonlife_moon%` | 当前月相枚举名 |
+| `%moonlife_moon_phase%` | 当前月相枚举名 |
+| `%moonlife_moon_localized%` | 当前月相本地化显示名 |
+| `%moonlife_moon_display%` | 当前月相本地化显示名 |
+| `%moonlife_moon_index%` | 当前月相序号，1 到 8 |
+| `%moonlife_solar%` | 当前日相枚举名 |
+| `%moonlife_solar_phase%` | 当前日相枚举名 |
+| `%moonlife_solar_localized%` | 当前日相本地化显示名 |
+| `%moonlife_solar_display%` | 当前日相本地化显示名 |
+| `%moonlife_solar_index%` | 当前日相序号，1 到 5 |
+| `%moonlife_summary%` | `月相:日相:天气` 简短摘要 |
+| `%moonlife_phase_summary%` | 本地化月相 / 日相 / 天气摘要 |
+
+### 刷怪功能
+
+这些变量基于玩家当前位置，只读预览当前可命中的野外刷新规则，不会触发刷怪。
+
+| 变量 | 输出 |
+| --- | --- |
+| `%moonlife_spawn_rules%` | 当前命中的刷怪规则 id 列表 |
+| `%moonlife_active_spawn_rules%` | 当前命中的刷怪规则 id 列表 |
+| `%moonlife_spawn_count%` | 当前命中的刷怪规则数量 |
+| `%moonlife_active_spawn_count%` | 当前命中的刷怪规则数量 |
+| `%moonlife_spawn_targets%` | 当前命中的 MythicMobs 怪物 ID 列表 |
+| `%moonlife_spawn_feature%` | 当前刷怪功能摘要，例如 `刷怪:ShadowBeast x1-1 权重8` |
+
+### 作物功能
+
+这些变量基于玩家当前位置预览作物规则的环境部分；实际成长仍由作物事件触发。
+
+| 变量 | 输出 |
+| --- | --- |
+| `%moonlife_crop_rules%` | 当前命中的作物规则 id 列表 |
+| `%moonlife_active_crop_rules%` | 当前命中的作物规则 id 列表 |
+| `%moonlife_crop_count%` | 当前命中的作物规则数量 |
+| `%moonlife_active_crop_count%` | 当前命中的作物规则数量 |
+| `%moonlife_crop_feature%` | 当前作物功能摘要，例如 `作物:sunny_day_growth 成长x1.35 收获+6.00% 变异+0.50%` |
+
+### 玩家状态功能
+
+这些变量基于玩家当前位置和状态预览当前 Buff 计划，不会强制应用新 Buff。
+
+| 变量 | 输出 |
+| --- | --- |
+| `%moonlife_buff_rules%` | 当前命中的玩家状态规则 id 列表 |
+| `%moonlife_active_buff_rules%` | 当前命中的玩家状态规则 id 列表 |
+| `%moonlife_buff_count%` | 当前命中的玩家状态规则数量 |
+| `%moonlife_active_buff_count%` | 当前命中的玩家状态规则数量 |
+| `%moonlife_buff_feature%` | 当前玩家状态摘要，例如 `状态:dusk_forager 经验x1.15 掉落x1.12 伤害x1.00 承伤x1.00` |
+| `%moonlife_features%` | 刷怪、作物、玩家状态的综合摘要 |
+| `%moonlife_phase_features%` | `%moonlife_features%` 的别名 |
+
+## 配置文件
+
+| 文件 | 说明 |
+| --- | --- |
+| `config.yml` | 运行时开关、性能保护、荒野判断、刷新节流 |
+| `messages.yml` | MiniMessage 语言文件 |
+| `moon-phases.yml` | 月相世界配置和变化表现 |
+| `solar-phases.yml` | 日相 tick 区间和变化表现 |
+| `spawn-rules.yml` | MythicMobs 野外刷新规则 |
+| `crop-rules.yml` | 作物成长、收获、变异规则 |
+| `buff-rules.yml` | 玩家药水、属性、伤害、经验、掉落规则 |
+
+## 性能策略
+
+- 配置只在启动和 `/ecology reload` 时读取。
+- 规则解析后进入不可变内存模型。
+- 刷怪采用玩家附近周期抽样，不做全世界扫描。
+- 刷怪规则做静态候选缓存、世界限速、区块限速、规则冷却和 TPS/MSPT 保护。
+- 荒野判断做 chunk 级 TTL 缓存。
+- 作物系统只响应成长、骨粉、收获事件。
+- Buff 系统节流刷新玩家状态并缓存计划，避免频繁重复上药水。
+- Folia 下实体操作走 Entity Scheduler，方块和区域操作走 Region Scheduler，全局逻辑走 Global Scheduler。
+
+## 热重载
+
+执行：
+
+```text
+/ecology reload
+```
+
+重载流程是先读取和校验配置，再构建新内存模型，最后原子替换；失败时保留上一份可用配置。
+
+## MythicMobs 示例
+
+下面只是最小占位示例，正式服建议在 MythicMobs 中完整配置技能、掉落、装备和 AI。
+
+```yaml
+FullMoonZombieKnight:
+  Type: ZOMBIE
+  Display: '&dFull Moon Zombie Knight'
+  Health: 60
+  Damage: 8
+
+ShadowBeast:
+  Type: WOLF
+  Display: '&8Shadow Beast'
+  Health: 80
+  Damage: 10
+
+StormboneRaider:
+  Type: SKELETON
+  Display: '&bStormbone Raider'
+  Health: 55
+  Damage: 7
+```
+
+## 注意事项
+
+- 如果没有安装 MythicMobs，Moonlife 会正常启动，但默认刷怪规则会被跳过。
+- 如果没有安装 PlaceholderAPI，占位符扩展会自动跳过。
+- 如果没有安装 WorldGuard，荒野判断会按未接入保护插件处理。

@@ -1,0 +1,141 @@
+# 玩家增益规则配置根节点，玩家状态会节流刷新并缓存。
+rules:
+  # 黄昏野外采集者增益规则。
+  dusk_forager:
+    # 规则唯一 id，用于调试、缓存和状态标签。
+    id: dusk_forager
+    # 是否启用该规则。
+    enable: true
+    # 允许触发该规则的世界列表，留空表示任意世界。
+    worlds:
+      # 主世界示例。
+      - world
+    # 允许触发该规则的生物群系列表，留空表示任意群系。
+    biomes: []
+    # 允许触发该规则的月相列表，留空表示任意月相。
+    moon-phases: []
+    # 允许触发该规则的日相列表。
+    solar-phases:
+      # 黄昏。
+      - DUSK
+    # 允许触发该规则的天气列表。
+    weather:
+      # 晴天。
+      - CLEAR
+      # 雨天。
+      - RAIN
+    # 是否只允许在荒野区域触发。
+    wilderness-only: true
+    # 是否要求玩家在地下。
+    underground: false
+    # 是否要求玩家在水中。
+    in-water: false
+    # 是否要求玩家潜行。
+    sneaking: false
+    # 触发所需权限，留空表示不需要。
+    permission: ''
+    # 药水效果配置根节点。
+    potion-effects:
+      # 黄昏轻微急迫效果。
+      dusk_haste:
+        # 药水效果类型。
+        type: FAST_DIGGING
+        # 药水等级，从 0 开始。
+        amplifier: 0
+        # 药水持续时间 tick。
+        duration-ticks: 220
+        # 是否为环境效果。
+        ambient: true
+        # 是否显示粒子。
+        particles: false
+        # 是否显示图标。
+        icon: true
+    # 属性修饰器配置根节点。
+    attribute-modifiers:
+      # 黄昏移动速度属性加成。
+      dusk_walk:
+        # Bukkit 属性名，支持省略 GENERIC 前缀。
+        attribute: MOVEMENT_SPEED
+        # 属性修饰值。
+        amount: 0.04
+        # 属性运算方式。
+        operation: ADD_SCALAR
+    # 对外造成伤害倍率。
+    damage-multiplier: 1.0
+    # 经验获取倍率。
+    experience-multiplier: 1.15
+    # 击杀掉落倍率。
+    drop-multiplier: 1.12
+    # 额外移动速度修正，会转换为属性修饰。
+    movement-speed-modifier: 0.02
+    # 额外攻击力修正，会转换为属性修饰。
+    attack-modifier: 0.0
+    # 抗性修正，正数降低受到伤害，负数提高受到伤害。
+    resistance-modifier: 0.0
+    # 给玩家添加的自定义状态标签。
+    custom-tags:
+      # 黄昏采集者状态标签。
+      - dusk_forager
+    # 冲突策略，可选 OVERRIDE、STACK、MAX、MIN、EXCLUSIVE、PRIORITY。
+    conflict-strategy: STACK
+    # 规则优先级，高优先级优先生效。
+    priority: 20
+
+  # 雷雨夜野外危险状态规则。
+  thunder_night_danger:
+    # 规则唯一 id，用于调试、缓存和状态标签。
+    id: thunder_night_danger
+    # 是否启用该规则。
+    enable: true
+    # 允许触发该规则的世界列表。
+    worlds:
+      # 主世界示例。
+      - world
+    # 允许触发该规则的生物群系列表，留空表示任意群系。
+    biomes: []
+    # 允许触发该规则的月相列表，留空表示任意月相。
+    moon-phases: []
+    # 允许触发该规则的日相列表。
+    solar-phases:
+      # 夜晚。
+      - NIGHT
+      # 午夜。
+      - MIDNIGHT
+    # 允许触发该规则的天气列表。
+    weather:
+      # 雷暴。
+      - THUNDER
+    # 是否只允许在荒野区域触发。
+    wilderness-only: true
+    # 是否要求玩家在地下。
+    underground: false
+    # 是否要求玩家在水中。
+    in-water: false
+    # 是否要求玩家潜行。
+    sneaking: false
+    # 触发所需权限，留空表示不需要。
+    permission: ''
+    # 药水效果配置根节点，空对象表示没有药水效果。
+    potion-effects: {}
+    # 属性修饰器配置根节点，空对象表示没有属性修饰。
+    attribute-modifiers: {}
+    # 对外造成伤害倍率。
+    damage-multiplier: 1.05
+    # 经验获取倍率。
+    experience-multiplier: 1.25
+    # 击杀掉落倍率。
+    drop-multiplier: 1.18
+    # 额外移动速度修正。
+    movement-speed-modifier: 0.0
+    # 额外攻击力修正。
+    attack-modifier: 0.0
+    # 抗性修正，负数表示雷雨夜更危险。
+    resistance-modifier: -0.05
+    # 给玩家添加的自定义状态标签。
+    custom-tags:
+      # 雷雨被狩猎状态标签。
+      - thunder_hunted
+    # 冲突策略，可选 OVERRIDE、STACK、MAX、MIN、EXCLUSIVE、PRIORITY。
+    conflict-strategy: STACK
+    # 规则优先级，高优先级优先生效。
+    priority: 10
