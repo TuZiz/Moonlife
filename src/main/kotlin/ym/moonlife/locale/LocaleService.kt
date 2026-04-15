@@ -24,24 +24,29 @@ class LocaleService(private val plugin: JavaPlugin) {
 
     fun raw(key: String, placeholders: Map<String, String> = emptyMap()): String {
         val config = messages.get() ?: return key
-        val prefix = config.getString("prefix", "") ?: ""
+        val prefix = normalizePlaceholder(config.getString("prefix", "") ?: "")
         var value = config.getString(key, key) ?: key
         value = value.replace("<prefix>", prefix)
         placeholders.forEach { (placeholder, replacement) ->
-            value = value.replace("<$placeholder>", replacement)
+            value = value.replace("<$placeholder>", normalizePlaceholder(replacement))
         }
         return value
     }
 
     fun list(key: String, placeholders: Map<String, String> = emptyMap()): List<String> {
         val config = messages.get() ?: return listOf(key)
-        val prefix = config.getString("prefix", "") ?: ""
+        val prefix = normalizePlaceholder(config.getString("prefix", "") ?: "")
         return config.getStringList(key).map { line ->
             var value = line.replace("<prefix>", prefix)
             placeholders.forEach { (placeholder, replacement) ->
-                value = value.replace("<$placeholder>", replacement)
+                value = value.replace("<$placeholder>", normalizePlaceholder(replacement))
             }
             legacy.serialize(miniMessage.deserialize(value))
         }
+    }
+
+    private fun normalizePlaceholder(value: String): String {
+        if ('§' !in value) return value
+        return miniMessage.serialize(legacy.deserialize(value))
     }
 }

@@ -9,6 +9,8 @@ import java.util.Locale
 import java.util.UUID
 
 class AttributeModifierService(private val plugin: Plugin) {
+    private val knownAttributes: List<Attribute> by lazy { discoverAttributes() }
+
     fun apply(player: Player, plan: BuffPlan) {
         clear(player)
         plan.attributes.forEachIndexed { index, buff ->
@@ -22,7 +24,7 @@ class AttributeModifierService(private val plugin: Plugin) {
     }
 
     fun clear(player: Player) {
-        Attribute::class.java.enumConstants.forEach { attribute ->
+        knownAttributes.forEach { attribute ->
             val instance = player.getAttribute(attribute) ?: return@forEach
             instance.modifiers
                 .filter { modifier -> isMoonlifeModifier(modifier) }
@@ -35,11 +37,40 @@ class AttributeModifierService(private val plugin: Plugin) {
         val candidates = listOf(
             normalized,
             "GENERIC_$normalized",
-            normalized.removePrefix("GENERIC_")
+            normalized.removePrefix("GENERIC_"),
+            normalized.removePrefix("GENERIC_").lowercase(Locale.ROOT)
         ).distinct()
-        return Attribute::class.java.enumConstants.firstOrNull { attribute ->
-            candidates.any { it == attribute.name() }
+        return knownAttributes.firstOrNull { attribute ->
+            val names = attributeNames(attribute)
+            candidates.any { candidate -> candidate in names }
         }
+    }
+
+    private fun discoverAttributes(): List<Attribute> {
+        Attribute::class.java.enumConstants?.let { return it.toList() }
+        val values = runCatching {
+            Attribute::class.java.getMethod("values").invoke(null) as? Array<*>
+        }.getOrNull()
+        if (values != null) return values.filterIsInstance<Attribute>()
+        return runCatching {
+            val registry = Class.forName("org.bukkit.Registry").getField("ATTRIBUTE").get(null)
+            val iterator = registry.javaClass.methods
+                .firstOrNull { method -> method.name == "iterator" && method.parameterCount == 0 }
+                ?.invoke(registry) as? Iterator<*>
+            iterator?.asSequence()?.filterIsInstance<Attribute>()?.toList().orEmpty()
+        }.getOrDefault(emptyList())
+    }
+
+    private fun attributeNames(attribute: Attribute): Set<String> {
+        val names = mutableSetOf<String>()
+        runCatching { names += attribute.name().uppercase(Locale.ROOT) }
+        runCatching {
+            val key = attribute.key
+            names += key.key.uppercase(Locale.ROOT)
+            names += key.key.lowercase(Locale.ROOT)
+            names += key.toString().uppercase(Locale.ROOT)
+        }
+        return names
     }
 
     private fun resolveOperation(raw: String): AttributeModifier.Operation? {
