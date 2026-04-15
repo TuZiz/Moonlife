@@ -33,7 +33,7 @@ class ConfigService(private val plugin: JavaPlugin) {
     val phaseAssignments: PhaseAssignments get() = phaseAssignmentsRef.get()
 
     private val defaultFiles = listOf(
-        "config.yml",
+        "settings/config.yml",
         "monsters.yml",
         "altars.yml",
         "crops.yml",
@@ -68,7 +68,7 @@ class ConfigService(private val plugin: JavaPlugin) {
         ensureDefaults()
         val errors = mutableListOf<String>()
         val loaded = runCatching {
-            val config = loadYaml("config.yml")
+            val config = loadYamlPreferred("settings/config.yml", "config.yml")
             val moon = loadYamlPreferred("moon-phases/settings.yml", "moon-phases.yml")
             val solar = loadYamlPreferred("solar-phases/settings.yml", "solar-phases.yml")
             val spawn = loadYamlPreferred("monsters.yml", "spawn-rules.yml")
@@ -231,7 +231,7 @@ class ConfigService(private val plugin: JavaPlugin) {
                 cleanupIntervalTicks = config.getLong("spawn.cleanup-interval-ticks", 1200L).coerceAtLeast(200L)
             ).also {
                 if (it.spawnRadiusMin > it.spawnRadiusMax) {
-                    errors += "config.yml: spawn.spawn-radius.min must not be greater than max"
+                    errors += "settings/config.yml: spawn.spawn-radius.min must not be greater than max"
                 }
             },
             crop = CropRuntimeConfig(
@@ -312,14 +312,14 @@ class ConfigService(private val plugin: JavaPlugin) {
         parseRuleSections(config, "rules").mapNotNull { (id, section) ->
             val backend = ConfigReaders.valueOfEnum<SpawnBackend>(section.getString("spawn-backend"))
             if (backend == null) {
-                errors += "spawn-rules.yml: $id has missing or invalid spawn-backend"
+                errors += "monsters.yml: $id has missing or invalid spawn-backend"
                 return@mapNotNull null
             }
             val target = when (backend) {
                 SpawnBackend.VANILLA -> {
                     val type = ConfigReaders.entityType(section, "vanilla-entity")
                     if (type == null) {
-                        errors += "spawn-rules.yml: $id uses VANILLA but vanilla-entity is invalid"
+                        errors += "monsters.yml: $id uses VANILLA but vanilla-entity is invalid"
                         return@mapNotNull null
                     }
                     VanillaSpawnTarget(type)
@@ -327,7 +327,7 @@ class ConfigService(private val plugin: JavaPlugin) {
                 SpawnBackend.MYTHIC_MOB -> {
                     val mobId = section.getString("mythic-mob-id")?.trim().orEmpty()
                     if (mobId.isEmpty()) {
-                        errors += "spawn-rules.yml: $id uses MYTHIC_MOB but mythic-mob-id is empty"
+                        errors += "monsters.yml: $id uses MYTHIC_MOB but mythic-mob-id is empty"
                         return@mapNotNull null
                     }
                     MythicSpawnTarget(mobId)
