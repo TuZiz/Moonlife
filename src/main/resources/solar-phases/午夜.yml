@@ -1,0 +1,19 @@
+# 午夜：新月影兽、满月精英怪和雷雨夜危险都会在这里变得更活跃。
+enable: true
+display-name: "午夜"
+time:
+  start: 18000
+  end: 23000
+functions:
+  monsters:
+    - newmoon_shadow_beast
+    - fullmoon_zombie_knight
+    - thunder_night_raider
+  altars:
+    - fullmoon_altar
+  crops: []
+  buffs:
+    - thunder_night_danger
+  hotspots:
+    - newmoon_shadow_hotspot
+    - thunder_night_hotspot

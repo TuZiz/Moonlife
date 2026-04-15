@@ -1,0 +1,64 @@
+# 玩家状态配置：这里只定义 Buff 规则本身，在哪些月相/日相启用写到对应相位文件。
+rules:
+  # 黄昏采集者：由 solar-phases/黄昏.yml 启用。
+  dusk_forager:
+    id: dusk_forager
+    enable: true
+    worlds: [world]
+    biomes: []
+    moon-phases: []
+    solar-phases: []
+    weather: [CLEAR, RAIN]
+    wilderness-only: true
+    underground: false
+    in-water: false
+    sneaking: false
+    permission: ''
+    potion-effects:
+      dusk_haste:
+        type: FAST_DIGGING
+        amplifier: 0
+        duration-ticks: 220
+        ambient: true
+        particles: false
+        icon: true
+    attribute-modifiers:
+      dusk_walk:
+        attribute: MOVEMENT_SPEED
+        amount: 0.04
+        operation: ADD_SCALAR
+    damage-multiplier: 1.0
+    experience-multiplier: 1.15
+    drop-multiplier: 1.12
+    movement-speed-modifier: 0.02
+    attack-modifier: 0.0
+    resistance-modifier: 0.0
+    custom-tags: [dusk_forager]
+    conflict-strategy: STACK
+    priority: 20
+
+  # 雷雨夜危机：由 solar-phases/夜晚.yml 与 solar-phases/午夜.yml 启用，并要求雷暴天气。
+  thunder_night_danger:
+    id: thunder_night_danger
+    enable: true
+    worlds: [world]
+    biomes: []
+    moon-phases: []
+    solar-phases: []
+    weather: [THUNDER]
+    wilderness-only: true
+    underground: false
+    in-water: false
+    sneaking: false
+    permission: ''
+    potion-effects: {}
+    attribute-modifiers: {}
+    damage-multiplier: 1.05
+    experience-multiplier: 1.25
+    drop-multiplier: 1.18
+    movement-speed-modifier: 0.0
+    attack-modifier: 0.0
+    resistance-modifier: -0.05
+    custom-tags: [thunder_hunted]
+    conflict-strategy: STACK
+    priority: 10

@@ -2,6 +2,8 @@ package ym.moonlife.config
 
 import ym.moonlife.buff.BuffRule
 import ym.moonlife.crop.CropRule
+import ym.moonlife.moon.MoonPhase
+import ym.moonlife.solar.SolarPhase
 import ym.moonlife.solar.SolarPhaseWindow
 import ym.moonlife.spawn.SpawnRule
 import ym.moonlife.util.PerformanceLimits
@@ -76,4 +78,17 @@ data class SolarConfig(
 data class ReloadResult(
     val success: Boolean,
     val errors: List<String>
+)
+
+data class PhaseAssignments(
+    val moonMonsters: Map<String, Set<MoonPhase>> = emptyMap(),
+    val moonCrops: Map<String, Set<MoonPhase>> = emptyMap(),
+    val moonBuffs: Map<String, Set<MoonPhase>> = emptyMap(),
+    val moonAltars: Map<String, Set<MoonPhase>> = emptyMap(),
+    val moonHotspots: Map<String, Set<MoonPhase>> = emptyMap(),
+    val solarMonsters: Map<String, Set<SolarPhase>> = emptyMap(),
+    val solarCrops: Map<String, Set<SolarPhase>> = emptyMap(),
+    val solarBuffs: Map<String, Set<SolarPhase>> = emptyMap(),
+    val solarAltars: Map<String, Set<SolarPhase>> = emptyMap(),
+    val solarHotspots: Map<String, Set<SolarPhase>> = emptyMap()
 )

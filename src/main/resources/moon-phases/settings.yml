@@ -1,0 +1,10 @@
+# 月相系统通用设置。
+worlds:
+  enabled: []
+  disabled: []
+
+events:
+  broadcast: true
+  actionbar: true
+  bossbar: false
+  title: false

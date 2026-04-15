@@ -1,0 +1,17 @@
+# 夜晚：满月精英怪、雷雨夜危险和满月祭坛。
+enable: true
+display-name: "夜晚"
+time:
+  start: 13500
+  end: 18000
+functions:
+  monsters:
+    - fullmoon_zombie_knight
+    - thunder_night_raider
+  altars:
+    - fullmoon_altar
+  crops: []
+  buffs:
+    - thunder_night_danger
+  hotspots:
+    - thunder_night_hotspot

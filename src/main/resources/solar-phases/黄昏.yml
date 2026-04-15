@@ -1,0 +1,13 @@
+# 黄昏：玩家获得采集、移动、经验和掉落收益。
+enable: true
+display-name: "黄昏"
+time:
+  start: 11500
+  end: 13500
+functions:
+  monsters: []
+  altars: []
+  crops: []
+  buffs:
+    - dusk_forager
+  hotspots: []

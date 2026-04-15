@@ -1,0 +1,45 @@
+# 作物生态配置：这里只定义作物规则本身，在哪些月相/日相启用写到对应相位文件。
+rules:
+  # 晴天白昼作物成长加速：由 solar-phases/白昼.yml 启用。
+  sunny_day_growth:
+    id: sunny_day_growth
+    enable: true
+    crop-types: [WHEAT, CARROTS, POTATOES, BEETROOTS, PUMPKIN_STEM, MELON_STEM, NETHER_WART]
+    worlds: [world]
+    biomes: []
+    moon-phases: []
+    solar-phases: []
+    weather: [CLEAR]
+    light-range: [9, 15]
+    soil-types: [FARMLAND, SOUL_SAND]
+    moisture: [5, 7]
+    growth-multiplier: 1.35
+    bonus-growth-chance: 0.12
+    extra-harvest-chance: 0.06
+    mutation-chance: 0.005
+    mutation-material: ''
+    bone-meal-interaction: true
+    automation-apply: true
+    priority: 20
+
+  # 满月地狱疣：由 moon-phases/满月.yml 启用。
+  fullmoon_nether_wart:
+    id: fullmoon_nether_wart
+    enable: true
+    crop-types: [NETHER_WART]
+    worlds: [world_nether]
+    biomes: []
+    moon-phases: []
+    solar-phases: []
+    weather: []
+    light-range: [0, 15]
+    soil-types: [SOUL_SAND]
+    moisture: [0, 7]
+    growth-multiplier: 1.15
+    bonus-growth-chance: 0.05
+    extra-harvest-chance: 0.04
+    mutation-chance: 0.0
+    mutation-material: ''
+    bone-meal-interaction: true
+    automation-apply: true
+    priority: 10

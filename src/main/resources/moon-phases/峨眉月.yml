@@ -1,0 +1,9 @@
+# 峨眉月：默认不启用额外功能，可在下方列表加入规则 id。
+enable: true
+display-name: "峨眉月"
+functions:
+  monsters: []
+  altars: []
+  crops: []
+  buffs: []
+  hotspots: []

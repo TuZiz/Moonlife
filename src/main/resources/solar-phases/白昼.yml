@@ -1,0 +1,13 @@
+# 白昼：晴天作物成长加速。
+enable: true
+display-name: "白昼"
+time:
+  start: 1000
+  end: 11500
+functions:
+  monsters: []
+  altars: []
+  crops:
+    - sunny_day_growth
+  buffs: []
+  hotspots: []

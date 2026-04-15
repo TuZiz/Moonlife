@@ -84,10 +84,11 @@ class EcologyFeatureService(
     }
 
     fun reload() {
-        val file = File(plugin.dataFolder, "features.yml")
-        if (!file.exists()) plugin.saveResource("features.yml", false)
+        val file = listOf(File(plugin.dataFolder, "altars.yml"), File(plugin.dataFolder, "features.yml"))
+            .firstOrNull { it.exists() }
+            ?: File(plugin.dataFolder, "altars.yml")
         val yaml = YamlConfiguration.loadConfiguration(file)
-        configRef.set(parseConfig(yaml))
+        configRef.set(applyPhaseAssignments(parseConfig(yaml)))
         activeEvents.entries.removeIf { it.value.remainingSeconds() <= 0L }
     }
 
@@ -503,6 +504,27 @@ class EcologyFeatureService(
             eventPresets = parseEvents(yaml.getConfigurationSection("events")),
             worldTemplates = parseTemplates(yaml.getConfigurationSection("world-templates"))
         )
+
+    private fun applyPhaseAssignments(config: FeatureConfig): FeatureConfig {
+        val assignments = configService.phaseAssignments
+        return config.copy(
+            altarRules = config.altarRules.map { rule ->
+                rule.copy(
+                    moonPhases = merge(rule.moonPhases, assignments.moonAltars[rule.id.lowercase(Locale.ROOT)]),
+                    solarPhases = merge(rule.solarPhases, assignments.solarAltars[rule.id.lowercase(Locale.ROOT)])
+                )
+            },
+            hotspotRules = config.hotspotRules.map { rule ->
+                rule.copy(
+                    moonPhases = merge(rule.moonPhases, assignments.moonHotspots[rule.id.lowercase(Locale.ROOT)]),
+                    solarPhases = merge(rule.solarPhases, assignments.solarHotspots[rule.id.lowercase(Locale.ROOT)])
+                )
+            }
+        )
+    }
+
+    private fun <P> merge(existing: Set<P>, assigned: Set<P>?): Set<P> =
+        if (assigned.isNullOrEmpty()) existing else existing + assigned
 
     private fun parseBounties(section: ConfigurationSection?): List<BountyRule> {
         section ?: return defaultConfig().bountyRules

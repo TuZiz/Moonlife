@@ -1,0 +1,12 @@
+# 满月：精英怪、祭坛和下界作物强化。
+enable: true
+display-name: "满月"
+functions:
+  monsters:
+    - fullmoon_zombie_knight
+  altars:
+    - fullmoon_altar
+  crops:
+    - fullmoon_nether_wart
+  buffs: []
+  hotspots: []

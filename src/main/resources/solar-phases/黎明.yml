@@ -1,0 +1,12 @@
+# 黎明：默认不启用额外功能。
+enable: true
+display-name: "黎明"
+time:
+  start: 23000
+  end: 1000
+functions:
+  monsters: []
+  altars: []
+  crops: []
+  buffs: []
+  hotspots: []

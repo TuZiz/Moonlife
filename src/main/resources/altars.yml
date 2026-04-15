@@ -1,0 +1,95 @@
+# 祭坛与生态扩展配置：祭坛、悬赏、材料、热点、临时事件都集中在这里。
+calendar:
+  days: 8
+
+debug-bossbar:
+  refresh-ticks: 40
+
+player-protection:
+  new-player-ticks: 0
+  spawn-radius: 24.0
+
+materials:
+  moonlit_seed:
+    display-name: "月露种子"
+    material: AMETHYST_SHARD
+    source: "满月成熟作物"
+  shadow_dust:
+    display-name: "影尘"
+    material: GUNPOWDER
+    source: "新月生态与 ShadowBeast"
+  thunder_bone:
+    display-name: "雷骨"
+    material: BONE
+    source: "StormboneRaider"
+
+bounties:
+  shadow_beast_hunt:
+    display-name: "新月暗影狩猎"
+    mythic-mob-ids: [ShadowBeast]
+    reward-exp: 120
+    reward-materials: [shadow_dust]
+    codex-entry: shadow_beast
+  stormbone_raider_hunt:
+    display-name: "雷骨夜袭"
+    mythic-mob-ids: [StormboneRaider]
+    reward-exp: 100
+    reward-materials: [thunder_bone]
+    codex-entry: stormbone_raider
+  fullmoon_knight_hunt:
+    display-name: "满月骑士讨伐"
+    mythic-mob-ids: [FullMoonZombieKnight]
+    reward-exp: 150
+    reward-materials: [moonlit_seed]
+    codex-entry: fullmoon_zombie_knight
+
+altars:
+  # 满月祭坛：月相/日相启用关系写在 moon-phases/满月.yml 与 solar-phases/夜晚.yml、solar-phases/午夜.yml。
+  fullmoon_altar:
+    display-name: "满月祭坛"
+    block: CRYING_OBSIDIAN
+    cost: AMETHYST_SHARD
+    moon-phases: []
+    solar-phases: []
+    weather: []
+    event-id: fullmoon_frenzy
+    event-minutes: 20
+    event-multiplier: 1.35
+
+hotspots:
+  newmoon_shadow_hotspot:
+    display-name: "新月暗影热点"
+    biomes: []
+    moon-phases: []
+    solar-phases: []
+    weather: []
+    multiplier: 1.4
+  thunder_night_hotspot:
+    display-name: "雷雨夜热点"
+    biomes: []
+    moon-phases: []
+    solar-phases: []
+    weather: [THUNDER]
+    multiplier: 1.5
+
+events:
+  fullmoon_frenzy:
+    display-name: "满月狂潮"
+    multiplier: 1.35
+    default-minutes: 30
+  thunder_hunt:
+    display-name: "雷雨猎杀"
+    multiplier: 1.5
+    default-minutes: 20
+
+world-templates:
+  survival:
+    - "world: 开启所有月相刷怪、作物成长和玩家状态"
+    - "monsters: 使用 FullMoonZombieKnight / ShadowBeast / StormboneRaider"
+    - "buffs: 保留 dusk_forager 与 thunder_night_danger"
+  resource:
+    - "resource_world: 提高热点倍率，缩短刷怪冷却"
+    - "建议禁用出生点保护或缩小保护半径"
+  nether:
+    - "world_nether: 保留 fullmoon_nether_wart 作物规则"
+    - "可增加满月地狱疣和新月灵魂沙相关材料"

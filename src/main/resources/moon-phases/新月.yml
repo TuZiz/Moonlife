@@ -1,0 +1,11 @@
+# 新月：暗影生态开始活跃。
+enable: true
+display-name: "新月"
+functions:
+  monsters:
+    - newmoon_shadow_beast
+  altars: []
+  crops: []
+  buffs: []
+  hotspots:
+    - newmoon_shadow_hotspot

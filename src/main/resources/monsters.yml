@@ -1,0 +1,90 @@
+# 怪物生态配置：这里只定义怪物规则本身，月相/日相启用关系写到 moon-phases 与 solar-phases 目录。
+rules:
+  # 满月僵尸骑士：由 moon-phases/满月.yml 与 solar-phases/夜晚.yml、solar-phases/午夜.yml 启用。
+  fullmoon_zombie_knight:
+    id: fullmoon_zombie_knight
+    enable: true
+    spawn-backend: MYTHIC_MOB
+    vanilla-entity: ZOMBIE
+    mythic-mob-id: FullMoonZombieKnight
+    worlds: [world]
+    biomes: []
+    moon-phases: []
+    solar-phases: []
+    weather: [CLEAR, RAIN, THUNDER]
+    y-range: [-32, 120]
+    light-range: [0, 7]
+    terrain: SURFACE
+    wilderness-only: true
+    nearby-player-limit: 6
+    nearby-player-radius: 48.0
+    chunk-limit: 4
+    world-limit: 80
+    cooldown: 500
+    weight: 18
+    amount: [1, 3]
+    effects:
+      - SPEED:1:200
+      - INCREASE_DAMAGE:0:200
+    tags:
+      - moonlife_fullmoon
+      - elite_wilderness
+    priority: 30
+
+  # 新月影兽：基础测试配置不限制群系，正式服可在 biomes 中加入 DARK_FOREST、SWAMP、MANGROVE_SWAMP。
+  newmoon_shadow_beast:
+    id: newmoon_shadow_beast
+    enable: true
+    spawn-backend: MYTHIC_MOB
+    vanilla-entity: ZOMBIE
+    mythic-mob-id: ShadowBeast
+    worlds: [world]
+    biomes: []
+    moon-phases: []
+    solar-phases: []
+    weather: [CLEAR, RAIN, THUNDER]
+    y-range: [-32, 90]
+    light-range: [0, 8]
+    terrain: SURFACE
+    wilderness-only: true
+    nearby-player-limit: 4
+    nearby-player-radius: 56.0
+    chunk-limit: 2
+    world-limit: 24
+    cooldown: 600
+    weight: 16
+    amount: [1, 2]
+    effects: []
+    tags:
+      - moonlife_newmoon
+      - mythic_shadow
+    priority: 50
+
+  # 雷骨袭击者：由 solar-phases/夜晚.yml 与 solar-phases/午夜.yml 启用，并要求雷暴天气。
+  thunder_night_raider:
+    id: thunder_night_raider
+    enable: true
+    spawn-backend: MYTHIC_MOB
+    vanilla-entity: SKELETON
+    mythic-mob-id: StormboneRaider
+    worlds: [world]
+    biomes: []
+    moon-phases: []
+    solar-phases: []
+    weather: [THUNDER]
+    y-range: [-32, 120]
+    light-range: [0, 8]
+    terrain: SURFACE
+    wilderness-only: true
+    nearby-player-limit: 8
+    nearby-player-radius: 64.0
+    chunk-limit: 5
+    world-limit: 96
+    cooldown: 360
+    weight: 22
+    amount: [1, 2]
+    effects:
+      - SPEED:0:160
+    tags:
+      - moonlife_thunder
+    priority: 20
