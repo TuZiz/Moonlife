@@ -93,14 +93,8 @@ rules:
     worlds:
       # 主世界示例。
       - world
-    # 允许触发该规则的生物群系列表。
-    biomes:
-      # 黑森林。
-      - DARK_FOREST
-      # 沼泽。
-      - SWAMP
-      # 红树林沼泽。
-      - MANGROVE_SWAMP
+    # 允许触发该规则的生物群系列表；基础测试配置留空，正式服可改回黑森林、沼泽、红树林沼泽。
+    biomes: []
     # 允许触发该规则的月相列表。
     moon-phases:
       # 新月。
@@ -119,8 +113,8 @@ rules:
       - THUNDER
     # 允许刷新的 Y 轴范围。
     y-range: [-32, 90]
-    # 允许刷新的方块光照范围。
-    light-range: [0, 4]
+    # 允许刷新的方块光照范围，基础测试配置略放宽。
+    light-range: [0, 8]
     # 地形模式，可选 ANY、SURFACE、UNDERGROUND。
     terrain: SURFACE
     # 是否只允许在荒野区域刷新。
@@ -134,11 +128,11 @@ rules:
     # 单世界该规则追踪实体数量上限。
     world-limit: 24
     # 规则冷却 tick，按世界隔离。
-    cooldown: 1200
+    cooldown: 600
     # 权重值，越高越容易被选中。
-    weight: 8
+    weight: 16
     # 每次刷新数量范围。
-    amount: [1, 1]
+    amount: [1, 2]
     # 刷新后给实体附加的药水效果列表。
     effects: []
     # 刷新后给实体添加的 scoreboard tag。

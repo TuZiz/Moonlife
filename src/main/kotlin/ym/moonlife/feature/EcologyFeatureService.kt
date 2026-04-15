@@ -98,7 +98,7 @@ class EcologyFeatureService(
         return (0 until days.coerceIn(1, 32)).map { offset ->
             val phase = MoonPhase.fromFullTime(now + offset * 24000L)
             val feature = phaseFeatureSummary(phase)
-            "Day +$offset: ${phase.name} | $feature"
+            "第 $offset 天：${moonDisplay(phase)}｜$feature"
         }
     }
 
@@ -111,13 +111,13 @@ class EcologyFeatureService(
         val event = activeEvent()
         val danger = dangerScore(player)
         return listOf(
-            "World=${context.snapshot.worldName} Moon=${context.snapshot.moonPhase.name} Solar=${context.snapshot.solarPhase.name} Weather=${context.snapshot.weather.name}",
-            "Biome=${context.biome.key} Wilderness=${context.wilderness} Underground=${context.underground} Protected=${isPlayerProtected(player)}",
-            "Danger=${DangerLevel.fromScore(danger)} Score=$danger Hotspot=${hotspot?.id ?: "-"} Event=${event?.id ?: "-"}",
-            "SpawnRules=${spawnRules.joinToString(", ") { it.id }.ifEmpty { "-" }}",
-            "CropRules=${cropRules.joinToString(", ") { it.id }.ifEmpty { "-" }}",
-            "BuffRules=${buffPlan.ruleIds.joinToString(", ").ifEmpty { "-" }}",
-            "Stats=${statsSummary(5).joinToString(" | ").ifEmpty { "-" }}"
+            "世界=${worldDisplay(context.snapshot.worldName)} 月相=${moonDisplay(context.snapshot.moonPhase)} 日相=${solarDisplay(context.snapshot.solarPhase)} 天气=${weatherDisplay(context.snapshot.weather)}",
+            "群系=${biomeDisplay(context.biome.key.key)} 荒野=${yesNo(context.wilderness)} 地下=${yesNo(context.underground)} 保护=${yesNo(isPlayerProtected(player))}",
+            "危险=${dangerDisplay(DangerLevel.fromScore(danger))} 分数=$danger 热点=${hotspot?.displayName ?: "无"} 活动=${event?.displayName ?: "无"}",
+            "刷怪规则=${spawnRules.joinToString("、") { ruleDisplay(it.id) }.ifEmpty { "无" }}",
+            "作物规则=${cropRules.joinToString("、") { ruleDisplay(it.id) }.ifEmpty { "无" }}",
+            "状态规则=${buffPlan.ruleIds.joinToString("、") { ruleDisplay(it) }.ifEmpty { "无" }}",
+            "统计=${statsSummary(5).joinToString("｜").ifEmpty { "暂无" }}"
         )
     }
 
@@ -125,30 +125,33 @@ class EcologyFeatureService(
         val lines = mutableListOf<String>()
         val bundle = configService.current
         val knownMythic = hookManager.mythicMobs.knownMobIds()
-        lines += "Spawn rules: ${bundle.spawnRules.size}, crop rules: ${bundle.cropRules.size}, buff rules: ${bundle.buffRules.size}"
+        val knownMythicLower = knownMythic.map { it.lowercase(Locale.ROOT) }.toSet()
+        lines += "刷怪规则：${bundle.spawnRules.size} 条，作物规则：${bundle.cropRules.size} 条，状态规则：${bundle.buffRules.size} 条。"
         if (!hookManager.mythicMobs.available) {
-            lines += "WARN MythicMobs is not available. MYTHIC_MOB spawn rules will be skipped."
+            lines += "警告：未检测到 MythicMobs，自定义怪物刷新规则会被跳过。"
+        } else if (knownMythic.isEmpty()) {
+            lines += "提示：MythicMobs 怪物索引为空，请执行 MythicMobs 重载后再执行 /ecology reload。"
         }
         bundle.spawnRules.forEach { rule ->
             when (val target = rule.target) {
                 is MythicSpawnTarget -> {
-                    if (hookManager.mythicMobs.available && knownMythic.isNotEmpty() && target.mobId !in knownMythic) {
-                        lines += "WARN ${rule.id}: MythicMob '${target.mobId}' was not found in MythicMobs index."
+                    if (hookManager.mythicMobs.available && knownMythic.isNotEmpty() && target.mobId.lowercase(Locale.ROOT) !in knownMythicLower) {
+                        lines += "警告：${ruleDisplay(rule.id)} 的目标「${targetDisplay(target.mobId)}」未出现在 MythicMobs 索引中。"
                     }
                 }
                 is VanillaSpawnTarget -> {
-                    if (bundle.main.spawn.mythicMobsOnly) lines += "WARN ${rule.id}: VANILLA rule is skipped because spawn.mythic-mobs-only=true."
+                    if (bundle.main.spawn.mythicMobsOnly) lines += "警告：${ruleDisplay(rule.id)} 是原版怪规则，当前已开启只使用 MythicMobs，因此会跳过。"
                 }
             }
-            if (rule.weight <= 0) lines += "WARN ${rule.id}: weight <= 0."
+            if (rule.weight <= 0) lines += "警告：${ruleDisplay(rule.id)} 的权重小于等于 0。"
             if (rule.worlds.isNotEmpty() && rule.worlds.none { Bukkit.getWorld(it) != null }) {
-                lines += "WARN ${rule.id}: none of configured worlds are currently loaded."
+                lines += "警告：${ruleDisplay(rule.id)} 配置的世界当前没有加载。"
             }
         }
         config().bountyRules.forEach { bounty ->
-            if (bounty.mythicMobIds.isEmpty()) lines += "WARN bounty ${bounty.id}: no MythicMobs targets."
+            if (bounty.mythicMobIds.isEmpty()) lines += "警告：悬赏「${bounty.displayName}」没有配置 MythicMobs 目标。"
         }
-        return lines.ifEmpty { listOf("OK No validation warnings.") }
+        return lines.ifEmpty { listOf("校验通过：没有发现配置警告。") }
     }
 
     fun startEvent(id: String, minutes: Int?, multiplier: Double?): ActiveEcologyEvent? {
@@ -223,41 +226,42 @@ class EcologyFeatureService(
 
     fun featuresText(player: Player): String =
         listOf(
-            "danger=${dangerLevel(player)}",
-            "spawn=${spawnService.preview(player).joinToString(",") { it.target.key }.ifEmpty { "-" }}",
-            "crop=${cropGrowthService.preview(player).joinToString(",") { it.id }.ifEmpty { "-" }}",
-            "buff=${playerBuffService.preview(player).ruleIds.joinToString(",").ifEmpty { "-" }}",
-            "hotspot=${activeHotspot(player)?.id ?: "-"}",
-            "event=${activeEvent()?.id ?: "-"}"
+            "危险=${dangerDisplay(dangerLevel(player))}",
+            "刷怪=${spawnService.preview(player).joinToString("、") { targetDisplay(it.target.key) }.ifEmpty { "无" }}",
+            "作物=${cropGrowthService.preview(player).joinToString("、") { ruleDisplay(it.id) }.ifEmpty { "无" }}",
+            "状态=${playerBuffService.preview(player).ruleIds.joinToString("、") { ruleDisplay(it) }.ifEmpty { "无" }}",
+            "热点=${activeHotspot(player)?.displayName ?: "无"}",
+            "活动=${activeEvent()?.displayName ?: "无"}"
         ).joinToString(" ")
 
     fun bountyLines(player: Player): List<String> =
         config().bountyRules.map { bounty ->
             val done = player.scoreboardTags.contains(bountyTag(bounty.id))
-            "${bounty.id}: ${bounty.displayName} target=${bounty.mythicMobIds.joinToString(",")} rewardExp=${bounty.rewardExp} done=$done"
+            "${bounty.displayName}：目标=${bounty.mythicMobIds.joinToString("、") { targetDisplay(it) }} 奖励经验=${bounty.rewardExp} 已完成=${yesNo(done)}"
         }
 
     fun codexLines(player: Player): List<String> =
         player.scoreboardTags
             .filter { it.startsWith(CODEX_TAG_PREFIX) }
             .map { it.removePrefix(CODEX_TAG_PREFIX) }
+            .map { codexDisplay(it) }
             .sorted()
-            .ifEmpty { listOf("No codex entries yet.") }
+            .ifEmpty { listOf("暂未解锁生态图鉴。") }
 
     fun materialsLines(): List<String> =
-        config().materials.map { "${it.id}: ${it.displayName} item=${it.material.name} source=${it.source}" }
+        config().materials.map { "${it.displayName}：物品=${materialDisplay(it.material)} 来源=${sourceDisplay(it.source)}" }
 
     fun templateLines(name: String?): List<String> {
         val templates = config().worldTemplates
-        if (name.isNullOrBlank()) return templates.keys.sorted().map { "template: $it" }
-        return templates[name.lowercase(Locale.ROOT)].orEmpty().ifEmpty { listOf("Unknown template: $name") }
+        if (name.isNullOrBlank()) return templates.keys.sorted().map { "可用模板：${templateDisplay(it)}" }
+        return templates[name.lowercase(Locale.ROOT)].orEmpty().ifEmpty { listOf("未知模板：$name") }
     }
 
     fun statsSummary(limit: Int = 10): List<String> =
         stats.values
             .sortedByDescending { it.spawns + it.skips }
             .take(limit)
-            .map { "${it.ruleId}: spawns=${it.spawns} skips=${it.skips}" }
+            .map { "${ruleDisplay(it.ruleId)}：刷新=${it.spawns} 跳过=${it.skips}" }
 
     fun recordSpawn(ruleId: String) {
         stats.computeIfAbsent(ruleId) { MutableRuleStat(ruleId) }.spawn()
@@ -357,10 +361,10 @@ class EcologyFeatureService(
                 bar.setTitle(messages.plain(
                     "feature.debug-bossbar.line",
                     mapOf(
-                        "danger" to dangerLevel(player).name,
+                        "danger" to dangerDisplay(dangerLevel(player)),
                         "score" to score.toString(),
                         "event" to (activeEvent()?.id ?: "-"),
-                        "hotspot" to (activeHotspot(player)?.id ?: "-")
+                        "hotspot" to (activeHotspot(player)?.displayName ?: "无")
                     )
                 ))
                 bar.progress = (score / 120.0).coerceIn(0.0, 1.0)
@@ -380,7 +384,7 @@ class EcologyFeatureService(
         val meta = stack.itemMeta
         if (meta != null) {
             meta.setDisplayName(material.displayName)
-            meta.lore = listOf("Moonlife material", "Source: ${material.source}")
+            meta.lore = listOf("月息生态材料", "来源：${sourceDisplay(material.source)}")
             stack.itemMeta = meta
         }
         player.inventory.addItem(stack).values.forEach { leftover ->
@@ -390,11 +394,101 @@ class EcologyFeatureService(
 
     private fun phaseFeatureSummary(phase: MoonPhase): String {
         val bundle = configService.current
-        val spawn = bundle.spawnRules.filter { it.moonPhases.isEmpty() || phase in it.moonPhases }.take(3).joinToString(",") { it.id }
-        val crop = bundle.cropRules.filter { it.moonPhases.isEmpty() || phase in it.moonPhases }.take(3).joinToString(",") { it.id }
-        val buff = bundle.buffRules.filter { it.moonPhases.isEmpty() || phase in it.moonPhases }.take(3).joinToString(",") { it.id }
-        return "spawn=${spawn.ifEmpty { "-" }} crop=${crop.ifEmpty { "-" }} buff=${buff.ifEmpty { "-" }}"
+        val spawn = bundle.spawnRules.filter { it.moonPhases.isEmpty() || phase in it.moonPhases }.take(3).joinToString("、") { ruleDisplay(it.id) }
+        val crop = bundle.cropRules.filter { it.moonPhases.isEmpty() || phase in it.moonPhases }.take(3).joinToString("、") { ruleDisplay(it.id) }
+        val buff = bundle.buffRules.filter { it.moonPhases.isEmpty() || phase in it.moonPhases }.take(3).joinToString("、") { ruleDisplay(it.id) }
+        return "刷怪=${spawn.ifEmpty { "无" }} 作物=${crop.ifEmpty { "无" }} 状态=${buff.ifEmpty { "无" }}"
     }
+
+    private fun moonDisplay(phase: MoonPhase): String = messages.phaseName(phase.displayKey)
+
+    private fun solarDisplay(phase: SolarPhase): String = messages.phaseName(phase.displayKey)
+
+    private fun dangerDisplay(level: DangerLevel): String = when (level) {
+        DangerLevel.SAFE -> "安全"
+        DangerLevel.WATCH -> "警戒"
+        DangerLevel.DANGER -> "危险"
+        DangerLevel.NIGHTMARE -> "噩梦"
+    }
+
+    private fun weatherDisplay(weather: WeatherState): String = when (weather) {
+        WeatherState.CLEAR -> "晴朗"
+        WeatherState.RAIN -> "降雨"
+        WeatherState.THUNDER -> "雷暴"
+    }
+
+    private fun yesNo(value: Boolean): String = if (value) "是" else "否"
+
+    private fun worldDisplay(world: String): String = when (world.lowercase(Locale.ROOT)) {
+        "world" -> "主世界"
+        "world_nether" -> "下界"
+        "world_the_end" -> "末地"
+        else -> world
+    }
+
+    private fun biomeDisplay(key: String): String = when (key.lowercase(Locale.ROOT)) {
+        "plains" -> "平原"
+        "forest" -> "森林"
+        "dark_forest" -> "黑森林"
+        "swamp" -> "沼泽"
+        "mangrove_swamp" -> "红树林沼泽"
+        "desert" -> "沙漠"
+        "taiga" -> "针叶林"
+        "snowy_plains" -> "雪原"
+        "river" -> "河流"
+        "beach" -> "海滩"
+        "cherry_grove" -> "樱花林"
+        "old_growth_pine_taiga" -> "原始松木针叶林"
+        "meadow" -> "草甸"
+        "jungle" -> "丛林"
+        "savanna" -> "热带草原"
+        else -> "其他群系"
+    }
+
+    private fun ruleDisplay(id: String): String = when (id.lowercase(Locale.ROOT)) {
+        "fullmoon_zombie_knight" -> "满月僵尸骑士"
+        "newmoon_shadow_beast" -> "新月影兽"
+        "thunder_night_raider" -> "雷雨夜袭击者"
+        "sunny_day_growth" -> "晴天白昼成长"
+        "fullmoon_nether_wart" -> "满月地狱疣"
+        "dusk_forager" -> "黄昏采集者"
+        "thunder_night_danger" -> "雷雨夜危机"
+        "performance_guard" -> "性能保护"
+        else -> id.replace('_', ' ')
+    }
+
+    private fun targetDisplay(key: String): String = when (key.lowercase(Locale.ROOT)) {
+        "fullmoonzombieknight" -> "满月僵尸骑士"
+        "shadowbeast" -> "新月影兽"
+        "stormboneraider" -> "雷骨袭击者"
+        else -> key
+    }
+
+    private fun codexDisplay(id: String): String = when (id.lowercase(Locale.ROOT)) {
+        "shadow_beast" -> "新月影兽"
+        "stormbone_raider" -> "雷骨袭击者"
+        "fullmoon_zombie_knight" -> "满月僵尸骑士"
+        else -> id.replace('_', ' ')
+    }
+
+    private fun templateDisplay(id: String): String = when (id.lowercase(Locale.ROOT)) {
+        "survival" -> "生存主世界"
+        "resource" -> "资源世界"
+        "nether" -> "下界"
+        else -> id
+    }
+
+    private fun materialDisplay(material: Material): String = when (material) {
+        Material.AMETHYST_SHARD -> "紫水晶碎片"
+        Material.GUNPOWDER -> "火药"
+        Material.BONE -> "骨头"
+        else -> material.name
+    }
+
+    private fun sourceDisplay(source: String): String = source
+        .replace("FullMoonZombieKnight", "满月僵尸骑士")
+        .replace("ShadowBeast", "新月影兽")
+        .replace("StormboneRaider", "雷骨袭击者")
 
     private fun parseConfig(yaml: YamlConfiguration): FeatureConfig =
         FeatureConfig(

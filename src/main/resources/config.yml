@@ -34,13 +34,13 @@ spawn:
   # 每轮最多抽样多少名玩家，避免百人服全量遍历。
   max-player-samples-per-cycle: 24
   # 每名被抽样玩家每轮尝试多少个候选位置。
-  attempts-per-player: 2
+  attempts-per-player: 3
   # 候选刷新半径配置根节点。
   spawn-radius:
-    # 候选点距离玩家的最小半径。
-    min: 24
-    # 候选点距离玩家的最大半径。
-    max: 72
+    # 候选点距离玩家的最小半径，基础配置调近，方便玩家明显感知月相生态。
+    min: 12
+    # 候选点距离玩家的最大半径，基础配置调近，仍保留一定野外感。
+    max: 42
   # 清理失效追踪实体缓存的间隔 tick。
   cleanup-interval-ticks: 1200
 

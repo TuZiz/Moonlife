@@ -5,7 +5,7 @@ version: '${version}'
 # 插件主类入口。
 main: ym.moonlife.Moonlife
 # 插件描述。
-description: Moon phase, solar phase and wilderness ecology system for survival servers.
+description: 面向生存服的月相、日相与野外生态玩法系统。
 # 目标运行 API 版本，不能高于服务器实际 Paper 版本。
 api-version: '26.1.1'
 # 插件作者列表。
@@ -20,7 +20,7 @@ commands:
   # 主生态管理命令。
   ecology:
     # 主命令描述。
-    description: Main Moonlife ecology command.
+    description: 月息生态主命令。
     # 主命令用法。
     usage: /ecology
     # 主命令别名。
@@ -30,7 +30,7 @@ commands:
   # 月相查询快捷命令。
   lunarphase:
     # 月相命令描述。
-    description: Show current lunar phase.
+    description: 查看当前月相。
     # 月相命令用法。
     usage: /lunarphase
     # 月相命令默认权限。
@@ -38,7 +38,7 @@ commands:
   # 日相查询快捷命令。
   solarphase:
     # 日相命令描述。
-    description: Show current solar phase.
+    description: 查看当前日相。
     # 日相命令用法。
     usage: /solarphase
     # 日相命令默认权限。
@@ -49,7 +49,7 @@ permissions:
   # 管理员总权限。
   ecology.admin:
     # 管理员总权限描述。
-    description: Grants all Moonlife administrative permissions.
+    description: 授予所有月息生态管理权限。
     # 管理员总权限默认授予 OP。
     default: op
     # 管理员总权限包含的子权限。
@@ -67,30 +67,30 @@ permissions:
   # 重载配置权限。
   ecology.reload:
     # 重载配置权限描述。
-    description: Reload Moonlife configuration.
+    description: 重载月息生态配置。
     # 重载配置权限默认授予 OP。
     default: op
   # 调试命令权限。
   ecology.debug:
     # 调试命令权限描述。
-    description: Use Moonlife debug commands.
+    description: 使用月息生态调试命令。
     # 调试命令权限默认授予 OP。
     default: op
   # 设置相位权限。
   ecology.setphase:
     # 设置相位权限描述。
-    description: Override moon and solar phases.
+    description: 覆盖月相和日相。
     # 设置相位权限默认授予 OP。
     default: op
   # 查看生态信息权限。
   ecology.info:
     # 查看生态信息权限描述。
-    description: View Moonlife phase information.
+    description: 查看月息生态相位信息。
     # 查看生态信息权限默认所有玩家可用。
     default: true
   # 预览生态规则权限。
   ecology.preview:
     # 预览生态规则权限描述。
-    description: Preview active ecology rules.
+    description: 预览当前位置命中的生态规则。
     # 预览生态规则权限默认授予 OP。
     default: op

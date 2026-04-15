@@ -13,7 +13,8 @@ class LocaleService(private val plugin: JavaPlugin) {
     private val messages = AtomicReference<YamlConfiguration>()
 
     fun reload() {
-        val file = File(plugin.dataFolder, "messages.yml")
+        val zhCn = File(plugin.dataFolder, "lang/zh_cn.yml")
+        val file = if (zhCn.exists()) zhCn else File(plugin.dataFolder, "messages.yml")
         messages.set(YamlConfiguration.loadConfiguration(file))
     }
 

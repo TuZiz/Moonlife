@@ -38,7 +38,8 @@ class ConfigService(private val plugin: JavaPlugin) {
         "spawn-rules.yml",
         "crop-rules.yml",
         "buff-rules.yml",
-        "features.yml"
+        "features.yml",
+        "lang/zh_cn.yml"
     )
 
     fun loadInitial() {

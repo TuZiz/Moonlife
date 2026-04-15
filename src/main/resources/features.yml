@@ -12,10 +12,10 @@ debug-bossbar:
 
 # 玩家保护配置。
 player-protection:
-  # 新玩家保护时间，单位 tick；72000 tick 约等于 1 小时在线时间。
-  new-player-ticks: 72000
-  # 出生点保护半径，在该范围内跳过生态刷怪。
-  spawn-radius: 96.0
+  # 新玩家保护时间，单位 tick；基础测试配置为 0，正式服可改为 72000。
+  new-player-ticks: 0
+  # 出生点保护半径，在该范围内跳过生态刷怪；基础测试配置调小，方便进服验证。
+  spawn-radius: 24.0
 
 # 生态材料配置。
 materials:

@@ -103,7 +103,7 @@ class EcologyCommand(
 
     private fun setMoon(sender: CommandSender, args: Array<out String>): Boolean {
         if (!require(sender, "ecology.setphase")) return true
-        val phase = args.getOrNull(1)?.let { parseEnum<MoonPhase>(it) }
+        val phase = args.getOrNull(1)?.let { parseMoonPhase(it) }
         if (phase == null) {
             messages.send(sender, "command.setmoon.invalid")
             return true
@@ -116,7 +116,7 @@ class EcologyCommand(
 
     private fun setSolar(sender: CommandSender, args: Array<out String>): Boolean {
         if (!require(sender, "ecology.setphase")) return true
-        val phase = args.getOrNull(1)?.let { parseEnum<SolarPhase>(it) }
+        val phase = args.getOrNull(1)?.let { parseSolarPhase(it) }
         if (phase == null) {
             messages.send(sender, "command.setsolar.invalid")
             return true
@@ -153,7 +153,7 @@ class EcologyCommand(
                 "world" to world.name,
                 "moon" to messages.phaseName(moonPhaseService.phase(world).displayKey),
                 "solar" to messages.phaseName(solarPhaseService.phase(world).displayKey),
-                "weather" to WeatherState.from(world).name
+                "weather" to weatherDisplay(WeatherState.from(world))
             )
         )
         return true
@@ -165,7 +165,7 @@ class EcologyCommand(
         val rules = spawnService.preview(player)
         messages.send(sender, "command.preview.header", mapOf("count" to rules.size.toString()))
         rules.take(12).forEach { rule ->
-            messages.send(sender, "command.preview.entry", mapOf("id" to rule.id, "target" to rule.target.key, "weight" to rule.weight.toString()))
+            messages.send(sender, "command.preview.entry", mapOf("id" to ruleDisplay(rule.id), "target" to targetDisplay(rule.target.key), "weight" to rule.weight.toString()))
         }
         return true
     }
@@ -182,7 +182,7 @@ class EcologyCommand(
         if (!require(sender, "ecology.debug")) return true
         val player = sender as? Player ?: return playerOnly(sender)
         val plan = buffService.testBuff(player)
-        messages.send(sender, "command.testbuff.summary", mapOf("rules" to plan.ruleIds.joinToString(", ").ifEmpty { "-" }))
+        messages.send(sender, "command.testbuff.summary", mapOf("rules" to plan.ruleIds.joinToString("、") { ruleDisplay(it) }.ifEmpty { "无" }))
         return true
     }
 
@@ -218,7 +218,7 @@ class EcologyCommand(
         if (!require(sender, "ecology.debug")) return true
         if (args.size < 3 || !args[1].equals("start", ignoreCase = true)) {
             featureService.config().eventPresets.forEach {
-                featureLine(sender, "event ${it.id}: multiplier=${it.multiplier} minutes=${it.defaultMinutes}")
+                featureLine(sender, "生态事件 ${it.displayName}：倍率=${it.multiplier} 持续=${it.defaultMinutes} 分钟")
             }
             return true
         }
@@ -296,10 +296,12 @@ class EcologyCommand(
         if (alias.equals("lunarphase", ignoreCase = true) || alias.equals("solarphase", ignoreCase = true)) return emptyList()
         if (args.size == 1) return subcommands.filter { it.startsWith(args[0], ignoreCase = true) }
         if (args.size == 2 && args[0].equals("setmoon", ignoreCase = true)) {
-            return MoonPhase.entries.map { it.name }.filter { it.startsWith(args[1], ignoreCase = true) }
+            return listOf("新月", "峨眉月", "上弦月", "盈凸月", "满月", "亏凸月", "下弦月", "残月")
+                .filter { it.startsWith(args[1], ignoreCase = true) }
         }
         if (args.size == 2 && args[0].equals("setsolar", ignoreCase = true)) {
-            return SolarPhase.entries.map { it.name }.filter { it.startsWith(args[1], ignoreCase = true) }
+            return listOf("黎明", "白昼", "黄昏", "夜晚", "午夜")
+                .filter { it.startsWith(args[1], ignoreCase = true) }
         }
         if (args.size == 3 && (args[0].equals("setmoon", true) || args[0].equals("setsolar", true))) {
             return Bukkit.getWorlds().map { it.name }.filter { it.startsWith(args[2], ignoreCase = true) }
@@ -319,4 +321,49 @@ class EcologyCommand(
 
     private inline fun <reified E : Enum<E>> parseEnum(value: String): E? =
         runCatching { enumValueOf<E>(value.uppercase(Locale.ROOT).replace('-', '_')) }.getOrNull()
+
+    private fun parseMoonPhase(value: String): MoonPhase? = when (value.trim()) {
+        "新月" -> MoonPhase.NEW_MOON
+        "峨眉月", "娥眉月" -> MoonPhase.WAXING_CRESCENT
+        "上弦月" -> MoonPhase.FIRST_QUARTER
+        "盈凸月" -> MoonPhase.WAXING_GIBBOUS
+        "满月" -> MoonPhase.FULL_MOON
+        "亏凸月" -> MoonPhase.WANING_GIBBOUS
+        "下弦月" -> MoonPhase.LAST_QUARTER
+        "残月" -> MoonPhase.WANING_CRESCENT
+        else -> parseEnum<MoonPhase>(value)
+    }
+
+    private fun parseSolarPhase(value: String): SolarPhase? = when (value.trim()) {
+        "黎明" -> SolarPhase.DAWN
+        "白昼", "白天" -> SolarPhase.DAY
+        "黄昏" -> SolarPhase.DUSK
+        "夜晚" -> SolarPhase.NIGHT
+        "午夜" -> SolarPhase.MIDNIGHT
+        else -> parseEnum<SolarPhase>(value)
+    }
+
+    private fun weatherDisplay(weather: WeatherState): String = when (weather) {
+        WeatherState.CLEAR -> "晴朗"
+        WeatherState.RAIN -> "降雨"
+        WeatherState.THUNDER -> "雷暴"
+    }
+
+    private fun ruleDisplay(id: String): String = when (id.lowercase(Locale.ROOT)) {
+        "fullmoon_zombie_knight" -> "满月僵尸骑士"
+        "newmoon_shadow_beast" -> "新月影兽"
+        "thunder_night_raider" -> "雷雨夜袭击者"
+        "sunny_day_growth" -> "晴天白昼成长"
+        "fullmoon_nether_wart" -> "满月地狱疣"
+        "dusk_forager" -> "黄昏采集者"
+        "thunder_night_danger" -> "雷雨夜危机"
+        else -> id.replace('_', ' ')
+    }
+
+    private fun targetDisplay(key: String): String = when (key.lowercase(Locale.ROOT)) {
+        "fullmoonzombieknight" -> "满月僵尸骑士"
+        "shadowbeast" -> "新月影兽"
+        "stormboneraider" -> "雷骨袭击者"
+        else -> key
+    }
 }

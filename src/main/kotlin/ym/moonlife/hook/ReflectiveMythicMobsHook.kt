@@ -22,8 +22,8 @@ class ReflectiveMythicMobsHook(private val plugin: Plugin) : MythicMobsHook {
             } ?: return@runCatching emptySet<String>()
             val result = method.invoke(manager)
             when (result) {
-                is Collection<*> -> result.mapNotNull { it?.toString() }.toSet()
-                is Map<*, *> -> result.keys.mapNotNull { it?.toString() }.toSet()
+                is Collection<*> -> result.mapNotNull { mobIdFrom(it) }.toSet()
+                is Map<*, *> -> (result.keys + result.values).mapNotNull { mobIdFrom(it) }.toSet()
                 else -> emptySet()
             }
         }.getOrDefault(emptySet())
@@ -115,5 +115,20 @@ class ReflectiveMythicMobsHook(private val plugin: Plugin) : MythicMobsHook {
     private fun unwrapOptional(value: Any?): Any? = when (value) {
         is Optional<*> -> value.orElse(null)
         else -> value
+    }
+
+    private fun mobIdFrom(value: Any?): String? {
+        value ?: return null
+        if (value is String) return value
+        return runCatching {
+            listOf("getInternalName", "getId", "getName", "getKey").firstNotNullOfOrNull { methodName ->
+                val raw = value.javaClass.methods
+                    .firstOrNull { it.name == methodName && it.parameterCount == 0 }
+                    ?.invoke(value)
+                unwrapOptional(raw)
+                    ?.toString()
+                    ?.takeIf { it.isNotBlank() }
+            }
+        }.getOrNull()
     }
 }
