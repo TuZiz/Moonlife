@@ -6,8 +6,8 @@ version: '${version}'
 main: ym.moonlife.Moonlife
 # 插件描述。
 description: Moon phase, solar phase and wilderness ecology system for survival servers.
-# 目标 Paper API 版本。
-api-version: '26.1.2'
+# 目标运行 API 版本，不能高于服务器实际 Paper 版本。
+api-version: '26.1.1'
 # 插件作者列表。
 authors: [ ymxc ]
 # 插件项目网站。
