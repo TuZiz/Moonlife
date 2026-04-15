@@ -1,0 +1,49 @@
+FullMoonZombieKnight:
+  Type: ZOMBIE
+  Display: '&d满月僵尸骑士'
+  Health: 60
+  Damage: 8
+  Equipment:
+  - IRON_HELMET HEAD
+  - IRON_CHESTPLATE CHEST
+  - IRON_LEGGINGS LEGS
+  - IRON_BOOTS FEET
+  - IRON_SWORD HAND
+  Drops:
+  - ROTTEN_FLESH 1to3 0.8
+  - IRON_INGOT 1 0.15
+  Options:
+    AlwaysShowName: true
+    MovementSpeed: 0.24
+    PreventOtherDrops: false
+    MaxCombatDistance: 24
+
+ShadowBeast:
+  Type: SPIDER
+  Display: '&8新月影兽'
+  Health: 80
+  Damage: 10
+  Drops:
+  - GUNPOWDER 1to2 0.45
+  Options:
+    AlwaysShowName: true
+    MovementSpeed: 0.34
+    PreventOtherDrops: false
+    MaxCombatDistance: 32
+
+StormboneRaider:
+  Type: SKELETON
+  Display: '&b雷骨袭击者'
+  Health: 55
+  Damage: 7
+  Equipment:
+  - CHAINMAIL_HELMET HEAD
+  - BOW HAND
+  Drops:
+  - BONE 1to3 0.8
+  - ARROW 1to4 0.5
+  Options:
+    AlwaysShowName: true
+    MovementSpeed: 0.26
+    PreventOtherDrops: false
+    MaxCombatDistance: 32
