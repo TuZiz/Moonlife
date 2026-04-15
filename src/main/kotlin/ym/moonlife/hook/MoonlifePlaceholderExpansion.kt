@@ -9,6 +9,7 @@ import ym.moonlife.buff.BuffPlan
 import ym.moonlife.buff.PlayerBuffService
 import ym.moonlife.core.WeatherState
 import ym.moonlife.crop.CropGrowthService
+import ym.moonlife.feature.EcologyFeatureService
 import ym.moonlife.locale.MessageService
 import ym.moonlife.moon.MoonPhaseService
 import ym.moonlife.solar.SolarPhaseService
@@ -22,7 +23,8 @@ class MoonlifePlaceholderExpansion(
     private val messages: MessageService,
     private val spawnService: SpawnService,
     private val cropGrowthService: CropGrowthService,
-    private val playerBuffService: PlayerBuffService
+    private val playerBuffService: PlayerBuffService,
+    private val featureService: EcologyFeatureService
 ) : PlaceholderExpansion() {
     override fun getIdentifier(): String = "moonlife"
     override fun getAuthor(): String = "ymxc"
@@ -57,6 +59,17 @@ class MoonlifePlaceholderExpansion(
             "buff_count", "active_buff_count" -> onlinePlayer?.buffPlan()?.ruleIds?.size?.toString().orEmpty()
             "buff_feature" -> onlinePlayer?.buffFeatureText().orEmpty()
             "features", "phase_features" -> onlinePlayer?.allFeaturesText().orEmpty()
+            "danger", "danger_level" -> onlinePlayer?.let { featureService.dangerLevel(it).name }.orEmpty()
+            "danger_score" -> onlinePlayer?.let { featureService.dangerScore(it).toString() }.orEmpty()
+            "hotspot" -> onlinePlayer?.let { featureService.activeHotspot(it)?.id ?: "-" }.orEmpty()
+            "hotspot_multiplier" -> onlinePlayer?.let { featureService.activeHotspot(it)?.multiplier?.let(::format) ?: "1.00" }.orEmpty()
+            "active_event" -> featureService.activeEvent()?.id ?: "-"
+            "event_multiplier" -> format(featureService.eventMultiplier())
+            "event_seconds" -> featureService.activeEvent()?.remainingSeconds()?.toString() ?: "0"
+            "protected" -> onlinePlayer?.let { featureService.isPlayerProtected(it).toString() }.orEmpty()
+            "bounty_count" -> onlinePlayer?.let { featureService.bountyLines(it).size.toString() }.orEmpty()
+            "codex_count" -> onlinePlayer?.let { featureService.codexLines(it).count { line -> !line.startsWith("No ") }.toString() }.orEmpty()
+            "materials" -> featureService.materialsLines().joinToString("; ")
             else -> ""
         }
     }
@@ -95,7 +108,7 @@ class MoonlifePlaceholderExpansion(
     }
 
     private fun Player.allFeaturesText(): String =
-        listOf(spawnFeatureText(), cropFeatureText(), buffFeatureText()).joinToString(" | ")
+        listOf(spawnFeatureText(), cropFeatureText(), buffFeatureText(), featureService.featuresText(this)).joinToString(" | ")
 
     private fun format(value: Double): String =
         "%.2f".format(Locale.US, value)

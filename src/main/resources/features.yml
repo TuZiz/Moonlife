@@ -1,0 +1,214 @@
+# 功能扩展配置根节点：日历、悬赏、图鉴、祭坛、热点、生态材料、事件倍率、玩家保护和模板。
+
+# 月相事件日历配置。
+calendar:
+  # /ecology calendar 默认展示未来多少天。
+  days: 8
+
+# 管理员调试 ActionBar 配置。
+debug-bossbar:
+  # 调试状态刷新间隔 tick。
+  refresh-ticks: 40
+
+# 玩家保护配置。
+player-protection:
+  # 新玩家保护时间，单位 tick；72000 tick 约等于 1 小时在线时间。
+  new-player-ticks: 72000
+  # 出生点保护半径，在该范围内跳过生态刷怪。
+  spawn-radius: 96.0
+
+# 生态材料配置。
+materials:
+  # 月露种子：满月成熟作物低概率产出。
+  moonlit_seed:
+    # 展示名。
+    display-name: "月露种子"
+    # 物品材质。
+    material: AMETHYST_SHARD
+    # 来源说明。
+    source: "满月成熟作物"
+  # 影尘：新月成熟作物或暗影悬赏产出。
+  shadow_dust:
+    # 展示名。
+    display-name: "影尘"
+    # 物品材质。
+    material: GUNPOWDER
+    # 来源说明。
+    source: "新月生态与 ShadowBeast"
+  # 雷骨：雷雨夜悬赏产出。
+  thunder_bone:
+    # 展示名。
+    display-name: "雷骨"
+    # 物品材质。
+    material: BONE
+    # 来源说明。
+    source: "StormboneRaider"
+
+# 月相悬赏配置。
+bounties:
+  # 新月暗影兽悬赏。
+  shadow_beast_hunt:
+    # 展示名。
+    display-name: "新月暗影狩猎"
+    # 目标 MythicMobs 内部名。
+    mythic-mob-ids:
+      # 暗影兽。
+      - ShadowBeast
+    # 完成时给予经验。
+    reward-exp: 120
+    # 完成时给予生态材料 id。
+    reward-materials:
+      # 影尘。
+      - shadow_dust
+    # 解锁的图鉴条目。
+    codex-entry: shadow_beast
+  # 雷雨夜袭击者悬赏。
+  stormbone_raider_hunt:
+    # 展示名。
+    display-name: "雷骨夜袭"
+    # 目标 MythicMobs 内部名。
+    mythic-mob-ids:
+      # 雷骨袭击者。
+      - StormboneRaider
+    # 完成时给予经验。
+    reward-exp: 100
+    # 完成时给予生态材料 id。
+    reward-materials:
+      # 雷骨。
+      - thunder_bone
+    # 解锁的图鉴条目。
+    codex-entry: stormbone_raider
+  # 满月僵尸骑士悬赏。
+  fullmoon_knight_hunt:
+    # 展示名。
+    display-name: "满月骑士讨伐"
+    # 目标 MythicMobs 内部名。
+    mythic-mob-ids:
+      # 满月僵尸骑士。
+      - FullMoonZombieKnight
+    # 完成时给予经验。
+    reward-exp: 150
+    # 完成时给予生态材料 id。
+    reward-materials:
+      # 月露种子。
+      - moonlit_seed
+    # 解锁的图鉴条目。
+    codex-entry: fullmoon_zombie_knight
+
+# 月相祭坛配置。
+altars:
+  # 满月祭坛：使用紫水晶碎片右键哭泣黑曜石，启动临时活动。
+  fullmoon_altar:
+    # 展示名。
+    display-name: "满月祭坛"
+    # 祭坛方块。
+    block: CRYING_OBSIDIAN
+    # 消耗物品。
+    cost: AMETHYST_SHARD
+    # 允许触发的月相。
+    moon-phases:
+      # 满月。
+      - FULL_MOON
+    # 允许触发的日相。
+    solar-phases:
+      # 夜晚。
+      - NIGHT
+      # 午夜。
+      - MIDNIGHT
+    # 允许触发的天气，留空表示任意天气。
+    weather: []
+    # 启动的临时活动 id。
+    event-id: fullmoon_frenzy
+    # 活动持续分钟。
+    event-minutes: 20
+    # 活动倍率。
+    event-multiplier: 1.35
+
+# 区域生态热点配置。
+hotspots:
+  # 新月暗影热点。
+  newmoon_shadow_hotspot:
+    # 展示名。
+    display-name: "新月暗影热点"
+    # 热点群系。
+    biomes:
+      # 黑森林。
+      - DARK_FOREST
+      # 沼泽。
+      - SWAMP
+      # 红树林沼泽。
+      - MANGROVE_SWAMP
+    # 热点月相。
+    moon-phases:
+      # 新月。
+      - NEW_MOON
+    # 热点日相。
+    solar-phases:
+      # 午夜。
+      - MIDNIGHT
+    # 热点天气，留空表示任意天气。
+    weather: []
+    # 热点倍率，用于危险等级和显示。
+    multiplier: 1.4
+  # 雷雨夜热点。
+  thunder_night_hotspot:
+    # 展示名。
+    display-name: "雷雨夜热点"
+    # 热点群系，留空表示任意群系。
+    biomes: []
+    # 热点月相，留空表示任意月相。
+    moon-phases: []
+    # 热点日相。
+    solar-phases:
+      # 夜晚。
+      - NIGHT
+      # 午夜。
+      - MIDNIGHT
+    # 热点天气。
+    weather:
+      # 雷暴。
+      - THUNDER
+    # 热点倍率，用于危险等级和显示。
+    multiplier: 1.5
+
+# 临时服务器活动预设。
+events:
+  # 满月狂潮活动。
+  fullmoon_frenzy:
+    # 展示名。
+    display-name: "满月狂潮"
+    # 默认倍率。
+    multiplier: 1.35
+    # 默认持续分钟。
+    default-minutes: 30
+  # 雷雨猎杀活动。
+  thunder_hunt:
+    # 展示名。
+    display-name: "雷雨猎杀"
+    # 默认倍率。
+    multiplier: 1.5
+    # 默认持续分钟。
+    default-minutes: 20
+
+# 世界模板建议，/ecology template 可查看。
+world-templates:
+  # 主世界模板。
+  survival:
+    # 主世界模板建议一。
+    - "world: 开启所有月相刷怪、作物成长和玩家状态"
+    # 主世界模板建议二。
+    - "spawn-rules: 使用 FullMoonZombieKnight / ShadowBeast / StormboneRaider"
+    # 主世界模板建议三。
+    - "buff-rules: 保留 dusk_forager 与 thunder_night_danger"
+  # 资源世界模板。
+  resource:
+    # 资源世界模板建议一。
+    - "resource_world: 提高热点倍率，缩短刷怪冷却"
+    # 资源世界模板建议二。
+    - "建议禁用出生点保护或缩小保护半径"
+  # 下界模板。
+  nether:
+    # 下界模板建议一。
+    - "world_nether: 保留 fullmoon_nether_wart 作物规则"
+    # 下界模板建议二。
+    - "可增加满月地狱疣和新月灵魂沙相关材料"

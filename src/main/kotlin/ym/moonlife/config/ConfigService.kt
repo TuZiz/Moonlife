@@ -37,7 +37,8 @@ class ConfigService(private val plugin: JavaPlugin) {
         "solar-phases.yml",
         "spawn-rules.yml",
         "crop-rules.yml",
-        "buff-rules.yml"
+        "buff-rules.yml",
+        "features.yml"
     )
 
     fun loadInitial() {

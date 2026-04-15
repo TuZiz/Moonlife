@@ -14,6 +14,8 @@ class MessageService(
     private val locale: LocaleService,
     private val scheduler: SchedulerFacade
 ) {
+    fun plain(key: String, placeholders: Map<String, String> = emptyMap()): String = locale.plain(key, placeholders)
+
     fun send(sender: CommandSender, key: String, placeholders: Map<String, String> = emptyMap()) {
         sender.sendMessage(locale.plain(key, placeholders))
     }

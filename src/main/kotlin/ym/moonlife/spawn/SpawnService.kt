@@ -16,6 +16,7 @@ import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.potion.PotionEffect
 import ym.moonlife.config.ConfigService
 import ym.moonlife.core.EnvironmentSnapshotService
+import ym.moonlife.feature.EcologyFeatureService
 import ym.moonlife.locale.MessageService
 import ym.moonlife.scheduler.ScheduledTaskHandle
 import ym.moonlife.scheduler.SchedulerFacade
@@ -23,6 +24,7 @@ import ym.moonlife.util.ConfigReaders
 import ym.moonlife.util.PerformanceGuard
 import java.util.Locale
 import java.util.concurrent.ConcurrentHashMap
+import kotlin.math.ceil
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.random.Random
@@ -44,6 +46,11 @@ class SpawnService(
     private var engine = SpawnRuleEngine(emptyList(), targetResolver)
     private val cooldowns = ConcurrentHashMap<String, Long>()
     private val playerPositions = ConcurrentHashMap<java.util.UUID, CachedPlayerPosition>()
+    private var featureService: EcologyFeatureService? = null
+
+    fun setFeatureService(featureService: EcologyFeatureService) {
+        this.featureService = featureService
+    }
 
     fun start() {
         reload()
@@ -78,7 +85,10 @@ class SpawnService(
     }
 
     private fun tick() {
-        if (!performanceGuard.allowHeavyWork()) return
+        if (!performanceGuard.allowHeavyWork()) {
+            featureService?.recordPerformanceSkip()
+            return
+        }
         val config = configService.current.main.spawn
         val players = Bukkit.getOnlinePlayers()
             .filter { it.isOnline && it.isValid }
@@ -92,6 +102,7 @@ class SpawnService(
 
     private fun attemptAround(player: Player) {
         cachePlayerPosition(player)
+        if (featureService?.isPlayerProtected(player) == true) return
         val config = configService.current.main.spawn
         repeat(config.attemptsPerPlayer) {
             val center = player.location
@@ -161,15 +172,19 @@ class SpawnService(
     }
 
     private fun spawnRule(rule: SpawnRule, location: Location) {
-        val amount = rule.amount.random()
+        val multiplier = featureService?.spawnAmountMultiplier(rule) ?: 1.0
+        val amount = ceil(rule.amount.random() * multiplier).toInt().coerceAtLeast(1)
         val entities = when (val target = rule.target) {
             is VanillaSpawnTarget -> vanillaSpawnAdapter.spawn(target, location, amount)
             is MythicSpawnTarget -> mythicSpawnAdapter.spawn(target, location, amount)
         }
         entities.forEach { entity -> afterSpawn(rule, entity) }
         if (entities.isNotEmpty()) {
+            featureService?.recordSpawn(rule.id)
             val key = "${rule.id}:${location.world?.name?.lowercase(Locale.ROOT)}"
             cooldowns[key] = System.currentTimeMillis() + rule.cooldownTicks * 50L
+        } else {
+            featureService?.recordSkip(rule.id)
         }
     }
 

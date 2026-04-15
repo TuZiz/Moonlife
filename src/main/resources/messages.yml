@@ -79,6 +79,26 @@ command:
     - '<prefix><#E0F2FE>/ecology testspawn <#94A3B8>- 强制执行一次实地刷新测试'
     # 帮助菜单：测试增益。
     - '<prefix><#E0F2FE>/ecology testbuff <#94A3B8>- 强制进行一次 Buff 状态结算'
+    # 帮助菜单：事件日历。
+    - '<prefix><#E0F2FE>/ecology calendar [world] <#94A3B8>- 查看未来月相事件日历'
+    # 帮助菜单：规则命中解释。
+    - '<prefix><#E0F2FE>/ecology inspect <#94A3B8>- 解释当前位置命中的生态规则'
+    # 帮助菜单：配置校验。
+    - '<prefix><#E0F2FE>/ecology validate <#94A3B8>- 校验 MythicMobs 与生态规则配置'
+    # 帮助菜单：调试显示。
+    - '<prefix><#E0F2FE>/ecology bossbar <#94A3B8>- 开关生态危险等级调试显示'
+    # 帮助菜单：临时事件。
+    - '<prefix><#E0F2FE>/ecology event start <id> [minutes] [multiplier] <#94A3B8>- 启动临时生态事件'
+    # 帮助菜单：悬赏。
+    - '<prefix><#E0F2FE>/ecology bounty <#94A3B8>- 查看月相悬赏'
+    # 帮助菜单：图鉴。
+    - '<prefix><#E0F2FE>/ecology codex <#94A3B8>- 查看已解锁生态图鉴'
+    # 帮助菜单：生态材料。
+    - '<prefix><#E0F2FE>/ecology materials <#94A3B8>- 查看生态材料来源'
+    # 帮助菜单：世界模板。
+    - '<prefix><#E0F2FE>/ecology template [name] <#94A3B8>- 查看世界配置模板建议'
+    # 帮助菜单：规则统计。
+    - '<prefix><#E0F2FE>/ecology stats <#94A3B8>- 查看规则触发统计'
 
 # 月相消息根节点。
 moon:
@@ -129,6 +149,33 @@ spawn:
     skipped-performance: '<prefix><#FDE68A>世界魔力过载（服务器负载偏高），本轮生态刷新已跳过。'
     # 刷怪成功调试提示。
     spawned: '<prefix><#BAE6FD>遵循法则 <#FFFFFF><rule></#FFFFFF>，已在世间凝聚出 <#FFFFFF><target></#FFFFFF>。'
+
+# 扩展功能消息根节点。
+feature:
+  # 通用功能输出行。
+  line: '<prefix><#E0F2FE><line>'
+  # 月相祭坛消息根节点。
+  altar:
+    # 祭坛触发成功。
+    activated: '<prefix><#C4B5FD><altar></#C4B5FD> 已启动 <#FFFFFF><event></#FFFFFF>。'
+  # 悬赏消息根节点。
+  bounty:
+    # 悬赏完成提示。
+    completed: '<prefix><#86EFAC>悬赏完成：<#FFFFFF><bounty></#FFFFFF>。'
+  # 调试 BossBar / ActionBar 消息根节点。
+  debug-bossbar:
+    # 开启调试显示。
+    enabled: '<prefix><#86EFAC>生态调试显示已开启。'
+    # 关闭调试显示。
+    disabled: '<prefix><#FDE68A>生态调试显示已关闭。'
+    # 调试显示内容。
+    line: '<#7DD3FC>Danger <#FFFFFF><danger></#FFFFFF> <#94A3B8>(<score>)</#94A3B8> <#F9A8D4>Event <#FFFFFF><event></#FFFFFF> <#86EFAC>Hotspot <#FFFFFF><hotspot></#FFFFFF>'
+  # 临时事件消息根节点。
+  event:
+    # 未知事件提示。
+    unknown: '<prefix><#FCA5A5>未知生态事件：<#FFFFFF><event></#FFFFFF>。'
+    # 事件启动提示。
+    started: '<prefix><#86EFAC>生态事件 <#FFFFFF><event></#FFFFFF> 已启动，剩余 <#FFFFFF><seconds></#FFFFFF> 秒。'
 
 # 月相显示名根节点。
 moon-phase:

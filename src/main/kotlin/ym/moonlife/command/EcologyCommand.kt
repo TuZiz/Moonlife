@@ -16,6 +16,7 @@ import ym.moonlife.solar.SolarPhaseService
 import ym.moonlife.spawn.SpawnService
 import ym.moonlife.buff.PlayerBuffService
 import ym.moonlife.core.WeatherState
+import ym.moonlife.feature.EcologyFeatureService
 import java.util.Locale
 
 class EcologyCommand(
@@ -25,9 +26,13 @@ class EcologyCommand(
     private val solarPhaseService: SolarPhaseService,
     private val spawnService: SpawnService,
     private val buffService: PlayerBuffService,
+    private val featureService: EcologyFeatureService,
     private val onReload: () -> Boolean
 ) : CommandExecutor, TabCompleter {
-    private val subcommands = listOf("reload", "debug", "setmoon", "setsolar", "info", "preview", "testspawn", "testbuff", "help")
+    private val subcommands = listOf(
+        "reload", "debug", "setmoon", "setsolar", "info", "preview", "testspawn", "testbuff",
+        "calendar", "inspect", "validate", "bossbar", "event", "bounty", "codex", "materials", "template", "stats", "help"
+    )
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         return when (label.lowercase(Locale.ROOT)) {
@@ -48,6 +53,16 @@ class EcologyCommand(
             "preview" -> preview(sender)
             "testspawn" -> testSpawn(sender)
             "testbuff" -> testBuff(sender)
+            "calendar" -> calendar(sender, args)
+            "inspect" -> inspect(sender)
+            "validate" -> validate(sender)
+            "bossbar" -> bossbar(sender)
+            "event" -> event(sender, args)
+            "bounty" -> bounty(sender)
+            "codex" -> codex(sender)
+            "materials" -> materials(sender)
+            "template" -> template(sender, args)
+            "stats" -> stats(sender)
             "help" -> help(sender)
             else -> {
                 messages.send(sender, "command.unknown")
@@ -171,6 +186,86 @@ class EcologyCommand(
         return true
     }
 
+    private fun calendar(sender: CommandSender, args: Array<out String>): Boolean {
+        if (!require(sender, "ecology.info")) return true
+        val world = resolveWorld(sender, args.getOrNull(1)) ?: return true
+        featureService.calendar(world).forEach { line -> featureLine(sender, line) }
+        return true
+    }
+
+    private fun inspect(sender: CommandSender): Boolean {
+        if (!require(sender, "ecology.debug")) return true
+        val player = sender as? Player ?: return playerOnly(sender)
+        featureService.inspect(player).forEach { line -> featureLine(sender, line) }
+        return true
+    }
+
+    private fun validate(sender: CommandSender): Boolean {
+        if (!require(sender, "ecology.debug")) return true
+        featureService.validate().forEach { line -> featureLine(sender, line) }
+        return true
+    }
+
+    private fun bossbar(sender: CommandSender): Boolean {
+        if (!require(sender, "ecology.debug")) return true
+        val player = sender as? Player ?: return playerOnly(sender)
+        val enabled = featureService.toggleDebugBossBar(player)
+        messages.send(sender, if (enabled) "feature.debug-bossbar.enabled" else "feature.debug-bossbar.disabled")
+        return true
+    }
+
+    private fun event(sender: CommandSender, args: Array<out String>): Boolean {
+        if (!require(sender, "ecology.debug")) return true
+        if (args.size < 3 || !args[1].equals("start", ignoreCase = true)) {
+            featureService.config().eventPresets.forEach {
+                featureLine(sender, "event ${it.id}: multiplier=${it.multiplier} minutes=${it.defaultMinutes}")
+            }
+            return true
+        }
+        val id = args[2]
+        val minutes = args.getOrNull(3)?.toIntOrNull()
+        val multiplier = args.getOrNull(4)?.toDoubleOrNull()
+        val active = featureService.startEvent(id, minutes, multiplier)
+        if (active == null) {
+            messages.send(sender, "feature.event.unknown", mapOf("event" to id))
+        } else {
+            messages.send(sender, "feature.event.started", mapOf("event" to active.displayName, "seconds" to active.remainingSeconds().toString()))
+        }
+        return true
+    }
+
+    private fun bounty(sender: CommandSender): Boolean {
+        if (!require(sender, "ecology.info")) return true
+        val player = sender as? Player ?: return playerOnly(sender)
+        featureService.bountyLines(player).forEach { line -> featureLine(sender, line) }
+        return true
+    }
+
+    private fun codex(sender: CommandSender): Boolean {
+        if (!require(sender, "ecology.info")) return true
+        val player = sender as? Player ?: return playerOnly(sender)
+        featureService.codexLines(player).forEach { line -> featureLine(sender, line) }
+        return true
+    }
+
+    private fun materials(sender: CommandSender): Boolean {
+        if (!require(sender, "ecology.info")) return true
+        featureService.materialsLines().forEach { line -> featureLine(sender, line) }
+        return true
+    }
+
+    private fun template(sender: CommandSender, args: Array<out String>): Boolean {
+        if (!require(sender, "ecology.preview")) return true
+        featureService.templateLines(args.getOrNull(1)).forEach { line -> featureLine(sender, line) }
+        return true
+    }
+
+    private fun stats(sender: CommandSender): Boolean {
+        if (!require(sender, "ecology.debug")) return true
+        featureService.statsSummary().forEach { line -> featureLine(sender, line) }
+        return true
+    }
+
     private fun resolveWorld(sender: CommandSender, name: String?): World? {
         if (!name.isNullOrBlank()) {
             return Bukkit.getWorld(name).also {
@@ -193,6 +288,10 @@ class EcologyCommand(
         return true
     }
 
+    private fun featureLine(sender: CommandSender, line: String) {
+        messages.send(sender, "feature.line", mapOf("line" to line))
+    }
+
     override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<out String>): List<String> {
         if (alias.equals("lunarphase", ignoreCase = true) || alias.equals("solarphase", ignoreCase = true)) return emptyList()
         if (args.size == 1) return subcommands.filter { it.startsWith(args[0], ignoreCase = true) }
@@ -204,6 +303,16 @@ class EcologyCommand(
         }
         if (args.size == 3 && (args[0].equals("setmoon", true) || args[0].equals("setsolar", true))) {
             return Bukkit.getWorlds().map { it.name }.filter { it.startsWith(args[2], ignoreCase = true) }
+        }
+        if (args.size == 2 && args[0].equals("event", true)) return listOf("start").filter { it.startsWith(args[1], true) }
+        if (args.size == 3 && args[0].equals("event", true) && args[1].equals("start", true)) {
+            return featureService.config().eventPresets.map { it.id }.filter { it.startsWith(args[2], true) }
+        }
+        if (args.size == 2 && args[0].equals("calendar", true)) {
+            return Bukkit.getWorlds().map { it.name }.filter { it.startsWith(args[1], ignoreCase = true) }
+        }
+        if (args.size == 2 && args[0].equals("template", true)) {
+            return featureService.config().worldTemplates.keys.filter { it.startsWith(args[1], true) }
         }
         return emptyList()
     }

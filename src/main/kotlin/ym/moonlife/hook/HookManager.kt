@@ -12,6 +12,7 @@ import ym.moonlife.locale.MessageService
 import ym.moonlife.moon.MoonPhaseService
 import ym.moonlife.solar.SolarPhaseService
 import ym.moonlife.crop.CropGrowthService
+import ym.moonlife.feature.EcologyFeatureService
 import ym.moonlife.spawn.SpawnService
 import ym.moonlife.util.ReflectionUtil
 import java.util.concurrent.ConcurrentHashMap
@@ -54,7 +55,8 @@ class HookManager(
         messages: MessageService,
         spawnService: SpawnService,
         cropGrowthService: CropGrowthService,
-        playerBuffService: PlayerBuffService
+        playerBuffService: PlayerBuffService,
+        featureService: EcologyFeatureService
     ) {
         if (!placeholderApiAvailable || !ReflectionUtil.classExists("me.clip.placeholderapi.expansion.PlaceholderExpansion")) {
             plugin.logger.info("PlaceholderAPI not found. Placeholder expansion is skipped.")
@@ -69,7 +71,8 @@ class HookManager(
                 messages,
                 spawnService,
                 cropGrowthService,
-                playerBuffService
+                playerBuffService,
+                featureService
             )
             val registered = expansion.register()
             placeholderExpansion = expansion
