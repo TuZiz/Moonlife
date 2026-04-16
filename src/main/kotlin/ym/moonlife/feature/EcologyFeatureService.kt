@@ -18,7 +18,6 @@ import org.bukkit.event.block.Action
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.entity.EntityDeathEvent
 import org.bukkit.event.player.PlayerInteractEvent
-import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.java.JavaPlugin
 import ym.moonlife.buff.PlayerBuffService
 import ym.moonlife.config.ConfigService
@@ -26,6 +25,9 @@ import ym.moonlife.core.EnvironmentSnapshotService
 import ym.moonlife.core.WeatherState
 import ym.moonlife.crop.CropGrowthService
 import ym.moonlife.hook.HookManager
+import ym.moonlife.item.CustomItemSpec
+import ym.moonlife.item.PersistentTagSpec
+import ym.moonlife.item.PersistentTagType
 import ym.moonlife.locale.MessageService
 import ym.moonlife.moon.MoonPhase
 import ym.moonlife.moon.MoonPhaseService
@@ -329,7 +331,7 @@ class EcologyFeatureService(
         val context = environment.context(block.location, event.player)
         val rule = config().altarRules.firstOrNull { altar ->
             block.type == altar.block &&
-                item.type == altar.cost &&
+                altar.cost.matches(plugin, item) &&
                 (altar.moonPhases.isEmpty() || context.snapshot.moonPhase in altar.moonPhases) &&
                 (altar.solarPhases.isEmpty() || context.snapshot.solarPhase in altar.solarPhases) &&
                 (altar.weather.isEmpty() || context.snapshot.weather in altar.weather)
@@ -381,13 +383,7 @@ class EcologyFeatureService(
 
     private fun giveMaterial(player: Player, materialId: String) {
         val material = config().materials.firstOrNull { it.id.equals(materialId, ignoreCase = true) } ?: return
-        val stack = ItemStack(material.material)
-        val meta = stack.itemMeta
-        if (meta != null) {
-            meta.setDisplayName(material.displayName)
-            meta.lore = listOf("月息生态材料", "来源：${sourceDisplay(material.source)}")
-            stack.itemMeta = meta
-        }
+        val stack = material.item.create(plugin)
         player.inventory.addItem(stack).values.forEach { leftover ->
             player.world.dropItemNaturally(player.location, leftover)
         }
@@ -545,11 +541,22 @@ class EcologyFeatureService(
         section ?: return defaultConfig().materials
         return section.getKeys(false).mapNotNull { id ->
             val child = section.getConfigurationSection(id) ?: return@mapNotNull null
+            val source = child.getString("source", "unknown") ?: "unknown"
+            val displayName = child.getString("display-name", id) ?: id
+            val material = Material.matchMaterial(child.getString("material", "AMETHYST_SHARD") ?: "AMETHYST_SHARD") ?: Material.AMETHYST_SHARD
+            val itemSection = child.getConfigurationSection("item") ?: child
             EcologyMaterial(
                 id = id,
-                displayName = child.getString("display-name", id) ?: id,
-                material = Material.matchMaterial(child.getString("material", "AMETHYST_SHARD") ?: "AMETHYST_SHARD") ?: Material.AMETHYST_SHARD,
-                source = child.getString("source", "unknown") ?: "unknown"
+                displayName = displayName,
+                material = material,
+                source = source,
+                item = CustomItemSpec.parse(
+                    itemSection,
+                    defaultMaterial = material,
+                    defaultDisplayName = displayName,
+                    defaultLore = listOf("月息生态材料", "来源：${sourceDisplay(source)}"),
+                    defaultTags = listOf(PersistentTagSpec("moonlife:item_id", PersistentTagType.STRING, id.lowercase(Locale.ROOT)))
+                )
             )
         }
     }
@@ -558,11 +565,15 @@ class EcologyFeatureService(
         section ?: return defaultConfig().altarRules
         return section.getKeys(false).mapNotNull { id ->
             val child = section.getConfigurationSection(id) ?: return@mapNotNull null
+            val legacyCost = Material.matchMaterial(child.getString("cost", "AMETHYST_SHARD") ?: "AMETHYST_SHARD") ?: Material.AMETHYST_SHARD
+            val cost = child.getConfigurationSection("cost-item")
+                ?.let { CustomItemSpec.parse(it, legacyCost) }
+                ?: CustomItemSpec.legacyMaterial(legacyCost)
             AltarRule(
                 id = id,
                 displayName = child.getString("display-name", id) ?: id,
                 block = Material.matchMaterial(child.getString("block", "CRYING_OBSIDIAN") ?: "CRYING_OBSIDIAN") ?: Material.CRYING_OBSIDIAN,
-                cost = Material.matchMaterial(child.getString("cost", "AMETHYST_SHARD") ?: "AMETHYST_SHARD") ?: Material.AMETHYST_SHARD,
+                cost = cost,
                 moonPhases = ConfigReaders.enumSet(child, "moon-phases"),
                 solarPhases = ConfigReaders.enumSet(child, "solar-phases"),
                 weather = ConfigReaders.enumSet(child, "weather"),

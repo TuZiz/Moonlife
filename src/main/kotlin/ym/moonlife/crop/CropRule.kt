@@ -4,6 +4,7 @@ import org.bukkit.Material
 import org.bukkit.block.Biome
 import ym.moonlife.core.IntRangeRule
 import ym.moonlife.core.WeatherState
+import ym.moonlife.item.CustomItemDrop
 import ym.moonlife.moon.MoonPhase
 import ym.moonlife.solar.SolarPhase
 
@@ -22,6 +23,7 @@ data class CropRule(
     val growthMultiplier: Double,
     val bonusGrowthChance: Double,
     val extraHarvestChance: Double,
+    val extraHarvestDrops: List<CustomItemDrop>,
     val mutationChance: Double,
     val mutationMaterial: Material?,
     val boneMealInteraction: Boolean,

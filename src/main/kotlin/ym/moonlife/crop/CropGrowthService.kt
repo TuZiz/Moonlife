@@ -10,7 +10,6 @@ import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockFertilizeEvent
 import org.bukkit.event.block.BlockGrowEvent
-import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.java.JavaPlugin
 import ym.moonlife.config.ConfigService
 import ym.moonlife.core.EnvironmentSnapshotService
@@ -91,10 +90,14 @@ class CropGrowthService(
         val rule = engine.firstMatch(context, block) ?: return
         if (Random.nextDouble() < rule.extraHarvestChance) {
             val drops = block.getDrops(event.player.inventory.itemInMainHand, event.player).map { it.clone() }
+            val customDrops = rule.extraHarvestDrops
+                .filter { Random.nextDouble() < it.chance }
+                .map { it.create(plugin) }
             scheduler.region.run(block.location) {
-                drops.forEach { drop ->
+                val finalDrops = if (rule.extraHarvestDrops.isEmpty()) drops else customDrops
+                finalDrops.forEach { drop ->
                     if (drop.type != Material.AIR && drop.amount > 0) {
-                        block.world.dropItemNaturally(block.location, ItemStack(drop.type, drop.amount))
+                        block.world.dropItemNaturally(block.location, drop.clone())
                     }
                 }
             }

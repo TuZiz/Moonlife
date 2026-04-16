@@ -307,6 +307,44 @@ functions:
 
 兼容说明：旧的 `spawn-rules.yml`、`crop-rules.yml`、`buff-rules.yml`、`features.yml`、`moon-phases.yml`、`solar-phases.yml` 仍可作为兜底读取；旧版 `settings/config.yml` 也会作为 `config.yml` 的兜底读取。新默认包不再生成这些旧文件，只要新文件存在，Moonlife 会优先使用新结构。
 
+## 自定义物品
+
+祭坛消耗物、生态材料、作物额外收获都支持自定义物品配置。Moonlife 不使用 NMS，`nbt` 节点实际写入 Bukkit PersistentDataContainer，格式使用 `namespace:key`。
+
+```yaml
+cost-item:
+  material: AMETHYST_SHARD
+  display-name: "<#C4B5FD>月露种子"
+  lore:
+    - "<#A7F3D0>月息生态材料"
+    - "<#94A3B8>来源：满月成熟作物"
+  custom-model-data: 1001
+  nbt:
+    "moonlife:item_id": moonlit_seed
+  match:
+    display-name: true
+    lore: false
+    custom-model-data: true
+    nbt: true
+    name-mode: EXACT
+```
+
+作物收获的自定义掉落写在规则里的 `extra-harvest-items`，命中 `extra-harvest-chance` 后会掉落配置物品，不再复制原版掉落：
+
+```yaml
+extra-harvest-items:
+  sunny_harvest_seed:
+    chance: 1.0
+    amount: [1, 1]
+    material: WHEAT_SEEDS
+    display-name: "<#86EFAC>晴辉种子"
+    lore:
+      - "<#A7F3D0>月息生态作物产物"
+    custom-model-data: 2001
+    nbt:
+      "moonlife:item_id": sunny_harvest_seed
+```
+
 ## 性能策略
 
 - 配置只在启动和 `/ecology reload` 时读取。

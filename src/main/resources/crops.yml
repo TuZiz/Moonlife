@@ -30,6 +30,32 @@ rules:
     bonus-growth-chance: 0.12
     # 额外收获概率。
     extra-harvest-chance: 0.06
+    # 额外收获物品列表，配置后不再复制原版掉落，而是掉落下方自定义物品。
+    extra-harvest-items:
+      # 晴天丰收种子，自定义名字、lore 和 NBT。
+      sunny_harvest_seed:
+        # 掉落概率，会在 extra-harvest-chance 命中后再次判定。
+        chance: 1.0
+        # 单次掉落数量范围。
+        amount: [1, 1]
+        # 自定义掉落基础材质。
+        material: WHEAT_SEEDS
+        # 自定义掉落显示名，支持 MiniMessage。
+        display-name: "<#86EFAC>晴辉种子"
+        # 自定义掉落 lore，支持 MiniMessage。
+        lore:
+          # lore 第一行。
+          - "<#A7F3D0>月息生态作物产物"
+          # lore 第二行。
+          - "<#94A3B8>晴天白昼成熟作物偶然凝结"
+        # 自定义模型数据，材质包可用该值绑定模型。
+        custom-model-data: 2001
+        # 自定义 NBT / PDC 标签，完全无 NMS。
+        nbt:
+          # 作物额外掉落的物品 ID。
+          "moonlife:item_id": sunny_harvest_seed
+          # 作物额外掉落的来源标签。
+          "moonlife:source": sunny_day_growth
     # 作物变异概率。
     mutation-chance: 0.005
     # 变异产物材质，留空表示不产出。
@@ -71,6 +97,32 @@ rules:
     bonus-growth-chance: 0.05
     # 额外收获概率。
     extra-harvest-chance: 0.04
+    # 额外收获物品列表，配置后不再复制原版掉落，而是掉落下方自定义物品。
+    extra-harvest-items:
+      # 满月地狱疣结晶，自定义名字、lore 和 NBT。
+      fullmoon_wart_crystal:
+        # 掉落概率，会在 extra-harvest-chance 命中后再次判定。
+        chance: 1.0
+        # 单次掉落数量范围。
+        amount: [1, 1]
+        # 自定义掉落基础材质。
+        material: NETHER_WART
+        # 自定义掉落显示名，支持 MiniMessage。
+        display-name: "<#F9A8D4>满月疣晶"
+        # 自定义掉落 lore，支持 MiniMessage。
+        lore:
+          # lore 第一行。
+          - "<#A7F3D0>月息生态作物产物"
+          # lore 第二行。
+          - "<#94A3B8>满月时分，下界疣块凝结出的微光结晶"
+        # 自定义模型数据，材质包可用该值绑定模型。
+        custom-model-data: 2002
+        # 自定义 NBT / PDC 标签，完全无 NMS。
+        nbt:
+          # 作物额外掉落的物品 ID。
+          "moonlife:item_id": fullmoon_wart_crystal
+          # 作物额外掉落的来源标签。
+          "moonlife:source": fullmoon_nether_wart
     # 作物变异概率。
     mutation-chance: 0.0
     # 变异产物材质，留空表示不产出。

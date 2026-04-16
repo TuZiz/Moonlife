@@ -3,6 +3,7 @@ package ym.moonlife.feature
 import org.bukkit.Material
 import org.bukkit.block.Biome
 import ym.moonlife.core.WeatherState
+import ym.moonlife.item.CustomItemSpec
 import ym.moonlife.moon.MoonPhase
 import ym.moonlife.solar.SolarPhase
 
@@ -32,14 +33,15 @@ data class EcologyMaterial(
     val id: String,
     val displayName: String,
     val material: Material,
-    val source: String
+    val source: String,
+    val item: CustomItemSpec
 )
 
 data class AltarRule(
     val id: String,
     val displayName: String,
     val block: Material,
-    val cost: Material,
+    val cost: CustomItemSpec,
     val moonPhases: Set<MoonPhase>,
     val solarPhases: Set<SolarPhase>,
     val weather: Set<WeatherState>,

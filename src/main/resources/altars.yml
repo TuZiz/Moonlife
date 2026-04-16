@@ -23,6 +23,24 @@ materials:
     display-name: "月露种子"
     # 使用的 Bukkit 物品或方块材质名。
     material: AMETHYST_SHARD
+    # 生成给玩家的自定义物品配置。
+    item:
+      # 自定义物品的基础材质。
+      material: AMETHYST_SHARD
+      # 自定义物品的显示名，支持 MiniMessage。
+      display-name: "<#C4B5FD>月露种子"
+      # 自定义物品的 lore，支持 MiniMessage。
+      lore:
+        # lore 第一行。
+        - "<#A7F3D0>月息生态材料"
+        # lore 第二行。
+        - "<#94A3B8>来源：满月成熟作物"
+      # 自定义模型数据，材质包可用该值绑定模型。
+      custom-model-data: 1001
+      # 自定义 NBT / PDC 标签，完全无 NMS。
+      nbt:
+        # Moonlife 物品 ID 标签，用于祭坛和其他规则匹配。
+        "moonlife:item_id": moonlit_seed
     # 材料来源说明文本。
     source: "满月成熟作物"
   # 配置项 shadow_dust 的值，请根据实际玩法需求调整。
@@ -31,6 +49,24 @@ materials:
     display-name: "影尘"
     # 使用的 Bukkit 物品或方块材质名。
     material: GUNPOWDER
+    # 生成给玩家的自定义物品配置。
+    item:
+      # 自定义物品的基础材质。
+      material: GUNPOWDER
+      # 自定义物品的显示名，支持 MiniMessage。
+      display-name: "<#6B7280>影尘"
+      # 自定义物品的 lore，支持 MiniMessage。
+      lore:
+        # lore 第一行。
+        - "<#A7F3D0>月息生态材料"
+        # lore 第二行。
+        - "<#94A3B8>来源：新月生态与 ShadowBeast"
+      # 自定义模型数据，材质包可用该值绑定模型。
+      custom-model-data: 1002
+      # 自定义 NBT / PDC 标签，完全无 NMS。
+      nbt:
+        # Moonlife 物品 ID 标签，用于祭坛和其他规则匹配。
+        "moonlife:item_id": shadow_dust
     # 材料来源说明文本。
     source: "新月生态与 ShadowBeast"
   # 配置项 thunder_bone 的值，请根据实际玩法需求调整。
@@ -39,6 +75,24 @@ materials:
     display-name: "雷骨"
     # 使用的 Bukkit 物品或方块材质名。
     material: BONE
+    # 生成给玩家的自定义物品配置。
+    item:
+      # 自定义物品的基础材质。
+      material: BONE
+      # 自定义物品的显示名，支持 MiniMessage。
+      display-name: "<#FDE68A>雷骨"
+      # 自定义物品的 lore，支持 MiniMessage。
+      lore:
+        # lore 第一行。
+        - "<#A7F3D0>月息生态材料"
+        # lore 第二行。
+        - "<#94A3B8>来源：StormboneRaider"
+      # 自定义模型数据，材质包可用该值绑定模型。
+      custom-model-data: 1003
+      # 自定义 NBT / PDC 标签，完全无 NMS。
+      nbt:
+        # Moonlife 物品 ID 标签，用于祭坛和其他规则匹配。
+        "moonlife:item_id": thunder_bone
     # 材料来源说明文本。
     source: "StormboneRaider"
 
@@ -91,6 +145,36 @@ altars:
     block: CRYING_OBSIDIAN
     # 启动祭坛需要消耗的材料。
     cost: AMETHYST_SHARD
+    # 启动祭坛需要匹配的自定义物品，存在该节点时会优先按这里判断。
+    cost-item:
+      # 祭坛消耗物的基础材质。
+      material: AMETHYST_SHARD
+      # 祭坛消耗物的显示名。
+      display-name: "<#C4B5FD>月露种子"
+      # 祭坛消耗物的 lore。
+      lore:
+        # lore 第一行。
+        - "<#A7F3D0>月息生态材料"
+        # lore 第二行。
+        - "<#94A3B8>来源：满月成熟作物"
+      # 祭坛消耗物的 custom-model-data。
+      custom-model-data: 1001
+      # 祭坛消耗物必须拥有的 NBT / PDC 标签。
+      nbt:
+        # 必须匹配的 Moonlife 物品 ID。
+        "moonlife:item_id": moonlit_seed
+      # 祭坛消耗物匹配策略。
+      match:
+        # 是否匹配显示名。
+        display-name: true
+        # 是否匹配完整 lore。
+        lore: false
+        # 是否匹配 custom-model-data。
+        custom-model-data: true
+        # 是否匹配 NBT / PDC 标签。
+        nbt: true
+        # 显示名匹配模式：EXACT、PLAIN_EQUALS、PLAIN_CONTAINS、DISABLED。
+        name-mode: EXACT
     # 规则直接绑定的月相列表，通常建议在 moon-phases 目录中配置。
     moon-phases: []
     # 规则直接绑定的日相列表，通常建议在 solar-phases 目录中配置。

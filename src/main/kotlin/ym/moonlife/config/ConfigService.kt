@@ -12,6 +12,7 @@ import ym.moonlife.core.AmountRange
 import ym.moonlife.core.IntRangeRule
 import ym.moonlife.core.WeatherState
 import ym.moonlife.crop.CropRule
+import ym.moonlife.item.CustomItemDrop
 import ym.moonlife.moon.MoonPhase
 import ym.moonlife.solar.SolarPhase
 import ym.moonlife.solar.SolarPhaseWindow
@@ -382,6 +383,7 @@ class ConfigService(private val plugin: JavaPlugin) {
                 growthMultiplier = section.getDouble("growth-multiplier", 1.0).coerceAtLeast(0.0),
                 bonusGrowthChance = section.getDouble("bonus-growth-chance", 0.0).coerceIn(0.0, 1.0),
                 extraHarvestChance = section.getDouble("extra-harvest-chance", 0.0).coerceIn(0.0, 1.0),
+                extraHarvestDrops = CustomItemDrop.parseList(section, "extra-harvest-items", Material.AMETHYST_SHARD),
                 mutationChance = section.getDouble("mutation-chance", 0.0).coerceIn(0.0, 1.0),
                 mutationMaterial = section.getString("mutation-material")?.let { Material.matchMaterial(it) },
                 boneMealInteraction = section.getBoolean("bone-meal-interaction", true),
