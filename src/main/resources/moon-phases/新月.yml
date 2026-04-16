@@ -1,11 +1,20 @@
 # 新月：暗影生态开始活跃。
 enable: true
+# 显示名称。
 display-name: "新月"
+# 该月相或日相启用的功能 ID 根节点。
 functions:
+  # 该相位启用的怪物规则 ID 列表。
   monsters:
+    # 列表项：该列表中的一个配置值。
     - newmoon_shadow_beast
+  # 祭坛配置根节点。
   altars: []
+  # 该相位启用的作物规则 ID 列表。
   crops: []
+  # 该相位启用的玩家状态规则 ID 列表。
   buffs: []
+  # 生态热点配置根节点。
   hotspots:
+    # 列表项：该列表中的一个配置值。
     - newmoon_shadow_hotspot

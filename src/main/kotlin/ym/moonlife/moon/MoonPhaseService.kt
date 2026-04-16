@@ -15,6 +15,7 @@ class MoonPhaseService(
     private val messages: MessageService
 ) {
     private val cache = ConcurrentHashMap<String, MoonPhase>()
+    private val announced = ConcurrentHashMap<String, MoonPhase>()
     private val overrides = ConcurrentHashMap<String, MoonPhase>()
     private var task: ScheduledTaskHandle = ScheduledTaskHandle.NOOP
 
@@ -28,6 +29,7 @@ class MoonPhaseService(
     fun stop() {
         task.cancel()
         cache.clear()
+        announced.clear()
         overrides.clear()
     }
 
@@ -59,12 +61,22 @@ class MoonPhaseService(
         val old = cache.put(key, newPhase)
         if (old != null && old != newPhase) {
             fireChange(world, old, newPhase, manual = false)
+        } else if (old != null) {
+            announceIfReady(world, old, newPhase, manual = false)
         }
     }
 
     private fun fireChange(world: World, old: MoonPhase?, newPhase: MoonPhase, manual: Boolean) {
         Bukkit.getPluginManager().callEvent(MoonPhaseChangeEvent(world, old, newPhase, manual))
+        announceIfReady(world, old, newPhase, manual)
+    }
+
+    private fun announceIfReady(world: World, old: MoonPhase?, newPhase: MoonPhase, manual: Boolean) {
+        val key = world.configKey()
         val config = configService.current.moon
+        if (!manual && config.visibleOnlyMessages && !isMoonVisible(world)) return
+        if (!manual && announced[key] == newPhase) return
+        announced[key] = newPhase
         val placeholders = mapOf(
             "world" to world.name,
             "phase" to messages.phaseName(newPhase.displayKey),
@@ -81,6 +93,8 @@ class MoonPhaseService(
         if (config.bossBarChanges) messages.bossBarWorld(world, "moon.changed.bossbar", placeholders)
     }
 
+    private fun isMoonVisible(world: World): Boolean = world.time >= MOON_VISIBLE_START
+
     private fun isWorldEnabled(world: World): Boolean {
         val key = world.configKey()
         val config = configService.current.moon
@@ -89,4 +103,8 @@ class MoonPhaseService(
     }
 
     private fun World.configKey(): String = name.lowercase(Locale.ROOT)
+
+    private companion object {
+        private const val MOON_VISIBLE_START = 12000L
+    }
 }

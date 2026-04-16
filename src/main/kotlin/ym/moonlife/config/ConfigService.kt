@@ -33,7 +33,7 @@ class ConfigService(private val plugin: JavaPlugin) {
     val phaseAssignments: PhaseAssignments get() = phaseAssignmentsRef.get()
 
     private val defaultFiles = listOf(
-        "settings/config.yml",
+        "config.yml",
         "monsters.yml",
         "altars.yml",
         "crops.yml",
@@ -68,7 +68,7 @@ class ConfigService(private val plugin: JavaPlugin) {
         ensureDefaults()
         val errors = mutableListOf<String>()
         val loaded = runCatching {
-            val config = loadYamlPreferred("settings/config.yml", "config.yml")
+            val config = loadYamlPreferred("config.yml", "settings/config.yml")
             val moon = loadYamlPreferred("moon-phases/settings.yml", "moon-phases.yml")
             val solar = loadYamlPreferred("solar-phases/settings.yml", "solar-phases.yml")
             val spawn = loadYamlPreferred("monsters.yml", "spawn-rules.yml")
@@ -231,7 +231,7 @@ class ConfigService(private val plugin: JavaPlugin) {
                 cleanupIntervalTicks = config.getLong("spawn.cleanup-interval-ticks", 1200L).coerceAtLeast(200L)
             ).also {
                 if (it.spawnRadiusMin > it.spawnRadiusMax) {
-                    errors += "settings/config.yml: spawn.spawn-radius.min must not be greater than max"
+                    errors += "config.yml: spawn.spawn-radius.min must not be greater than max"
                 }
             },
             crop = CropRuntimeConfig(
@@ -263,7 +263,8 @@ class ConfigService(private val plugin: JavaPlugin) {
             broadcastChanges = config.getBoolean("events.broadcast", true),
             actionBarChanges = config.getBoolean("events.actionbar", true),
             bossBarChanges = config.getBoolean("events.bossbar", false),
-            titleChanges = config.getBoolean("events.title", false)
+            titleChanges = config.getBoolean("events.title", false),
+            visibleOnlyMessages = config.getBoolean("events.visible-only", true)
         )
 
     private fun parseSolar(config: YamlConfiguration, errors: MutableList<String>): SolarConfig {

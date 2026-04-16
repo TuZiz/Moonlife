@@ -62,7 +62,8 @@ data class MoonConfig(
     val broadcastChanges: Boolean,
     val actionBarChanges: Boolean,
     val bossBarChanges: Boolean,
-    val titleChanges: Boolean
+    val titleChanges: Boolean,
+    val visibleOnlyMessages: Boolean
 )
 
 data class SolarConfig(

@@ -2,89 +2,169 @@
 rules:
   # 满月僵尸骑士：由 moon-phases/满月.yml 与 solar-phases/夜晚.yml、solar-phases/午夜.yml 启用。
   fullmoon_zombie_knight:
+    # 规则唯一 ID。
     id: fullmoon_zombie_knight
+    # 是否启用该规则或相位文件。
     enable: true
+    # 刷怪后端，当前默认使用 MYTHIC_MOB。
     spawn-backend: MYTHIC_MOB
+    # 原版实体类型，MythicMobs-only 模式下仅作为兼容字段。
     vanilla-entity: ZOMBIE
+    # MythicMobs 内部怪物名。
     mythic-mob-id: FullMoonZombieKnight
+    # 规则生效的世界列表，留空表示不限制。
     worlds: [world]
+    # 规则生效的群系列表，留空表示不限制。
     biomes: []
+    # 规则直接绑定的月相列表，通常建议在 moon-phases 目录中配置。
     moon-phases: []
+    # 规则直接绑定的日相列表，通常建议在 solar-phases 目录中配置。
     solar-phases: []
+    # 规则生效的天气列表。
     weather: [CLEAR, RAIN, THUNDER]
+    # 允许刷怪或生效的 Y 坐标范围。
     y-range: [-32, 120]
+    # 允许刷怪或生效的光照范围。
     light-range: [0, 7]
+    # 地形条件，支持 SURFACE、UNDERGROUND、ANY。
     terrain: SURFACE
+    # 是否只在荒野区域生效。
     wilderness-only: true
+    # 附近玩家数量上限。
     nearby-player-limit: 6
+    # 统计附近玩家数量的半径。
     nearby-player-radius: 48.0
+    # 单区块生态实体数量上限。
     chunk-limit: 4
+    # 单世界生态实体数量上限。
     world-limit: 80
+    # 规则冷却时间，单位为 tick。
     cooldown: 500
+    # 权重，数值越高越容易被抽中。
     weight: 18
+    # 单次触发生成或处理的数量范围。
     amount: [1, 3]
+    # 刷出实体时附加的药水效果列表。
     effects:
+      # 列表项：该列表中的一个配置值。
       - SPEED:1:200
+      # 列表项：该列表中的一个配置值。
       - INCREASE_DAMAGE:0:200
+    # 刷出实体附加的 scoreboard tag 列表。
     tags:
+      # 列表项：该列表中的一个配置值。
       - moonlife_fullmoon
+      # 列表项：该列表中的一个配置值。
       - elite_wilderness
+    # 规则优先级，数值越高越先匹配。
     priority: 30
 
   # 新月影兽：基础测试配置不限制群系，正式服可在 biomes 中加入 DARK_FOREST、SWAMP、MANGROVE_SWAMP。
   newmoon_shadow_beast:
+    # 规则唯一 ID。
     id: newmoon_shadow_beast
+    # 是否启用该规则或相位文件。
     enable: true
+    # 刷怪后端，当前默认使用 MYTHIC_MOB。
     spawn-backend: MYTHIC_MOB
+    # 原版实体类型，MythicMobs-only 模式下仅作为兼容字段。
     vanilla-entity: ZOMBIE
+    # MythicMobs 内部怪物名。
     mythic-mob-id: ShadowBeast
+    # 规则生效的世界列表，留空表示不限制。
     worlds: [world]
+    # 规则生效的群系列表，留空表示不限制。
     biomes: []
+    # 规则直接绑定的月相列表，通常建议在 moon-phases 目录中配置。
     moon-phases: []
+    # 规则直接绑定的日相列表，通常建议在 solar-phases 目录中配置。
     solar-phases: []
+    # 规则生效的天气列表。
     weather: [CLEAR, RAIN, THUNDER]
+    # 允许刷怪或生效的 Y 坐标范围。
     y-range: [-32, 90]
+    # 允许刷怪或生效的光照范围。
     light-range: [0, 8]
+    # 地形条件，支持 SURFACE、UNDERGROUND、ANY。
     terrain: SURFACE
+    # 是否只在荒野区域生效。
     wilderness-only: true
+    # 附近玩家数量上限。
     nearby-player-limit: 4
+    # 统计附近玩家数量的半径。
     nearby-player-radius: 56.0
+    # 单区块生态实体数量上限。
     chunk-limit: 2
+    # 单世界生态实体数量上限。
     world-limit: 24
+    # 规则冷却时间，单位为 tick。
     cooldown: 600
+    # 权重，数值越高越容易被抽中。
     weight: 16
+    # 单次触发生成或处理的数量范围。
     amount: [1, 2]
+    # 刷出实体时附加的药水效果列表。
     effects: []
+    # 刷出实体附加的 scoreboard tag 列表。
     tags:
+      # 列表项：该列表中的一个配置值。
       - moonlife_newmoon
+      # 列表项：该列表中的一个配置值。
       - mythic_shadow
+    # 规则优先级，数值越高越先匹配。
     priority: 50
 
   # 雷骨袭击者：由 solar-phases/夜晚.yml 与 solar-phases/午夜.yml 启用，并要求雷暴天气。
   thunder_night_raider:
+    # 规则唯一 ID。
     id: thunder_night_raider
+    # 是否启用该规则或相位文件。
     enable: true
+    # 刷怪后端，当前默认使用 MYTHIC_MOB。
     spawn-backend: MYTHIC_MOB
+    # 原版实体类型，MythicMobs-only 模式下仅作为兼容字段。
     vanilla-entity: SKELETON
+    # MythicMobs 内部怪物名。
     mythic-mob-id: StormboneRaider
+    # 规则生效的世界列表，留空表示不限制。
     worlds: [world]
+    # 规则生效的群系列表，留空表示不限制。
     biomes: []
+    # 规则直接绑定的月相列表，通常建议在 moon-phases 目录中配置。
     moon-phases: []
+    # 规则直接绑定的日相列表，通常建议在 solar-phases 目录中配置。
     solar-phases: []
+    # 规则生效的天气列表。
     weather: [THUNDER]
+    # 允许刷怪或生效的 Y 坐标范围。
     y-range: [-32, 120]
+    # 允许刷怪或生效的光照范围。
     light-range: [0, 8]
+    # 地形条件，支持 SURFACE、UNDERGROUND、ANY。
     terrain: SURFACE
+    # 是否只在荒野区域生效。
     wilderness-only: true
+    # 附近玩家数量上限。
     nearby-player-limit: 8
+    # 统计附近玩家数量的半径。
     nearby-player-radius: 64.0
+    # 单区块生态实体数量上限。
     chunk-limit: 5
+    # 单世界生态实体数量上限。
     world-limit: 96
+    # 规则冷却时间，单位为 tick。
     cooldown: 360
+    # 权重，数值越高越容易被抽中。
     weight: 22
+    # 单次触发生成或处理的数量范围。
     amount: [1, 2]
+    # 刷出实体时附加的药水效果列表。
     effects:
+      # 列表项：该列表中的一个配置值。
       - SPEED:0:160
+    # 刷出实体附加的 scoreboard tag 列表。
     tags:
+      # 列表项：该列表中的一个配置值。
       - moonlife_thunder
+    # 规则优先级，数值越高越先匹配。
     priority: 20

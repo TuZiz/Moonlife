@@ -2,63 +2,120 @@
 rules:
   # 黄昏采集者：由 solar-phases/黄昏.yml 启用。
   dusk_forager:
+    # 规则唯一 ID。
     id: dusk_forager
+    # 是否启用该规则或相位文件。
     enable: true
+    # 规则生效的世界列表，留空表示不限制。
     worlds: [world]
+    # 规则生效的群系列表，留空表示不限制。
     biomes: []
+    # 规则直接绑定的月相列表，通常建议在 moon-phases 目录中配置。
     moon-phases: []
+    # 规则直接绑定的日相列表，通常建议在 solar-phases 目录中配置。
     solar-phases: []
+    # 规则生效的天气列表。
     weather: [CLEAR, RAIN]
+    # 是否只在荒野区域生效。
     wilderness-only: true
+    # 配置项 underground 的值，请根据实际玩法需求调整。
     underground: false
+    # 配置项 in-water 的值，请根据实际玩法需求调整。
     in-water: false
+    # 配置项 sneaking 的值，请根据实际玩法需求调整。
     sneaking: false
+    # 配置项 permission 的值，请根据实际玩法需求调整。
     permission: ''
+    # 药水效果配置根节点。
     potion-effects:
+      # 配置项 dusk_haste 的值，请根据实际玩法需求调整。
       dusk_haste:
+        # 药水效果类型。
         type: FAST_DIGGING
+        # 药水等级，从 0 开始。
         amplifier: 0
+        # 药水持续时间，单位为 tick。
         duration-ticks: 220
+        # 是否标记为环境效果。
         ambient: true
+        # 是否显示药水粒子。
         particles: false
+        # 是否显示药水图标。
         icon: true
+    # 属性修饰器配置根节点。
     attribute-modifiers:
+      # 配置项 dusk_walk 的值，请根据实际玩法需求调整。
       dusk_walk:
+        # 要修改的 Bukkit 属性名。
         attribute: MOVEMENT_SPEED
+        # 单次触发生成或处理的数量范围。
         amount: 0.04
+        # 属性计算方式。
         operation: ADD_SCALAR
+    # 玩家造成伤害倍率。
     damage-multiplier: 1.0
+    # 经验获取倍率。
     experience-multiplier: 1.15
+    # 掉落收益倍率。
     drop-multiplier: 1.12
+    # 移动速度额外修正。
     movement-speed-modifier: 0.02
+    # 攻击能力额外修正。
     attack-modifier: 0.0
+    # 承伤抗性额外修正。
     resistance-modifier: 0.0
+    # 玩家自定义状态标签列表。
     custom-tags: [dusk_forager]
+    # Buff 冲突处理策略。
     conflict-strategy: STACK
+    # 规则优先级，数值越高越先匹配。
     priority: 20
 
   # 雷雨夜危机：由 solar-phases/夜晚.yml 与 solar-phases/午夜.yml 启用，并要求雷暴天气。
   thunder_night_danger:
+    # 规则唯一 ID。
     id: thunder_night_danger
+    # 是否启用该规则或相位文件。
     enable: true
+    # 规则生效的世界列表，留空表示不限制。
     worlds: [world]
+    # 规则生效的群系列表，留空表示不限制。
     biomes: []
+    # 规则直接绑定的月相列表，通常建议在 moon-phases 目录中配置。
     moon-phases: []
+    # 规则直接绑定的日相列表，通常建议在 solar-phases 目录中配置。
     solar-phases: []
+    # 规则生效的天气列表。
     weather: [THUNDER]
+    # 是否只在荒野区域生效。
     wilderness-only: true
+    # 配置项 underground 的值，请根据实际玩法需求调整。
     underground: false
+    # 配置项 in-water 的值，请根据实际玩法需求调整。
     in-water: false
+    # 配置项 sneaking 的值，请根据实际玩法需求调整。
     sneaking: false
+    # 配置项 permission 的值，请根据实际玩法需求调整。
     permission: ''
+    # 药水效果配置根节点。
     potion-effects: {}
+    # 属性修饰器配置根节点。
     attribute-modifiers: {}
+    # 玩家造成伤害倍率。
     damage-multiplier: 1.05
+    # 经验获取倍率。
     experience-multiplier: 1.25
+    # 掉落收益倍率。
     drop-multiplier: 1.18
+    # 移动速度额外修正。
     movement-speed-modifier: 0.0
+    # 攻击能力额外修正。
     attack-modifier: 0.0
+    # 承伤抗性额外修正。
     resistance-modifier: -0.05
+    # 玩家自定义状态标签列表。
     custom-tags: [thunder_hunted]
+    # Buff 冲突处理策略。
     conflict-strategy: STACK
+    # 规则优先级，数值越高越先匹配。
     priority: 10
