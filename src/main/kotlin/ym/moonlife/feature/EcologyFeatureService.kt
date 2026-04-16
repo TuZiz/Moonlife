@@ -117,7 +117,7 @@ class EcologyFeatureService(
             "世界=${worldDisplay(context.snapshot.worldName)} 月相=${moonDisplay(context.snapshot.moonPhase)} 日相=${solarDisplay(context.snapshot.solarPhase)} 天气=${weatherDisplay(context.snapshot.weather)}",
             "群系=${biomeDisplay(context.biome.key.key)} 荒野=${yesNo(context.wilderness)} 地下=${yesNo(context.underground)} 保护=${yesNo(isPlayerProtected(player))}",
             "危险=${dangerDisplay(DangerLevel.fromScore(danger))} 分数=$danger 热点=${hotspot?.displayName ?: "无"} 活动=${event?.displayName ?: "无"}",
-            "刷怪规则=${spawnRules.joinToString("、") { ruleDisplay(it.id) }.ifEmpty { "无" }}",
+            "刷怪规则=${spawnRules.joinToString("、") { it.displayName }.ifEmpty { "无" }}",
             "作物规则=${cropRules.joinToString("、") { ruleDisplay(it.id) }.ifEmpty { "无" }}",
             "状态规则=${buffPlan.ruleIds.joinToString("、") { ruleDisplay(it) }.ifEmpty { "无" }}",
             "统计=${statsSummary(5).joinToString("｜").ifEmpty { "暂无" }}"
@@ -139,16 +139,16 @@ class EcologyFeatureService(
             when (val target = rule.target) {
                 is MythicSpawnTarget -> {
                     if (hookManager.mythicMobs.available && knownMythic.isNotEmpty() && target.mobId.lowercase(Locale.ROOT) !in knownMythicLower) {
-                        lines += "警告：${ruleDisplay(rule.id)} 的目标「${targetDisplay(target.mobId)}」未出现在 MythicMobs 索引中。"
+                        lines += "警告：${rule.displayName} 的目标「${rule.targetDisplayName}」未出现在 MythicMobs 索引中。"
                     }
                 }
                 is VanillaSpawnTarget -> {
-                    if (bundle.main.spawn.mythicMobsOnly) lines += "警告：${ruleDisplay(rule.id)} 是原版怪规则，当前已开启只使用 MythicMobs，因此会跳过。"
+                    if (bundle.main.spawn.mythicMobsOnly) lines += "警告：${rule.displayName} 是原版怪规则，当前已开启只使用 MythicMobs，因此会跳过。"
                 }
             }
-            if (rule.weight <= 0) lines += "警告：${ruleDisplay(rule.id)} 的权重小于等于 0。"
+            if (rule.weight <= 0) lines += "警告：${rule.displayName} 的权重小于等于 0。"
             if (rule.worlds.isNotEmpty() && rule.worlds.none { Bukkit.getWorld(it) != null }) {
-                lines += "警告：${ruleDisplay(rule.id)} 配置的世界当前没有加载。"
+                lines += "警告：${rule.displayName} 配置的世界当前没有加载。"
             }
         }
         config().bountyRules.forEach { bounty ->
@@ -230,7 +230,7 @@ class EcologyFeatureService(
     fun featuresText(player: Player): String =
         listOf(
             "危险=${dangerDisplay(dangerLevel(player))}",
-            "刷怪=${spawnService.preview(player).joinToString("、") { targetDisplay(it.target.key) }.ifEmpty { "无" }}",
+            "刷怪=${spawnService.preview(player).joinToString("、") { it.targetDisplayName }.ifEmpty { "无" }}",
             "作物=${cropGrowthService.preview(player).joinToString("、") { ruleDisplay(it.id) }.ifEmpty { "无" }}",
             "状态=${playerBuffService.preview(player).ruleIds.joinToString("、") { ruleDisplay(it) }.ifEmpty { "无" }}",
             "热点=${activeHotspot(player)?.displayName ?: "无"}",
@@ -391,7 +391,7 @@ class EcologyFeatureService(
 
     private fun phaseFeatureSummary(phase: MoonPhase): String {
         val bundle = configService.current
-        val spawn = bundle.spawnRules.filter { it.moonPhases.isEmpty() || phase in it.moonPhases }.take(3).joinToString("、") { ruleDisplay(it.id) }
+        val spawn = bundle.spawnRules.filter { it.moonPhases.isEmpty() || phase in it.moonPhases }.take(3).joinToString("、") { it.displayName }
         val crop = bundle.cropRules.filter { it.moonPhases.isEmpty() || phase in it.moonPhases }.take(3).joinToString("、") { ruleDisplay(it.id) }
         val buff = bundle.buffRules.filter { it.moonPhases.isEmpty() || phase in it.moonPhases }.take(3).joinToString("、") { ruleDisplay(it.id) }
         return "刷怪=${spawn.ifEmpty { "无" }} 作物=${crop.ifEmpty { "无" }} 状态=${buff.ifEmpty { "无" }}"
@@ -443,6 +443,8 @@ class EcologyFeatureService(
     }
 
     private fun ruleDisplay(id: String): String = when (id.lowercase(Locale.ROOT)) {
+        in configService.current.spawnRules.map { it.id.lowercase(Locale.ROOT) } ->
+            configService.current.spawnRules.first { it.id.equals(id, ignoreCase = true) }.displayName
         "fullmoon_zombie_knight" -> "满月僵尸骑士"
         "newmoon_shadow_beast" -> "新月影兽"
         "thunder_night_raider" -> "雷雨夜袭击者"
@@ -455,6 +457,8 @@ class EcologyFeatureService(
     }
 
     private fun targetDisplay(key: String): String = when (key.lowercase(Locale.ROOT)) {
+        in configService.current.spawnRules.map { it.target.key.lowercase(Locale.ROOT) } ->
+            configService.current.spawnRules.first { it.target.key.equals(key, ignoreCase = true) }.targetDisplayName
         "fullmoonzombieknight" -> "满月僵尸骑士"
         "shadowbeast" -> "新月影兽"
         "stormboneraider" -> "雷骨袭击者"

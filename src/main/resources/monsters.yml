@@ -4,6 +4,8 @@ rules:
   fullmoon_zombie_knight:
     # 规则唯一 ID。
     id: fullmoon_zombie_knight
+    # 玩家可见的怪物规则中文名，不影响内部规则 ID。
+    display-name: "满月僵尸骑士"
     # 是否启用该规则或相位文件。
     enable: true
     # 刷怪后端，当前默认使用 MYTHIC_MOB。
@@ -12,6 +14,8 @@ rules:
     vanilla-entity: ZOMBIE
     # MythicMobs 内部怪物名。
     mythic-mob-id: FullMoonZombieKnight
+    # 玩家可见的 MythicMobs 怪物中文名，不影响 MythicMobs 内部名。
+    target-display-name: "满月僵尸骑士"
     # 规则生效的世界列表，留空表示不限制。
     worlds: [world]
     # 规则生效的群系列表，留空表示不限制。
@@ -63,6 +67,8 @@ rules:
   newmoon_shadow_beast:
     # 规则唯一 ID。
     id: newmoon_shadow_beast
+    # 玩家可见的怪物规则中文名，不影响内部规则 ID。
+    display-name: "新月影兽"
     # 是否启用该规则或相位文件。
     enable: true
     # 刷怪后端，当前默认使用 MYTHIC_MOB。
@@ -71,6 +77,8 @@ rules:
     vanilla-entity: ZOMBIE
     # MythicMobs 内部怪物名。
     mythic-mob-id: ShadowBeast
+    # 玩家可见的 MythicMobs 怪物中文名，不影响 MythicMobs 内部名。
+    target-display-name: "新月影兽"
     # 规则生效的世界列表，留空表示不限制。
     worlds: [world]
     # 规则生效的群系列表，留空表示不限制。
@@ -118,6 +126,8 @@ rules:
   thunder_night_raider:
     # 规则唯一 ID。
     id: thunder_night_raider
+    # 玩家可见的怪物规则中文名，不影响内部规则 ID。
+    display-name: "雷骨袭击者"
     # 是否启用该规则或相位文件。
     enable: true
     # 刷怪后端，当前默认使用 MYTHIC_MOB。
@@ -126,6 +136,8 @@ rules:
     vanilla-entity: SKELETON
     # MythicMobs 内部怪物名。
     mythic-mob-id: StormboneRaider
+    # 玩家可见的 MythicMobs 怪物中文名，不影响 MythicMobs 内部名。
+    target-display-name: "雷骨袭击者"
     # 规则生效的世界列表，留空表示不限制。
     worlds: [world]
     # 规则生效的群系列表，留空表示不限制。

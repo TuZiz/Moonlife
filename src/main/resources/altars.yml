@@ -60,7 +60,7 @@ materials:
         # lore 第一行。
         - "<#A7F3D0>月息生态材料"
         # lore 第二行。
-        - "<#94A3B8>来源：新月生态与 ShadowBeast"
+        - "<#94A3B8>来源：新月生态与新月影兽"
       # 自定义模型数据，材质包可用该值绑定模型。
       custom-model-data: 1002
       # 自定义 NBT / PDC 标签，完全无 NMS。
@@ -68,7 +68,7 @@ materials:
         # Moonlife 物品 ID 标签，用于祭坛和其他规则匹配。
         "moonlife:item_id": shadow_dust
     # 材料来源说明文本。
-    source: "新月生态与 ShadowBeast"
+    source: "新月生态与新月影兽"
   # 配置项 thunder_bone 的值，请根据实际玩法需求调整。
   thunder_bone:
     # 显示名称。
@@ -86,7 +86,7 @@ materials:
         # lore 第一行。
         - "<#A7F3D0>月息生态材料"
         # lore 第二行。
-        - "<#94A3B8>来源：StormboneRaider"
+        - "<#94A3B8>来源：雷骨袭击者"
       # 自定义模型数据，材质包可用该值绑定模型。
       custom-model-data: 1003
       # 自定义 NBT / PDC 标签，完全无 NMS。
@@ -94,7 +94,7 @@ materials:
         # Moonlife 物品 ID 标签，用于祭坛和其他规则匹配。
         "moonlife:item_id": thunder_bone
     # 材料来源说明文本。
-    source: "StormboneRaider"
+    source: "雷骨袭击者"
 
 # 生态悬赏配置根节点。
 bounties:
@@ -245,7 +245,7 @@ world-templates:
     # 列表项：该列表中的一个配置值。
     - "world: 开启所有月相刷怪、作物成长和玩家状态"
     # 列表项：该列表中的一个配置值。
-    - "monsters: 使用 FullMoonZombieKnight / ShadowBeast / StormboneRaider"
+    - "monsters: 使用 满月僵尸骑士 / 新月影兽 / 雷骨袭击者"
     # 列表项：该列表中的一个配置值。
     - "buffs: 保留 dusk_forager 与 thunder_night_danger"
   # 配置项 resource 的值，请根据实际玩法需求调整。

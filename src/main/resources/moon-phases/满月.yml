@@ -35,6 +35,6 @@ messages:
   # 功能提示列表，仅当本文件 functions 中配置了功能时发送。
   features:
     # 满月精英怪提示。
-    - '<prefix><#FCE7F3>满月功能 ✦ 夜晚与午夜会刷新 <#FFFFFF>FullMoonZombieKnight</#FFFFFF>。'
+    - '<prefix><#FCE7F3>满月功能 ✦ 夜晚与午夜会刷新 <#FFFFFF>满月僵尸骑士</#FFFFFF>。'
     # 满月祭坛和作物提示。
     - '<prefix><#FCE7F3>满月功能 ✦ 满月祭坛可启动狂潮，下界疣获得成长与收获加成。'

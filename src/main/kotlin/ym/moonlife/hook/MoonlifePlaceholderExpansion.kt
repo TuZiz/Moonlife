@@ -75,16 +75,16 @@ class MoonlifePlaceholderExpansion(
     }
 
     private fun Player.spawnRulesText(): String =
-        spawnService.preview(this).joinToString("、") { ruleDisplay(it.id) }
+        spawnService.preview(this).joinToString("、") { it.displayName }
 
     private fun Player.spawnTargetsText(): String =
-        spawnService.preview(this).joinToString("、") { targetDisplay(it.target.key) }
+        spawnService.preview(this).joinToString("、") { it.targetDisplayName }
 
     private fun Player.spawnFeatureText(): String {
         val rules = spawnService.preview(this)
         if (rules.isEmpty()) return "无活跃野外刷新"
         return rules.joinToString("; ") { rule ->
-            "刷怪:${targetDisplay(rule.target.key)} x${rule.amount.min}-${rule.amount.max} 权重${rule.weight}"
+            "刷怪:${rule.targetDisplayName} x${rule.amount.min}-${rule.amount.max} 权重${rule.weight}"
         }
     }
 

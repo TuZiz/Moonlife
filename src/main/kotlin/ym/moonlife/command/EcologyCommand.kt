@@ -165,7 +165,7 @@ class EcologyCommand(
         val rules = spawnService.preview(player)
         messages.send(sender, "command.preview.header", mapOf("count" to rules.size.toString()))
         rules.take(12).forEach { rule ->
-            messages.send(sender, "command.preview.entry", mapOf("id" to ruleDisplay(rule.id), "target" to targetDisplay(rule.target.key), "weight" to rule.weight.toString()))
+            messages.send(sender, "command.preview.entry", mapOf("id" to rule.displayName, "target" to rule.targetDisplayName, "weight" to rule.weight.toString()))
         }
         return true
     }
@@ -350,6 +350,8 @@ class EcologyCommand(
     }
 
     private fun ruleDisplay(id: String): String = when (id.lowercase(Locale.ROOT)) {
+        in configService.current.spawnRules.map { it.id.lowercase(Locale.ROOT) } ->
+            configService.current.spawnRules.first { it.id.equals(id, ignoreCase = true) }.displayName
         "fullmoon_zombie_knight" -> "满月僵尸骑士"
         "newmoon_shadow_beast" -> "新月影兽"
         "thunder_night_raider" -> "雷雨夜袭击者"

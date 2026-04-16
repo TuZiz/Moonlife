@@ -33,4 +33,4 @@ messages:
   # 功能提示列表，仅当本文件 functions 中配置了功能时发送。
   features:
     # 新月暗影怪提示。
-    - '<prefix><#CBD5E1>新月功能 ✦ 午夜将可能唤出 <#FFFFFF>ShadowBeast</#FFFFFF>，暗影热点同步开启。'
+    - '<prefix><#CBD5E1>新月功能 ✦ 午夜将可能唤出 <#FFFFFF>新月影兽</#FFFFFF>，暗影热点同步开启。'

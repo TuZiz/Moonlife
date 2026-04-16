@@ -374,10 +374,16 @@ class ConfigService(private val plugin: JavaPlugin) {
                     MythicSpawnTarget(mobId)
                 }
             }
+            val ruleId = section.getString("id", id) ?: id
+            val displayName = section.getString("display-name", ruleId) ?: ruleId
             SpawnRule(
-                id = section.getString("id", id) ?: id,
+                id = ruleId,
+                displayName = displayName,
                 enabled = section.getBoolean("enable", true),
                 target = target,
+                targetDisplayName = section.getString("target-display-name")
+                    ?: section.getString("mythic-display-name")
+                    ?: displayName,
                 worlds = ConfigReaders.stringSet(section, "worlds"),
                 biomes = ConfigReaders.biomeSet(section, "biomes"),
                 moonPhases = ConfigReaders.enumSet(section, "moon-phases"),

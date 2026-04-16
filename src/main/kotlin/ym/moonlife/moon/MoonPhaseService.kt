@@ -84,7 +84,7 @@ class MoonPhaseService(
             "phase" to phaseDisplay(newPhase, config.phaseMessages[newPhase]),
             "old_phase" to (old?.let { phaseDisplay(it, config.phaseMessages[it]) } ?: ""),
             "phase_id" to newPhase.name,
-            "features" to phaseMessage.featureIds.joinToString("、").ifEmpty { "无" },
+            "features" to featureDisplay(phaseMessage.featureIds),
             "feature_count" to phaseMessage.featureIds.size.toString()
         )
         if (config.broadcastChanges) {
@@ -125,6 +125,25 @@ class MoonPhaseService(
 
     private fun phaseDisplay(phase: MoonPhase, message: PhaseMessageConfig?): String =
         message?.displayName?.takeIf { it.isNotBlank() } ?: messages.raw(phase.displayKey)
+
+    private fun featureDisplay(ids: List<String>): String =
+        ids.joinToString("、") { id ->
+            configService.current.spawnRules.firstOrNull { it.id.equals(id, ignoreCase = true) }?.displayName
+                ?: configService.current.cropRules.firstOrNull { it.id.equals(id, ignoreCase = true) }?.id?.let { ruleDisplay(it) }
+                ?: configService.current.buffRules.firstOrNull { it.id.equals(id, ignoreCase = true) }?.id?.let { ruleDisplay(it) }
+                ?: ruleDisplay(id)
+        }.ifEmpty { "无" }
+
+    private fun ruleDisplay(id: String): String = when (id.lowercase(Locale.ROOT)) {
+        "sunny_day_growth" -> "晴天白昼成长"
+        "fullmoon_nether_wart" -> "满月地狱疣"
+        "dusk_forager" -> "黄昏采集者"
+        "thunder_night_danger" -> "雷雨夜危机"
+        "fullmoon_altar" -> "满月祭坛"
+        "newmoon_shadow_hotspot" -> "新月暗影热点"
+        "thunder_night_hotspot" -> "雷雨夜热点"
+        else -> id.replace('_', ' ')
+    }
 
     private fun emptyPhaseMessage(): PhaseMessageConfig =
         PhaseMessageConfig(null, null, null, null, null, null, emptyList(), emptyList())
