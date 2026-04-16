@@ -63,7 +63,8 @@ data class MoonConfig(
     val actionBarChanges: Boolean,
     val bossBarChanges: Boolean,
     val titleChanges: Boolean,
-    val visibleOnlyMessages: Boolean
+    val visibleOnlyMessages: Boolean,
+    val phaseMessages: Map<MoonPhase, PhaseMessageConfig>
 )
 
 data class SolarConfig(
@@ -73,7 +74,19 @@ data class SolarConfig(
     val broadcastChanges: Boolean,
     val actionBarChanges: Boolean,
     val bossBarChanges: Boolean,
-    val titleChanges: Boolean
+    val titleChanges: Boolean,
+    val phaseMessages: Map<SolarPhase, PhaseMessageConfig>
+)
+
+data class PhaseMessageConfig(
+    val displayName: String?,
+    val broadcast: String?,
+    val actionBar: String?,
+    val title: String?,
+    val subtitle: String?,
+    val bossBar: String?,
+    val featureLines: List<String>,
+    val featureIds: List<String>
 )
 
 data class ReloadResult(

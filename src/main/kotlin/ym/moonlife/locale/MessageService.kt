@@ -16,6 +16,10 @@ class MessageService(
 ) {
     fun plain(key: String, placeholders: Map<String, String> = emptyMap()): String = locale.plain(key, placeholders)
 
+    fun raw(key: String, placeholders: Map<String, String> = emptyMap()): String = locale.raw(key, placeholders)
+
+    fun render(template: String, placeholders: Map<String, String> = emptyMap()): String = locale.render(template, placeholders)
+
     fun send(sender: CommandSender, key: String, placeholders: Map<String, String> = emptyMap()) {
         sender.sendMessage(locale.plain(key, placeholders))
     }
@@ -26,6 +30,14 @@ class MessageService(
 
     fun broadcast(key: String, placeholders: Map<String, String> = emptyMap()) {
         val text = locale.plain(key, placeholders)
+        broadcastRendered(text)
+    }
+
+    fun broadcastRaw(template: String, placeholders: Map<String, String> = emptyMap()) {
+        broadcastRendered(locale.render(template, placeholders))
+    }
+
+    private fun broadcastRendered(text: String) {
         Bukkit.getConsoleSender().sendMessage(text)
         Bukkit.getOnlinePlayers().forEach { player ->
             scheduler.entity.run(player) { player.sendMessage(text) }
@@ -34,6 +46,14 @@ class MessageService(
 
     fun actionBar(player: Player, key: String, placeholders: Map<String, String> = emptyMap()) {
         val text = locale.plain(key, placeholders)
+        actionBarRendered(player, text)
+    }
+
+    fun actionBarRaw(player: Player, template: String, placeholders: Map<String, String> = emptyMap()) {
+        actionBarRendered(player, locale.render(template, placeholders))
+    }
+
+    private fun actionBarRendered(player: Player, text: String) {
         runCatching {
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, *TextComponent.fromLegacyText(text))
         }.onFailure {
@@ -43,6 +63,10 @@ class MessageService(
 
     fun title(player: Player, titleKey: String, subtitleKey: String, placeholders: Map<String, String> = emptyMap()) {
         player.sendTitle(locale.plain(titleKey, placeholders), locale.plain(subtitleKey, placeholders), 10, 60, 10)
+    }
+
+    fun titleRaw(player: Player, title: String, subtitle: String, placeholders: Map<String, String> = emptyMap()) {
+        player.sendTitle(locale.render(title, placeholders), locale.render(subtitle, placeholders), 10, 60, 10)
     }
 
     fun bossBar(players: Collection<Player>, key: String, placeholders: Map<String, String> = emptyMap()) {
@@ -60,6 +84,15 @@ class MessageService(
 
     fun bossBarWorld(world: World, key: String, placeholders: Map<String, String> = emptyMap()) {
         val bar = Bukkit.createBossBar(locale.plain(key, placeholders), BarColor.PURPLE, BarStyle.SOLID)
+        bossBarWorldRendered(world, bar)
+    }
+
+    fun bossBarWorldRaw(world: World, template: String, placeholders: Map<String, String> = emptyMap()) {
+        val bar = Bukkit.createBossBar(locale.render(template, placeholders), BarColor.PURPLE, BarStyle.SOLID)
+        bossBarWorldRendered(world, bar)
+    }
+
+    private fun bossBarWorldRendered(world: World, bar: org.bukkit.boss.BossBar) {
         val players = Bukkit.getOnlinePlayers().toList()
         players.forEach { player ->
             scheduler.entity.run(player) {

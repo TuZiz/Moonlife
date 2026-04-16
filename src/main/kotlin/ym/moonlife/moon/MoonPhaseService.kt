@@ -3,6 +3,7 @@ package ym.moonlife.moon
 import org.bukkit.Bukkit
 import org.bukkit.World
 import ym.moonlife.config.ConfigService
+import ym.moonlife.config.PhaseMessageConfig
 import ym.moonlife.locale.MessageService
 import ym.moonlife.scheduler.ScheduledTaskHandle
 import ym.moonlife.scheduler.SchedulerFacade
@@ -77,21 +78,56 @@ class MoonPhaseService(
         if (!manual && config.visibleOnlyMessages && !isMoonVisible(world)) return
         if (!manual && announced[key] == newPhase) return
         announced[key] = newPhase
+        val phaseMessage = config.phaseMessages[newPhase] ?: emptyPhaseMessage()
         val placeholders = mapOf(
             "world" to world.name,
-            "phase" to messages.phaseName(newPhase.displayKey),
-            "old_phase" to (old?.let { messages.phaseName(it.displayKey) } ?: "")
+            "phase" to phaseDisplay(newPhase, config.phaseMessages[newPhase]),
+            "old_phase" to (old?.let { phaseDisplay(it, config.phaseMessages[it]) } ?: ""),
+            "phase_id" to newPhase.name,
+            "features" to phaseMessage.featureIds.joinToString("、").ifEmpty { "无" },
+            "feature_count" to phaseMessage.featureIds.size.toString()
         )
-        if (config.broadcastChanges) messages.broadcast("moon.changed.broadcast", placeholders)
+        if (config.broadcastChanges) {
+            phaseMessage.broadcast?.let { messages.broadcastRaw(it, placeholders) }
+                ?: messages.broadcast("moon.changed.broadcast", placeholders)
+            if (phaseMessage.featureIds.isNotEmpty()) {
+                phaseMessage.featureLines.forEach { line -> messages.broadcastRaw(line, placeholders) }
+            }
+        }
         Bukkit.getOnlinePlayers().forEach { player ->
             scheduler.entity.run(player) {
                 if (player.world != world) return@run
-                if (config.actionBarChanges) messages.actionBar(player, "moon.changed.actionbar", placeholders)
-                if (config.titleChanges) messages.title(player, "moon.changed.title", "moon.changed.subtitle", placeholders)
+                if (config.actionBarChanges) {
+                    phaseMessage.actionBar?.let { messages.actionBarRaw(player, it, placeholders) }
+                        ?: messages.actionBar(player, "moon.changed.actionbar", placeholders)
+                }
+                if (config.titleChanges) {
+                    val title = phaseMessage.title
+                    val subtitle = phaseMessage.subtitle
+                    if (title != null || subtitle != null) {
+                        messages.titleRaw(
+                            player,
+                            title ?: messages.raw("moon.changed.title"),
+                            subtitle ?: messages.raw("moon.changed.subtitle"),
+                            placeholders
+                        )
+                    } else {
+                        messages.title(player, "moon.changed.title", "moon.changed.subtitle", placeholders)
+                    }
+                }
             }
         }
-        if (config.bossBarChanges) messages.bossBarWorld(world, "moon.changed.bossbar", placeholders)
+        if (config.bossBarChanges) {
+            phaseMessage.bossBar?.let { messages.bossBarWorldRaw(world, it, placeholders) }
+                ?: messages.bossBarWorld(world, "moon.changed.bossbar", placeholders)
+        }
     }
+
+    private fun phaseDisplay(phase: MoonPhase, message: PhaseMessageConfig?): String =
+        message?.displayName?.takeIf { it.isNotBlank() } ?: messages.raw(phase.displayKey)
+
+    private fun emptyPhaseMessage(): PhaseMessageConfig =
+        PhaseMessageConfig(null, null, null, null, null, null, emptyList(), emptyList())
 
     private fun isMoonVisible(world: World): Boolean = world.time >= MOON_VISIBLE_START
 

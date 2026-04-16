@@ -22,3 +22,19 @@ functions:
   buffs: []
   # 生态热点配置根节点。
   hotspots: []
+# 该日相切换时的提示文本配置。
+messages:
+  # 日相变化广播提示。
+  broadcast: '<prefix><#86EFAC>白昼铺展 ✦ <world> 的草木开始吸收温暖天光。'
+  # 日相变化 ActionBar 提示。
+  actionbar: '<#86EFAC>☼ 当前日相：<#FFFFFF><phase></#FFFFFF>'
+  # 日相变化 Title 主标题。
+  title: '<#86EFAC>☼ <phase>'
+  # 日相变化 Title 副标题。
+  subtitle: '<#DCFCE7>晴天时作物成长加速'
+  # 日相变化 BossBar 提示。
+  bossbar: '<#86EFAC>白昼生态 ☼ <#FFFFFF><phase></#FFFFFF>'
+  # 功能提示列表，仅当本文件 functions 中配置了功能时发送。
+  features:
+    # 白昼作物提示。
+    - '<prefix><#DCFCE7>白昼功能 ✦ 晴天成熟作物会获得成长与额外收获机会。'

@@ -22,3 +22,19 @@ functions:
     - dusk_forager
   # 生态热点配置根节点。
   hotspots: []
+# 该日相切换时的提示文本配置。
+messages:
+  # 日相变化广播提示。
+  broadcast: '<prefix><#F0ABFC>黄昏降临 ✦ <world> 的荒野采集收益开始上浮。'
+  # 日相变化 ActionBar 提示。
+  actionbar: '<#F0ABFC>☼ 当前日相：<#FFFFFF><phase></#FFFFFF>'
+  # 日相变化 Title 主标题。
+  title: '<#F0ABFC>☼ <phase>'
+  # 日相变化 Title 副标题。
+  subtitle: '<#FAE8FF>野外采集、经验、掉落与移速获得加成'
+  # 日相变化 BossBar 提示。
+  bossbar: '<#F0ABFC>黄昏生态 ☼ <#FFFFFF><phase></#FFFFFF>'
+  # 功能提示列表，仅当本文件 functions 中配置了功能时发送。
+  features:
+    # 黄昏采集者提示。
+    - '<prefix><#FAE8FF>黄昏功能 ✦ 野外玩家获得采集、移动、经验与掉落收益。'

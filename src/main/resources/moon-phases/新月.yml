@@ -18,3 +18,19 @@ functions:
   hotspots:
     # 列表项：该列表中的一个配置值。
     - newmoon_shadow_hotspot
+# 该月相切换时的提示文本配置。
+messages:
+  # 月相变化广播提示。
+  broadcast: '<prefix><#6B7280>新月升起 ✦ <world> 的夜空沉入无光之潮。'
+  # 月相变化 ActionBar 提示。
+  actionbar: '<#6B7280>☾ 当前月相：<#FFFFFF><phase></#FFFFFF>'
+  # 月相变化 Title 主标题。
+  title: '<#6B7280>☾ <phase>'
+  # 月相变化 Title 副标题。
+  subtitle: '<#CBD5E1>暗影生态开始活跃'
+  # 月相变化 BossBar 提示。
+  bossbar: '<#6B7280>新月生态 ☾ <#FFFFFF><phase></#FFFFFF>'
+  # 功能提示列表，仅当本文件 functions 中配置了功能时发送。
+  features:
+    # 新月暗影怪提示。
+    - '<prefix><#CBD5E1>新月功能 ✦ 午夜将可能唤出 <#FFFFFF>ShadowBeast</#FFFFFF>，暗影热点同步开启。'

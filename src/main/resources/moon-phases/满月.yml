@@ -20,3 +20,21 @@ functions:
   buffs: []
   # 生态热点配置根节点。
   hotspots: []
+# 该月相切换时的提示文本配置。
+messages:
+  # 月相变化广播提示。
+  broadcast: '<prefix><#F9A8D4>满月临空 ✦ <world> 的月辉正在强化荒野生态。'
+  # 月相变化 ActionBar 提示。
+  actionbar: '<#F9A8D4>☾ 当前月相：<#FFFFFF><phase></#FFFFFF>'
+  # 月相变化 Title 主标题。
+  title: '<#F9A8D4>☾ <phase>'
+  # 月相变化 Title 副标题。
+  subtitle: '<#FCE7F3>精英怪、祭坛与下界作物开始共鸣'
+  # 月相变化 BossBar 提示。
+  bossbar: '<#F9A8D4>满月生态 ☾ <#FFFFFF><phase></#FFFFFF>'
+  # 功能提示列表，仅当本文件 functions 中配置了功能时发送。
+  features:
+    # 满月精英怪提示。
+    - '<prefix><#FCE7F3>满月功能 ✦ 夜晚与午夜会刷新 <#FFFFFF>FullMoonZombieKnight</#FFFFFF>。'
+    # 满月祭坛和作物提示。
+    - '<prefix><#FCE7F3>满月功能 ✦ 满月祭坛可启动狂潮，下界疣获得成长与收获加成。'

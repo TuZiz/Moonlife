@@ -265,7 +265,13 @@ class ConfigService(private val plugin: JavaPlugin) {
             actionBarChanges = config.getBoolean("events.actionbar", true),
             bossBarChanges = config.getBoolean("events.bossbar", false),
             titleChanges = config.getBoolean("events.title", false),
-            visibleOnlyMessages = config.getBoolean("events.visible-only", true)
+            visibleOnlyMessages = config.getBoolean("events.visible-only", true),
+            phaseMessages = MoonPhase.entries.associateWith { phase ->
+                parsePhaseMessages(
+                    phaseYaml("moon-phases/${moonFileName(phase)}.yml")
+                        ?: phaseYaml("moon-pgases/${moonFileName(phase)}.yml")
+                )
+            }
         )
 
     private fun parseSolar(config: YamlConfiguration, errors: MutableList<String>): SolarConfig {
@@ -277,7 +283,40 @@ class ConfigService(private val plugin: JavaPlugin) {
             broadcastChanges = config.getBoolean("events.broadcast", true),
             actionBarChanges = config.getBoolean("events.actionbar", false),
             bossBarChanges = config.getBoolean("events.bossbar", false),
-            titleChanges = config.getBoolean("events.title", false)
+            titleChanges = config.getBoolean("events.title", false),
+            phaseMessages = SolarPhase.entries.associateWith { phase ->
+                parsePhaseMessages(phaseYaml("solar-phases/${solarFileName(phase)}.yml"))
+            }
+        )
+    }
+
+    private fun parsePhaseMessages(config: YamlConfiguration?): PhaseMessageConfig {
+        val section = config?.getConfigurationSection("messages")
+        val featureIds = if (config == null) {
+            emptyList()
+        } else {
+            ids(
+                config,
+                "functions.monsters", "functions.怪物", "monsters", "怪物",
+                "functions.crops", "functions.作物", "crops", "作物",
+                "functions.buffs", "functions.buff", "functions.增益", "buffs", "buff", "增益",
+                "functions.altars", "functions.祭坛", "altars", "祭坛",
+                "functions.hotspots", "functions.热点", "hotspots", "热点"
+            )
+        }
+        return PhaseMessageConfig(
+            displayName = config?.getString("display-name"),
+            broadcast = section?.getString("broadcast"),
+            actionBar = section?.getString("actionbar") ?: section?.getString("action-bar"),
+            title = section?.getString("title"),
+            subtitle = section?.getString("subtitle"),
+            bossBar = section?.getString("bossbar") ?: section?.getString("boss-bar"),
+            featureLines = when {
+                section?.isList("features") == true -> section.getStringList("features")
+                section?.isList("feature-lines") == true -> section.getStringList("feature-lines")
+                else -> emptyList()
+            },
+            featureIds = featureIds
         )
     }
 

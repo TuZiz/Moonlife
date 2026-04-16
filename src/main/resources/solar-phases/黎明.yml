@@ -20,3 +20,15 @@ functions:
   buffs: []
   # 生态热点配置根节点。
   hotspots: []
+# 该日相切换时的提示文本配置。
+messages:
+  # 日相变化广播提示。
+  broadcast: '<prefix><#FDBA74>天光初醒 ✦ <world> 正进入 <#FFFFFF><phase></#FFFFFF>。'
+  # 日相变化 ActionBar 提示。
+  actionbar: '<#FDBA74>☼ 当前日相：<#FFFFFF><phase></#FFFFFF>'
+  # 日相变化 Title 主标题。
+  title: '<#FDBA74>☼ <phase>'
+  # 日相变化 Title 副标题。
+  subtitle: '<#FFEDD5>当前日相暂无额外生态功能'
+  # 日相变化 BossBar 提示。
+  bossbar: '<#FDBA74>日相 ☼ <#FFFFFF><phase></#FFFFFF>'

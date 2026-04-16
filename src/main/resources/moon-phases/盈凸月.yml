@@ -14,3 +14,15 @@ functions:
   buffs: []
   # 生态热点配置根节点。
   hotspots: []
+# 该月相切换时的提示文本配置。
+messages:
+  # 月相变化广播提示。
+  broadcast: '<prefix><#C4B5FD>月相更替 ✦ <world> 的夜空进入 <#FFFFFF><phase></#FFFFFF>。'
+  # 月相变化 ActionBar 提示。
+  actionbar: '<#C4B5FD>☾ 当前月相：<#FFFFFF><phase></#FFFFFF>'
+  # 月相变化 Title 主标题。
+  title: '<#C4B5FD>☾ <phase>'
+  # 月相变化 Title 副标题。
+  subtitle: '<#EDE9FE>当前月相暂无额外生态功能'
+  # 月相变化 BossBar 提示。
+  bossbar: '<#C4B5FD>月相 ☾ <#FFFFFF><phase></#FFFFFF>'

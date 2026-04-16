@@ -307,6 +307,23 @@ functions:
 
 兼容说明：旧的 `spawn-rules.yml`、`crop-rules.yml`、`buff-rules.yml`、`features.yml`、`moon-phases.yml`、`solar-phases.yml` 仍可作为兜底读取；旧版 `settings/config.yml` 也会作为 `config.yml` 的兜底读取。新默认包不再生成这些旧文件，只要新文件存在，Moonlife 会优先使用新结构。
 
+## 相位提示
+
+月相和日相切换提示现在直接写在对应相位文件里，例如 `moon-phases/新月.yml`、`solar-phases/午夜.yml`。配置支持 MiniMessage RGB，例如 `<#7DD3FC>`，实际发送时会转成 Minecraft 客户端识别的 `§x` 真彩格式。
+
+```yaml
+messages:
+  broadcast: '<prefix><#6B7280>新月升起 ✦ <world> 的夜空沉入无光之潮。'
+  actionbar: '<#6B7280>☾ 当前月相：<#FFFFFF><phase></#FFFFFF>'
+  title: '<#6B7280>☾ <phase>'
+  subtitle: '<#CBD5E1>暗影生态开始活跃'
+  bossbar: '<#6B7280>新月生态 ☾ <#FFFFFF><phase></#FFFFFF>'
+  features:
+    - '<prefix><#CBD5E1>新月功能 ✦ 午夜将可能唤出 ShadowBeast。'
+```
+
+`features` 只有在该相位文件的 `functions` 下写了怪物、作物、Buff、祭坛或热点时才会发送。没有配置功能的相位只会发一条相位提示。
+
 ## 自定义物品
 
 祭坛消耗物、生态材料、作物额外收获都支持自定义物品配置。Moonlife 不使用 NMS，`nbt` 节点实际写入 Bukkit PersistentDataContainer，格式使用 `namespace:key`。

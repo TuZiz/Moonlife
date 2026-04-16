@@ -30,3 +30,21 @@ functions:
   hotspots:
     # 列表项：该列表中的一个配置值。
     - thunder_night_hotspot
+# 该日相切换时的提示文本配置。
+messages:
+  # 日相变化广播提示。
+  broadcast: '<prefix><#93C5FD>夜幕落下 ✦ <world> 的荒野危险度开始升高。'
+  # 日相变化 ActionBar 提示。
+  actionbar: '<#93C5FD>☼ 当前日相：<#FFFFFF><phase></#FFFFFF>'
+  # 日相变化 Title 主标题。
+  title: '<#93C5FD>☼ <phase>'
+  # 日相变化 Title 副标题。
+  subtitle: '<#DBEAFE>满月与雷雨生态开始活跃'
+  # 日相变化 BossBar 提示。
+  bossbar: '<#93C5FD>夜晚生态 ☼ <#FFFFFF><phase></#FFFFFF>'
+  # 功能提示列表，仅当本文件 functions 中配置了功能时发送。
+  features:
+    # 夜晚怪物提示。
+    - '<prefix><#DBEAFE>夜晚功能 ✦ 满月精英怪与雷雨夜袭击者可能在荒野出现。'
+    # 夜晚状态提示。
+    - '<prefix><#DBEAFE>夜晚功能 ✦ 雷暴时会进入高风险高收益状态。'

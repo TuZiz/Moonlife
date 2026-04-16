@@ -34,3 +34,21 @@ functions:
     - newmoon_shadow_hotspot
     # 列表项：该列表中的一个配置值。
     - thunder_night_hotspot
+# 该日相切换时的提示文本配置。
+messages:
+  # 日相变化广播提示。
+  broadcast: '<prefix><#C4B5FD>午夜已至 ✦ <world> 的深夜生态达到峰值。'
+  # 日相变化 ActionBar 提示。
+  actionbar: '<#C4B5FD>☼ 当前日相：<#FFFFFF><phase></#FFFFFF>'
+  # 日相变化 Title 主标题。
+  title: '<#C4B5FD>☼ <phase>'
+  # 日相变化 Title 副标题。
+  subtitle: '<#EDE9FE>新月、满月与雷雨生态在午夜最活跃'
+  # 日相变化 BossBar 提示。
+  bossbar: '<#C4B5FD>午夜生态 ☼ <#FFFFFF><phase></#FFFFFF>'
+  # 功能提示列表，仅当本文件 functions 中配置了功能时发送。
+  features:
+    # 午夜怪物提示。
+    - '<prefix><#EDE9FE>午夜功能 ✦ 新月影兽、满月骑士与雷雨袭击者均可能被唤醒。'
+    # 午夜热点提示。
+    - '<prefix><#EDE9FE>午夜功能 ✦ 暗影热点与雷雨热点会提高局部危险度。'
