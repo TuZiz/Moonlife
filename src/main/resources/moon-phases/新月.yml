@@ -1,4 +1,4 @@
-# 新月：暗影生态开始活跃。
+# 新月：原版夜蛛生态开始活跃。
 enable: true
 # 显示名称。
 display-name: "新月"
@@ -7,7 +7,7 @@ functions:
   # 该相位启用的怪物规则 ID 列表。
   monsters:
     # 列表项：该列表中的一个配置值。
-    - newmoon_shadow_beast
+    - newmoon_night_spider
   # 祭坛配置根节点。
   altars: []
   # 该相位启用的作物规则 ID 列表。
@@ -15,9 +15,7 @@ functions:
   # 该相位启用的玩家状态规则 ID 列表。
   buffs: []
   # 生态热点配置根节点。
-  hotspots:
-    # 列表项：该列表中的一个配置值。
-    - newmoon_shadow_hotspot
+  hotspots: []
 # 该月相切换时的提示文本配置。
 messages:
   # 月相变化广播提示。
@@ -27,10 +25,10 @@ messages:
   # 月相变化 Title 主标题。
   title: '<#6B7280>☾ <phase>'
   # 月相变化 Title 副标题。
-  subtitle: '<#CBD5E1>暗影生态开始活跃'
+  subtitle: '<#CBD5E1>新月夜蛛在午夜更活跃'
   # 月相变化 BossBar 提示。
   bossbar: '<#6B7280>新月生态 ☾ <#FFFFFF><phase></#FFFFFF>'
   # 功能提示列表，仅当本文件 functions 中配置了功能时发送。
   features:
-    # 新月暗影怪提示。
-    - '<prefix><#CBD5E1>新月功能 ✦ 午夜将可能唤出 <#FFFFFF>新月影兽</#FFFFFF>，暗影热点同步开启。'
+    # 新月原版怪提示。
+    - '<prefix><#CBD5E1>新月功能 ✦ 午夜会提高 <#FFFFFF>新月夜蛛</#FFFFFF> 的荒野出现概率。'

@@ -87,6 +87,7 @@ class MoonPhaseService(
             "features" to featureDisplay(phaseMessage.featureIds),
             "feature_count" to phaseMessage.featureIds.size.toString()
         )
+        if (!phaseMessage.announce) return
         if (config.broadcastChanges) {
             phaseMessage.broadcast?.let { messages.broadcastRaw(it, placeholders) }
                 ?: messages.broadcast("moon.changed.broadcast", placeholders)
@@ -135,6 +136,9 @@ class MoonPhaseService(
         }.ifEmpty { "无" }
 
     private fun ruleDisplay(id: String): String = when (id.lowercase(Locale.ROOT)) {
+        "fullmoon_zombie_pack" -> "满月僵尸群"
+        "newmoon_night_spider" -> "新月夜蛛"
+        "thunder_skeleton_patrol" -> "雷雨骷髅巡游"
         "sunny_day_growth" -> "晴天白昼成长"
         "fullmoon_nether_wart" -> "满月地狱疣"
         "dusk_forager" -> "黄昏采集者"
@@ -146,7 +150,7 @@ class MoonPhaseService(
     }
 
     private fun emptyPhaseMessage(): PhaseMessageConfig =
-        PhaseMessageConfig(null, null, null, null, null, null, emptyList(), emptyList())
+        PhaseMessageConfig(true, null, null, null, null, null, null, emptyList(), emptyList())
 
     private fun isMoonVisible(world: World): Boolean = world.time >= MOON_VISIBLE_START
 

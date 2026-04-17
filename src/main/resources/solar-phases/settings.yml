@@ -9,8 +9,8 @@ worlds:
 events:
   # 是否广播相位变化。
   broadcast: true
-  # 是否使用 ActionBar 提示相位变化。
-  actionbar: false
+  # 是否使用 ActionBar 提示相位变化，轻生态默认每个白天或夜晚提示一次。
+  actionbar: true
   # 是否使用 BossBar 提示相位变化。
   bossbar: false
   # 是否使用 Title 提示相位变化。

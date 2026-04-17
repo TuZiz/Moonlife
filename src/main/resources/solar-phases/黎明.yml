@@ -22,6 +22,8 @@ functions:
   hotspots: []
 # 该日相切换时的提示文本配置。
 messages:
+  # 是否公告该相位，轻生态中黎明静默，避免刷屏。
+  announce: false
   # 日相变化广播提示。
   broadcast: '<prefix><#FDBA74>天光初醒 ✦ <world> 正进入 <#FFFFFF><phase></#FFFFFF>。'
   # 日相变化 ActionBar 提示。

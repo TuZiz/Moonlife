@@ -305,6 +305,7 @@ class ConfigService(private val plugin: JavaPlugin) {
             )
         }
         return PhaseMessageConfig(
+            announce = section?.getBoolean("announce", true) ?: true,
             displayName = config?.getString("display-name"),
             broadcast = section?.getString("broadcast"),
             actionBar = section?.getString("actionbar") ?: section?.getString("action-bar"),

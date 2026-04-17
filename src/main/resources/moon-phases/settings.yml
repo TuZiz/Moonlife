@@ -7,10 +7,10 @@ worlds:
 
 # 配置项 events 的值，请根据实际玩法需求调整。
 events:
-  # 是否广播相位变化。
-  broadcast: true
-  # 是否使用 ActionBar 提示相位变化。
-  actionbar: true
+  # 是否广播月相变化，轻生态默认交给白昼/夜晚摘要统一提示。
+  broadcast: false
+  # 是否使用 ActionBar 提示月相变化，轻生态默认交给日相 ActionBar 统一提示。
+  actionbar: false
   # 是否使用 BossBar 提示相位变化。
   bossbar: false
   # 是否使用 Title 提示相位变化。

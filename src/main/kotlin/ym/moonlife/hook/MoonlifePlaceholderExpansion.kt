@@ -78,7 +78,7 @@ class MoonlifePlaceholderExpansion(
         spawnService.preview(this).joinToString("、") { it.displayName }
 
     private fun Player.spawnTargetsText(): String =
-        spawnService.preview(this).joinToString("、") { it.target.key }
+        spawnService.preview(this).joinToString("、") { targetDisplay(it.target.key) }
 
     private fun Player.spawnFeatureText(): String {
         val rules = spawnService.preview(this)
@@ -133,6 +133,9 @@ class MoonlifePlaceholderExpansion(
     private fun yesNo(value: Boolean): String = if (value) "是" else "否"
 
     private fun ruleDisplay(id: String): String = when (id.lowercase(Locale.ROOT)) {
+        "fullmoon_zombie_pack" -> "满月僵尸群"
+        "newmoon_night_spider" -> "新月夜蛛"
+        "thunder_skeleton_patrol" -> "雷雨骷髅巡游"
         "fullmoon_zombie_knight" -> "满月僵尸骑士"
         "newmoon_shadow_beast" -> "新月影兽"
         "thunder_night_raider" -> "雷雨夜袭击者"
@@ -143,4 +146,10 @@ class MoonlifePlaceholderExpansion(
         else -> id.replace('_', ' ')
     }
 
+    private fun targetDisplay(key: String): String = when (key.uppercase(Locale.ROOT)) {
+        "ZOMBIE" -> "原版僵尸"
+        "SPIDER" -> "原版蜘蛛"
+        "SKELETON" -> "原版骷髅"
+        else -> key
+    }
 }

@@ -24,6 +24,8 @@ functions:
   hotspots: []
 # 该日相切换时的提示文本配置。
 messages:
+  # 是否公告该相位，轻生态中黄昏静默，收益可通过 /ecology info 查看。
+  announce: false
   # 日相变化广播提示。
   broadcast: '<prefix><#F0ABFC>黄昏降临 ✦ <world> 的荒野采集收益开始上浮。'
   # 日相变化 ActionBar 提示。

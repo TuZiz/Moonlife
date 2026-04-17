@@ -1,4 +1,4 @@
-# 夜晚：满月精英怪、雷雨夜危险和满月祭坛。
+# 夜晚：原版怪物活跃、雷雨夜危险和轻量收益。
 enable: true
 # 显示名称。
 display-name: "夜晚"
@@ -13,13 +13,11 @@ functions:
   # 该相位启用的怪物规则 ID 列表。
   monsters:
     # 列表项：该列表中的一个配置值。
-    - fullmoon_zombie_knight
+    - fullmoon_zombie_pack
     # 列表项：该列表中的一个配置值。
-    - thunder_night_raider
+    - thunder_skeleton_patrol
   # 祭坛配置根节点。
-  altars:
-    # 列表项：该列表中的一个配置值。
-    - fullmoon_altar
+  altars: []
   # 该相位启用的作物规则 ID 列表。
   crops: []
   # 该相位启用的玩家状态规则 ID 列表。
@@ -27,24 +25,20 @@ functions:
     # 列表项：该列表中的一个配置值。
     - thunder_night_danger
   # 生态热点配置根节点。
-  hotspots:
-    # 列表项：该列表中的一个配置值。
-    - thunder_night_hotspot
+  hotspots: []
 # 该日相切换时的提示文本配置。
 messages:
+  # 是否公告该相位，轻生态只公告白昼与夜晚。
+  announce: true
   # 日相变化广播提示。
-  broadcast: '<prefix><#93C5FD>夜幕落下 ✦ <world> 的荒野危险度开始升高。'
+  broadcast: '<prefix><#93C5FD>夜幕降临 ✦ <world> 今夜生态：原版怪物更活跃，雷雨时风险与收益同步上升。'
   # 日相变化 ActionBar 提示。
-  actionbar: '<#93C5FD>☼ 当前日相：<#FFFFFF><phase></#FFFFFF>'
+  actionbar: '<#93C5FD>夜晚</#93C5FD> <#94A3B8>·</#94A3B8> <#DBEAFE>荒野危险上升</#DBEAFE> <#94A3B8>·</#94A3B8> <#E0F2FE>/ecology info</#E0F2FE>'
   # 日相变化 Title 主标题。
   title: '<#93C5FD>☼ <phase>'
   # 日相变化 Title 副标题。
-  subtitle: '<#DBEAFE>满月与雷雨生态开始活跃'
+  subtitle: '<#DBEAFE>原版怪物与雷雨生态开始活跃'
   # 日相变化 BossBar 提示。
   bossbar: '<#93C5FD>夜晚生态 ☼ <#FFFFFF><phase></#FFFFFF>'
   # 功能提示列表，仅当本文件 functions 中配置了功能时发送。
-  features:
-    # 夜晚怪物提示。
-    - '<prefix><#DBEAFE>夜晚功能 ✦ 满月精英怪与雷雨夜袭击者可能在荒野出现。'
-    # 夜晚状态提示。
-    - '<prefix><#DBEAFE>夜晚功能 ✦ 雷暴时会进入高风险高收益状态。'
+  features: []

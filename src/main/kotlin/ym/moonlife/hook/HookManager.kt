@@ -13,6 +13,7 @@ import ym.moonlife.moon.MoonPhaseService
 import ym.moonlife.solar.SolarPhaseService
 import ym.moonlife.crop.CropGrowthService
 import ym.moonlife.feature.EcologyFeatureService
+import ym.moonlife.spawn.MythicSpawnTarget
 import ym.moonlife.spawn.SpawnService
 import ym.moonlife.util.ReflectionUtil
 import java.util.concurrent.ConcurrentHashMap
@@ -97,7 +98,12 @@ class HookManager(
                 plugin.logger.info("MythicMobs hook enabled. Known mob ids: ${it.knownMobIds().size}")
             }
         } else {
-            plugin.logger.warning("MythicMobs not found. MYTHIC_MOB spawn rules will be skipped.")
+            val hasMythicRules = configService.current.spawnRules.any { it.target is MythicSpawnTarget }
+            if (hasMythicRules) {
+                plugin.logger.warning("MythicMobs not found. MYTHIC_MOB spawn rules will be skipped.")
+            } else {
+                plugin.logger.info("MythicMobs not found. No MythicMobs spawn rules are enabled in the current config.")
+            }
             DisabledMythicMobsHook
         }
     }

@@ -1,4 +1,4 @@
-# 满月：精英怪、祭坛和下界作物强化。
+# 满月：原版僵尸群和下界作物轻量强化。
 enable: true
 # 显示名称。
 display-name: "满月"
@@ -7,11 +7,9 @@ functions:
   # 该相位启用的怪物规则 ID 列表。
   monsters:
     # 列表项：该列表中的一个配置值。
-    - fullmoon_zombie_knight
+    - fullmoon_zombie_pack
   # 祭坛配置根节点。
-  altars:
-    # 列表项：该列表中的一个配置值。
-    - fullmoon_altar
+  altars: []
   # 该相位启用的作物规则 ID 列表。
   crops:
     # 列表项：该列表中的一个配置值。
@@ -29,12 +27,12 @@ messages:
   # 月相变化 Title 主标题。
   title: '<#F9A8D4>☾ <phase>'
   # 月相变化 Title 副标题。
-  subtitle: '<#FCE7F3>精英怪、祭坛与下界作物开始共鸣'
+  subtitle: '<#FCE7F3>满月僵尸群与下界作物轻量活跃'
   # 月相变化 BossBar 提示。
   bossbar: '<#F9A8D4>满月生态 ☾ <#FFFFFF><phase></#FFFFFF>'
   # 功能提示列表，仅当本文件 functions 中配置了功能时发送。
   features:
-    # 满月精英怪提示。
-    - '<prefix><#FCE7F3>满月功能 ✦ 夜晚与午夜会刷新 <#FFFFFF>满月僵尸骑士</#FFFFFF>。'
-    # 满月祭坛和作物提示。
-    - '<prefix><#FCE7F3>满月功能 ✦ 满月祭坛可启动狂潮，下界疣获得成长与收获加成。'
+    # 满月原版怪提示。
+    - '<prefix><#FCE7F3>满月功能 ✦ 夜晚与午夜会提高 <#FFFFFF>满月僵尸群</#FFFFFF> 的荒野出现概率。'
+    # 满月作物提示。
+    - '<prefix><#FCE7F3>满月功能 ✦ 下界疣获得轻微成长与收获加成。'

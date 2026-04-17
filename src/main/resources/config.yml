@@ -27,8 +27,8 @@ wilderness:
 spawn:
   # 是否启用生态刷怪服务。
   enabled: true
-  # 是否强制怪物完全依赖 MythicMobs，开启后 VANILLA 规则会被跳过。
-  mythic-mobs-only: true
+  # 是否强制怪物完全依赖 MythicMobs，轻生态默认关闭以使用原版生物。
+  mythic-mobs-only: false
   # 每轮玩家附近抽样刷新间隔 tick。
   interval-ticks: 200
   # 每轮最多抽样多少名玩家，避免百人服全量遍历。

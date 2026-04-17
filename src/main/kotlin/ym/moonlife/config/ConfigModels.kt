@@ -79,6 +79,7 @@ data class SolarConfig(
 )
 
 data class PhaseMessageConfig(
+    val announce: Boolean,
     val displayName: String?,
     val broadcast: String?,
     val actionBar: String?,

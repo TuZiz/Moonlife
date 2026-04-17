@@ -129,10 +129,11 @@ class EcologyFeatureService(
         val bundle = configService.current
         val knownMythic = hookManager.mythicMobs.knownMobIds()
         val knownMythicLower = knownMythic.map { it.lowercase(Locale.ROOT) }.toSet()
+        val mythicRules = bundle.spawnRules.filter { it.target is MythicSpawnTarget }
         lines += "刷怪规则：${bundle.spawnRules.size} 条，作物规则：${bundle.cropRules.size} 条，状态规则：${bundle.buffRules.size} 条。"
-        if (!hookManager.mythicMobs.available) {
+        if (!hookManager.mythicMobs.available && mythicRules.isNotEmpty()) {
             lines += "警告：未检测到 MythicMobs，自定义怪物刷新规则会被跳过。"
-        } else if (knownMythic.isEmpty()) {
+        } else if (hookManager.mythicMobs.available && mythicRules.isNotEmpty() && knownMythic.isEmpty()) {
             lines += "提示：MythicMobs 怪物索引为空，请执行 MythicMobs 重载后再执行 /ecology reload。"
         }
         bundle.spawnRules.forEach { rule ->
@@ -445,6 +446,9 @@ class EcologyFeatureService(
     private fun ruleDisplay(id: String): String = when (id.lowercase(Locale.ROOT)) {
         in configService.current.spawnRules.map { it.id.lowercase(Locale.ROOT) } ->
             configService.current.spawnRules.first { it.id.equals(id, ignoreCase = true) }.displayName
+        "fullmoon_zombie_pack" -> "满月僵尸群"
+        "newmoon_night_spider" -> "新月夜蛛"
+        "thunder_skeleton_patrol" -> "雷雨骷髅巡游"
         "fullmoon_zombie_knight" -> "满月僵尸骑士"
         "newmoon_shadow_beast" -> "新月影兽"
         "thunder_night_raider" -> "雷雨夜袭击者"

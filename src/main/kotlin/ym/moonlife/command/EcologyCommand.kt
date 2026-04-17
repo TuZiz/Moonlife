@@ -165,7 +165,7 @@ class EcologyCommand(
         val rules = spawnService.preview(player)
         messages.send(sender, "command.preview.header", mapOf("count" to rules.size.toString()))
         rules.take(12).forEach { rule ->
-            val targetName = if (rule.target.backend.name == "MYTHIC_MOB") "由 MythicMobs 控制" else rule.target.key
+            val targetName = if (rule.target.backend.name == "MYTHIC_MOB") "由 MythicMobs 控制" else vanillaTargetDisplay(rule.target.key)
             messages.send(sender, "command.preview.entry", mapOf("id" to rule.displayName, "target" to targetName, "weight" to rule.weight.toString()))
         }
         return true
@@ -353,6 +353,9 @@ class EcologyCommand(
     private fun ruleDisplay(id: String): String = when (id.lowercase(Locale.ROOT)) {
         in configService.current.spawnRules.map { it.id.lowercase(Locale.ROOT) } ->
             configService.current.spawnRules.first { it.id.equals(id, ignoreCase = true) }.displayName
+        "fullmoon_zombie_pack" -> "满月僵尸群"
+        "newmoon_night_spider" -> "新月夜蛛"
+        "thunder_skeleton_patrol" -> "雷雨骷髅巡游"
         "fullmoon_zombie_knight" -> "满月僵尸骑士"
         "newmoon_shadow_beast" -> "新月影兽"
         "thunder_night_raider" -> "雷雨夜袭击者"
@@ -363,4 +366,10 @@ class EcologyCommand(
         else -> id.replace('_', ' ')
     }
 
+    private fun vanillaTargetDisplay(key: String): String = when (key.uppercase(Locale.ROOT)) {
+        "ZOMBIE" -> "原版僵尸"
+        "SPIDER" -> "原版蜘蛛"
+        "SKELETON" -> "原版骷髅"
+        else -> "原版$key"
+    }
 }

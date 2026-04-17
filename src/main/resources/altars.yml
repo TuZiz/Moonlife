@@ -1,262 +1,54 @@
-# 祭坛与生态扩展配置：祭坛、悬赏、材料、热点、临时事件都集中在这里。
+# 轻生态扩展配置：默认不启用祭坛、悬赏、MythicMobs 材料和生态事件。
 calendar:
   # 日历向后预览的天数。
   days: 8
 
 # 调试 BossBar 配置根节点。
 debug-bossbar:
-  # 配置项 refresh-ticks 的值，请根据实际玩法需求调整。
+  # 调试 BossBar 刷新间隔，单位为 tick。
   refresh-ticks: 40
 
 # 玩家生态保护配置根节点。
 player-protection:
-  # 新玩家在线保护时间，单位为 tick。
+  # 新玩家在线保护时间，单位为 tick，轻生态默认不额外保护。
   new-player-ticks: 0
-  # 围绕玩家抽取候选刷新点的半径配置。
+  # 出生点周围生态刷怪保护半径。
   spawn-radius: 24.0
 
-# 生态材料定义根节点。
-materials:
-  # 配置项 moonlit_seed 的值，请根据实际玩法需求调整。
-  moonlit_seed:
-    # 显示名称。
-    display-name: "月露种子"
-    # 使用的 Bukkit 物品或方块材质名。
-    material: AMETHYST_SHARD
-    # 生成给玩家的自定义物品配置。
-    item:
-      # 自定义物品的基础材质。
-      material: AMETHYST_SHARD
-      # 自定义物品的显示名，支持 MiniMessage。
-      display-name: "<#C4B5FD>月露种子"
-      # 自定义物品的 lore，支持 MiniMessage。
-      lore:
-        # lore 第一行。
-        - "<#A7F3D0>月息生态材料"
-        # lore 第二行。
-        - "<#94A3B8>来源：满月成熟作物"
-      # 自定义模型数据，材质包可用该值绑定模型。
-      custom-model-data: 1001
-      # 自定义 NBT / PDC 标签，完全无 NMS。
-      nbt:
-        # Moonlife 物品 ID 标签，用于祭坛和其他规则匹配。
-        "moonlife:item_id": moonlit_seed
-    # 材料来源说明文本。
-    source: "满月成熟作物"
-  # 配置项 shadow_dust 的值，请根据实际玩法需求调整。
-  shadow_dust:
-    # 显示名称。
-    display-name: "影尘"
-    # 使用的 Bukkit 物品或方块材质名。
-    material: GUNPOWDER
-    # 生成给玩家的自定义物品配置。
-    item:
-      # 自定义物品的基础材质。
-      material: GUNPOWDER
-      # 自定义物品的显示名，支持 MiniMessage。
-      display-name: "<#6B7280>影尘"
-      # 自定义物品的 lore，支持 MiniMessage。
-      lore:
-        # lore 第一行。
-        - "<#A7F3D0>月息生态材料"
-        # lore 第二行。
-        - "<#94A3B8>来源：新月生态与新月影兽"
-      # 自定义模型数据，材质包可用该值绑定模型。
-      custom-model-data: 1002
-      # 自定义 NBT / PDC 标签，完全无 NMS。
-      nbt:
-        # Moonlife 物品 ID 标签，用于祭坛和其他规则匹配。
-        "moonlife:item_id": shadow_dust
-    # 材料来源说明文本。
-    source: "新月生态与新月影兽"
-  # 配置项 thunder_bone 的值，请根据实际玩法需求调整。
-  thunder_bone:
-    # 显示名称。
-    display-name: "雷骨"
-    # 使用的 Bukkit 物品或方块材质名。
-    material: BONE
-    # 生成给玩家的自定义物品配置。
-    item:
-      # 自定义物品的基础材质。
-      material: BONE
-      # 自定义物品的显示名，支持 MiniMessage。
-      display-name: "<#FDE68A>雷骨"
-      # 自定义物品的 lore，支持 MiniMessage。
-      lore:
-        # lore 第一行。
-        - "<#A7F3D0>月息生态材料"
-        # lore 第二行。
-        - "<#94A3B8>来源：雷骨袭击者"
-      # 自定义模型数据，材质包可用该值绑定模型。
-      custom-model-data: 1003
-      # 自定义 NBT / PDC 标签，完全无 NMS。
-      nbt:
-        # Moonlife 物品 ID 标签，用于祭坛和其他规则匹配。
-        "moonlife:item_id": thunder_bone
-    # 材料来源说明文本。
-    source: "雷骨袭击者"
+# 生态材料定义根节点，轻生态默认留空。
+materials: {}
 
-# 生态悬赏配置根节点。
-bounties:
-  # 配置项 shadow_beast_hunt 的值，请根据实际玩法需求调整。
-  shadow_beast_hunt:
-    # 显示名称。
-    display-name: "新月暗影狩猎"
-    # 悬赏匹配的 MythicMobs 内部怪物名列表。
-    mythic-mob-ids: [ShadowBeast]
-    # 完成悬赏奖励的经验值。
-    reward-exp: 120
-    # 完成悬赏奖励的生态材料 ID 列表。
-    reward-materials: [shadow_dust]
-    # 完成后解锁的生态图鉴条目 ID。
-    codex-entry: shadow_beast
-  # 配置项 stormbone_raider_hunt 的值，请根据实际玩法需求调整。
-  stormbone_raider_hunt:
-    # 显示名称。
-    display-name: "雷骨夜袭"
-    # 悬赏匹配的 MythicMobs 内部怪物名列表。
-    mythic-mob-ids: [StormboneRaider]
-    # 完成悬赏奖励的经验值。
-    reward-exp: 100
-    # 完成悬赏奖励的生态材料 ID 列表。
-    reward-materials: [thunder_bone]
-    # 完成后解锁的生态图鉴条目 ID。
-    codex-entry: stormbone_raider
-  # 配置项 fullmoon_knight_hunt 的值，请根据实际玩法需求调整。
-  fullmoon_knight_hunt:
-    # 显示名称。
-    display-name: "满月骑士讨伐"
-    # 悬赏匹配的 MythicMobs 内部怪物名列表。
-    mythic-mob-ids: [FullMoonZombieKnight]
-    # 完成悬赏奖励的经验值。
-    reward-exp: 150
-    # 完成悬赏奖励的生态材料 ID 列表。
-    reward-materials: [moonlit_seed]
-    # 完成后解锁的生态图鉴条目 ID。
-    codex-entry: fullmoon_zombie_knight
+# 生态悬赏配置根节点，轻生态默认留空。
+bounties: {}
 
-# 祭坛配置根节点。
-altars:
-  # 满月祭坛：月相/日相启用关系写在 moon-phases/满月.yml 与 solar-phases/夜晚.yml、solar-phases/午夜.yml。
-  fullmoon_altar:
-    # 显示名称。
-    display-name: "满月祭坛"
-    # 祭坛使用的方块材质。
-    block: CRYING_OBSIDIAN
-    # 启动祭坛需要消耗的材料。
-    cost: AMETHYST_SHARD
-    # 启动祭坛需要匹配的自定义物品，存在该节点时会优先按这里判断。
-    cost-item:
-      # 祭坛消耗物的基础材质。
-      material: AMETHYST_SHARD
-      # 祭坛消耗物的显示名。
-      display-name: "<#C4B5FD>月露种子"
-      # 祭坛消耗物的 lore。
-      lore:
-        # lore 第一行。
-        - "<#A7F3D0>月息生态材料"
-        # lore 第二行。
-        - "<#94A3B8>来源：满月成熟作物"
-      # 祭坛消耗物的 custom-model-data。
-      custom-model-data: 1001
-      # 祭坛消耗物必须拥有的 NBT / PDC 标签。
-      nbt:
-        # 必须匹配的 Moonlife 物品 ID。
-        "moonlife:item_id": moonlit_seed
-      # 祭坛消耗物匹配策略。
-      match:
-        # 是否匹配显示名。
-        display-name: true
-        # 是否匹配完整 lore。
-        lore: false
-        # 是否匹配 custom-model-data。
-        custom-model-data: true
-        # 是否匹配 NBT / PDC 标签。
-        nbt: true
-        # 显示名匹配模式：EXACT、PLAIN_EQUALS、PLAIN_CONTAINS、DISABLED。
-        name-mode: EXACT
-    # 规则直接绑定的月相列表，通常建议在 moon-phases 目录中配置。
-    moon-phases: []
-    # 规则直接绑定的日相列表，通常建议在 solar-phases 目录中配置。
-    solar-phases: []
-    # 规则生效的天气列表。
-    weather: []
-    # 祭坛启动的生态事件 ID。
-    event-id: fullmoon_frenzy
-    # 祭坛事件持续时间，单位为分钟。
-    event-minutes: 20
-    # 祭坛事件倍率。
-    event-multiplier: 1.35
+# 祭坛配置根节点，轻生态默认留空。
+altars: {}
 
-# 生态热点配置根节点。
-hotspots:
-  # 配置项 newmoon_shadow_hotspot 的值，请根据实际玩法需求调整。
-  newmoon_shadow_hotspot:
-    # 显示名称。
-    display-name: "新月暗影热点"
-    # 规则生效的群系列表，留空表示不限制。
-    biomes: []
-    # 规则直接绑定的月相列表，通常建议在 moon-phases 目录中配置。
-    moon-phases: []
-    # 规则直接绑定的日相列表，通常建议在 solar-phases 目录中配置。
-    solar-phases: []
-    # 规则生效的天气列表。
-    weather: []
-    # 热点或事件倍率。
-    multiplier: 1.4
-  # 配置项 thunder_night_hotspot 的值，请根据实际玩法需求调整。
-  thunder_night_hotspot:
-    # 显示名称。
-    display-name: "雷雨夜热点"
-    # 规则生效的群系列表，留空表示不限制。
-    biomes: []
-    # 规则直接绑定的月相列表，通常建议在 moon-phases 目录中配置。
-    moon-phases: []
-    # 规则直接绑定的日相列表，通常建议在 solar-phases 目录中配置。
-    solar-phases: []
-    # 规则生效的天气列表。
-    weather: [THUNDER]
-    # 热点或事件倍率。
-    multiplier: 1.5
+# 生态热点配置根节点，轻生态默认留空。
+hotspots: {}
 
-# 配置项 events 的值，请根据实际玩法需求调整。
-events:
-  # 配置项 fullmoon_frenzy 的值，请根据实际玩法需求调整。
-  fullmoon_frenzy:
-    # 显示名称。
-    display-name: "满月狂潮"
-    # 热点或事件倍率。
-    multiplier: 1.35
-    # 事件默认持续时间，单位为分钟。
-    default-minutes: 30
-  # 配置项 thunder_hunt 的值，请根据实际玩法需求调整。
-  thunder_hunt:
-    # 显示名称。
-    display-name: "雷雨猎杀"
-    # 热点或事件倍率。
-    multiplier: 1.5
-    # 事件默认持续时间，单位为分钟。
-    default-minutes: 20
+# 临时生态事件配置根节点，轻生态默认留空。
+events: {}
 
 # 世界配置模板建议根节点。
 world-templates:
-  # 配置项 survival 的值，请根据实际玩法需求调整。
+  # 生存主世界轻生态建议。
   survival:
     # 列表项：该列表中的一个配置值。
-    - "world: 开启所有月相刷怪、作物成长和玩家状态"
+    - "world: 使用原版怪物、作物成长和轻量玩家状态"
     # 列表项：该列表中的一个配置值。
-    - "monsters: 使用 满月僵尸骑士 / 新月影兽 / 雷骨袭击者"
+    - "monsters: 满月僵尸群 / 新月夜蛛 / 雷雨骷髅巡游"
     # 列表项：该列表中的一个配置值。
-    - "buffs: 保留 dusk_forager 与 thunder_night_danger"
-  # 配置项 resource 的值，请根据实际玩法需求调整。
+    - "messages: 每个白昼或夜晚只发送一条聊天和一条 ActionBar"
+  # 资源世界轻生态建议。
   resource:
     # 列表项：该列表中的一个配置值。
-    - "resource_world: 提高热点倍率，缩短刷怪冷却"
+    - "resource_world: 可以缩短原版怪物冷却，但不建议提高世界上限"
     # 列表项：该列表中的一个配置值。
-    - "建议禁用出生点保护或缩小保护半径"
-  # 配置项 nether 的值，请根据实际玩法需求调整。
+    - "建议保留荒野判定，避免出生点附近刷怪过密"
+  # 下界轻生态建议。
   nether:
     # 列表项：该列表中的一个配置值。
-    - "world_nether: 保留 fullmoon_nether_wart 作物规则"
+    - "world_nether: 默认只保留满月地狱疣作物规则"
     # 列表项：该列表中的一个配置值。
-    - "可增加满月地狱疣和新月灵魂沙相关材料"
+    - "如需下界怪物生态，可单独新增 VANILLA 规则"

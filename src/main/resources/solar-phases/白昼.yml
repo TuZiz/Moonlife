@@ -24,10 +24,12 @@ functions:
   hotspots: []
 # 该日相切换时的提示文本配置。
 messages:
+  # 是否公告该相位，轻生态只公告白昼与夜晚。
+  announce: true
   # 日相变化广播提示。
-  broadcast: '<prefix><#86EFAC>白昼铺展 ✦ <world> 的草木开始吸收温暖天光。'
+  broadcast: '<prefix><#86EFAC>白昼升起 ✦ <world> 今日生态：晴天促进作物成长，荒野危险降低。'
   # 日相变化 ActionBar 提示。
-  actionbar: '<#86EFAC>☼ 当前日相：<#FFFFFF><phase></#FFFFFF>'
+  actionbar: '<#86EFAC>白昼</#86EFAC> <#94A3B8>·</#94A3B8> <#BBF7D0>晴天作物成长提升</#BBF7D0> <#94A3B8>·</#94A3B8> <#E0F2FE>/ecology info</#E0F2FE>'
   # 日相变化 Title 主标题。
   title: '<#86EFAC>☼ <phase>'
   # 日相变化 Title 副标题。
@@ -35,6 +37,4 @@ messages:
   # 日相变化 BossBar 提示。
   bossbar: '<#86EFAC>白昼生态 ☼ <#FFFFFF><phase></#FFFFFF>'
   # 功能提示列表，仅当本文件 functions 中配置了功能时发送。
-  features:
-    # 白昼作物提示。
-    - '<prefix><#DCFCE7>白昼功能 ✦ 晴天成熟作物会获得成长与额外收获机会。'
+  features: []

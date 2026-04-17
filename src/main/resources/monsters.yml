@@ -1,19 +1,17 @@
-# 怪物生态配置：这里只定义怪物规则本身，月相/日相启用关系写到 moon-phases 与 solar-phases 目录。
+# 原版轻生态怪物配置：默认只使用 Bukkit / Paper 原版实体，不依赖 MythicMobs。
 rules:
-  # 满月僵尸骑士：由 moon-phases/满月.yml 与 solar-phases/夜晚.yml、solar-phases/午夜.yml 启用。
-  fullmoon_zombie_knight:
+  # 满月僵尸群：满月夜晚会在荒野附近出现，强度轻量，适合原版生存服。
+  fullmoon_zombie_pack:
     # 规则唯一 ID。
-    id: fullmoon_zombie_knight
+    id: fullmoon_zombie_pack
     # 玩家可见的怪物规则中文名，不影响内部规则 ID。
-    display-name: "满月僵尸骑士"
+    display-name: "满月僵尸群"
     # 是否启用该规则或相位文件。
     enable: true
-    # 刷怪后端，当前默认使用 MYTHIC_MOB。
-    spawn-backend: MYTHIC_MOB
-    # 原版实体类型，MythicMobs-only 模式下仅作为兼容字段。
+    # 刷怪后端，轻生态默认使用原版实体。
+    spawn-backend: VANILLA
+    # 原版实体类型。
     vanilla-entity: ZOMBIE
-    # MythicMobs 内部怪物名。
-    mythic-mob-id: FullMoonZombieKnight
     # 规则生效的世界列表，留空表示不限制。
     worlds: [world]
     # 规则生效的群系列表，留空表示不限制。
@@ -35,46 +33,42 @@ rules:
     # 附近玩家数量上限。
     nearby-player-limit: 6
     # 统计附近玩家数量的半径。
-    nearby-player-radius: 48.0
+    nearby-player-radius: 44.0
     # 单区块生态实体数量上限。
     chunk-limit: 4
     # 单世界生态实体数量上限。
-    world-limit: 80
+    world-limit: 64
     # 规则冷却时间，单位为 tick。
-    cooldown: 500
+    cooldown: 520
     # 权重，数值越高越容易被抽中。
-    weight: 18
+    weight: 16
     # 单次触发生成或处理的数量范围。
-    amount: [1, 3]
+    amount: [1, 2]
     # 刷出实体时附加的药水效果列表。
     effects:
-      # 列表项：该列表中的一个配置值。
-      - SPEED:1:200
-      # 列表项：该列表中的一个配置值。
-      - INCREASE_DAMAGE:0:200
+      # 列表项：轻微移速，让满月夜更紧张但不过度压迫。
+      - SPEED:0:180
     # 刷出实体附加的 scoreboard tag 列表。
     tags:
-      # 列表项：该列表中的一个配置值。
+      # 列表项：满月生态追踪标签。
       - moonlife_fullmoon
-      # 列表项：该列表中的一个配置值。
-      - elite_wilderness
+      # 列表项：原版轻生态标签。
+      - vanilla_light_ecology
     # 规则优先级，数值越高越先匹配。
     priority: 30
 
-  # 新月影兽：基础测试配置不限制群系，正式服可在 biomes 中加入 DARK_FOREST、SWAMP、MANGROVE_SWAMP。
-  newmoon_shadow_beast:
+  # 新月夜蛛：新月午夜会刷新少量蜘蛛，强化黑夜探索感。
+  newmoon_night_spider:
     # 规则唯一 ID。
-    id: newmoon_shadow_beast
+    id: newmoon_night_spider
     # 玩家可见的怪物规则中文名，不影响内部规则 ID。
-    display-name: "新月影兽"
+    display-name: "新月夜蛛"
     # 是否启用该规则或相位文件。
     enable: true
-    # 刷怪后端，当前默认使用 MYTHIC_MOB。
-    spawn-backend: MYTHIC_MOB
-    # 原版实体类型，MythicMobs-only 模式下仅作为兼容字段。
-    vanilla-entity: ZOMBIE
-    # MythicMobs 内部怪物名。
-    mythic-mob-id: ShadowBeast
+    # 刷怪后端，轻生态默认使用原版实体。
+    spawn-backend: VANILLA
+    # 原版实体类型。
+    vanilla-entity: SPIDER
     # 规则生效的世界列表，留空表示不限制。
     worlds: [world]
     # 规则生效的群系列表，留空表示不限制。
@@ -86,7 +80,7 @@ rules:
     # 规则生效的天气列表。
     weather: [CLEAR, RAIN, THUNDER]
     # 允许刷怪或生效的 Y 坐标范围。
-    y-range: [-32, 90]
+    y-range: [-32, 110]
     # 允许刷怪或生效的光照范围。
     light-range: [0, 8]
     # 地形条件，支持 SURFACE、UNDERGROUND、ANY。
@@ -94,44 +88,42 @@ rules:
     # 是否只在荒野区域生效。
     wilderness-only: true
     # 附近玩家数量上限。
-    nearby-player-limit: 4
+    nearby-player-limit: 5
     # 统计附近玩家数量的半径。
-    nearby-player-radius: 56.0
+    nearby-player-radius: 44.0
     # 单区块生态实体数量上限。
-    chunk-limit: 2
+    chunk-limit: 3
     # 单世界生态实体数量上限。
-    world-limit: 24
+    world-limit: 48
     # 规则冷却时间，单位为 tick。
-    cooldown: 600
+    cooldown: 640
     # 权重，数值越高越容易被抽中。
-    weight: 16
+    weight: 12
     # 单次触发生成或处理的数量范围。
-    amount: [1, 2]
+    amount: [1, 1]
     # 刷出实体时附加的药水效果列表。
     effects: []
     # 刷出实体附加的 scoreboard tag 列表。
     tags:
-      # 列表项：该列表中的一个配置值。
+      # 列表项：新月生态追踪标签。
       - moonlife_newmoon
-      # 列表项：该列表中的一个配置值。
-      - mythic_shadow
+      # 列表项：原版轻生态标签。
+      - vanilla_light_ecology
     # 规则优先级，数值越高越先匹配。
-    priority: 50
+    priority: 40
 
-  # 雷骨袭击者：由 solar-phases/夜晚.yml 与 solar-phases/午夜.yml 启用，并要求雷暴天气。
-  thunder_night_raider:
+  # 雷雨骷髅巡游：雷雨夜晚出现少量骷髅，提高风险但不改变原版体验。
+  thunder_skeleton_patrol:
     # 规则唯一 ID。
-    id: thunder_night_raider
+    id: thunder_skeleton_patrol
     # 玩家可见的怪物规则中文名，不影响内部规则 ID。
-    display-name: "雷骨袭击者"
+    display-name: "雷雨骷髅巡游"
     # 是否启用该规则或相位文件。
     enable: true
-    # 刷怪后端，当前默认使用 MYTHIC_MOB。
-    spawn-backend: MYTHIC_MOB
-    # 原版实体类型，MythicMobs-only 模式下仅作为兼容字段。
+    # 刷怪后端，轻生态默认使用原版实体。
+    spawn-backend: VANILLA
+    # 原版实体类型。
     vanilla-entity: SKELETON
-    # MythicMobs 内部怪物名。
-    mythic-mob-id: StormboneRaider
     # 规则生效的世界列表，留空表示不限制。
     worlds: [world]
     # 规则生效的群系列表，留空表示不限制。
@@ -151,26 +143,26 @@ rules:
     # 是否只在荒野区域生效。
     wilderness-only: true
     # 附近玩家数量上限。
-    nearby-player-limit: 8
+    nearby-player-limit: 7
     # 统计附近玩家数量的半径。
-    nearby-player-radius: 64.0
+    nearby-player-radius: 48.0
     # 单区块生态实体数量上限。
-    chunk-limit: 5
+    chunk-limit: 4
     # 单世界生态实体数量上限。
-    world-limit: 96
+    world-limit: 72
     # 规则冷却时间，单位为 tick。
-    cooldown: 360
+    cooldown: 420
     # 权重，数值越高越容易被抽中。
-    weight: 22
+    weight: 18
     # 单次触发生成或处理的数量范围。
     amount: [1, 2]
     # 刷出实体时附加的药水效果列表。
-    effects:
-      # 列表项：该列表中的一个配置值。
-      - SPEED:0:160
+    effects: []
     # 刷出实体附加的 scoreboard tag 列表。
     tags:
-      # 列表项：该列表中的一个配置值。
+      # 列表项：雷雨生态追踪标签。
       - moonlife_thunder
+      # 列表项：原版轻生态标签。
+      - vanilla_light_ecology
     # 规则优先级，数值越高越先匹配。
     priority: 20

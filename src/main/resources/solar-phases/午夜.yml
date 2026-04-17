@@ -1,4 +1,4 @@
-# 午夜：新月影兽、满月精英怪和雷雨夜危险都会在这里变得更活跃。
+# 午夜：新月夜蛛、满月僵尸群和雷雨危险会静默增强。
 enable: true
 # 显示名称。
 display-name: "午夜"
@@ -13,15 +13,13 @@ functions:
   # 该相位启用的怪物规则 ID 列表。
   monsters:
     # 列表项：该列表中的一个配置值。
-    - newmoon_shadow_beast
+    - newmoon_night_spider
     # 列表项：该列表中的一个配置值。
-    - fullmoon_zombie_knight
+    - fullmoon_zombie_pack
     # 列表项：该列表中的一个配置值。
-    - thunder_night_raider
+    - thunder_skeleton_patrol
   # 祭坛配置根节点。
-  altars:
-    # 列表项：该列表中的一个配置值。
-    - fullmoon_altar
+  altars: []
   # 该相位启用的作物规则 ID 列表。
   crops: []
   # 该相位启用的玩家状态规则 ID 列表。
@@ -29,13 +27,11 @@ functions:
     # 列表项：该列表中的一个配置值。
     - thunder_night_danger
   # 生态热点配置根节点。
-  hotspots:
-    # 列表项：该列表中的一个配置值。
-    - newmoon_shadow_hotspot
-    # 列表项：该列表中的一个配置值。
-    - thunder_night_hotspot
+  hotspots: []
 # 该日相切换时的提示文本配置。
 messages:
+  # 是否公告该相位，轻生态中午夜静默，避免夜晚中途再次刷屏。
+  announce: false
   # 日相变化广播提示。
   broadcast: '<prefix><#C4B5FD>午夜已至 ✦ <world> 的深夜生态达到峰值。'
   # 日相变化 ActionBar 提示。
@@ -43,12 +39,10 @@ messages:
   # 日相变化 Title 主标题。
   title: '<#C4B5FD>☼ <phase>'
   # 日相变化 Title 副标题。
-  subtitle: '<#EDE9FE>新月、满月与雷雨生态在午夜最活跃'
+  subtitle: '<#EDE9FE>新月、满月与雷雨生态在午夜静默增强'
   # 日相变化 BossBar 提示。
   bossbar: '<#C4B5FD>午夜生态 ☼ <#FFFFFF><phase></#FFFFFF>'
   # 功能提示列表，仅当本文件 functions 中配置了功能时发送。
   features:
     # 午夜怪物提示。
-    - '<prefix><#EDE9FE>午夜功能 ✦ 新月影兽、满月僵尸骑士与雷骨袭击者均可能被唤醒。'
-    # 午夜热点提示。
-    - '<prefix><#EDE9FE>午夜功能 ✦ 暗影热点与雷雨热点会提高局部危险度。'
+    - '<prefix><#EDE9FE>午夜功能 ✦ 新月夜蛛、满月僵尸群与雷雨骷髅巡游会静默提高权重。'
