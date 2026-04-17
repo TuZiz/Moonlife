@@ -124,6 +124,7 @@ class ConfigService(private val plugin: JavaPlugin) {
         val moonBuffs = mutableMapOf<String, MutableSet<MoonPhase>>()
         val moonAltars = mutableMapOf<String, MutableSet<MoonPhase>>()
         val moonHotspots = mutableMapOf<String, MutableSet<MoonPhase>>()
+        val moonMaterialDrops = mutableMapOf<String, MutableSet<MoonPhase>>()
         MoonPhase.entries.forEach { phase ->
             val yaml = phaseYaml("moon-phases/${moonFileName(phase)}.yml")
                 ?: phaseYaml("moon-pgases/${moonFileName(phase)}.yml")
@@ -134,6 +135,7 @@ class ConfigService(private val plugin: JavaPlugin) {
             addAssignments(moonBuffs, ids(yaml, "functions.buffs", "functions.buff", "functions.增益", "buffs", "buff", "增益"), phase)
             addAssignments(moonAltars, ids(yaml, "functions.altars", "functions.祭坛", "altars", "祭坛"), phase)
             addAssignments(moonHotspots, ids(yaml, "functions.hotspots", "functions.热点", "hotspots", "热点"), phase)
+            addAssignments(moonMaterialDrops, ids(yaml, "functions.material-drops", "functions.material_drops", "functions.材料掉落", "material-drops", "材料掉落"), phase)
         }
 
         val solarMonsters = mutableMapOf<String, MutableSet<SolarPhase>>()
@@ -141,6 +143,7 @@ class ConfigService(private val plugin: JavaPlugin) {
         val solarBuffs = mutableMapOf<String, MutableSet<SolarPhase>>()
         val solarAltars = mutableMapOf<String, MutableSet<SolarPhase>>()
         val solarHotspots = mutableMapOf<String, MutableSet<SolarPhase>>()
+        val solarMaterialDrops = mutableMapOf<String, MutableSet<SolarPhase>>()
         SolarPhase.entries.forEach { phase ->
             val yaml = phaseYaml("solar-phases/${solarFileName(phase)}.yml") ?: return@forEach
             if (!yaml.getBoolean("enable", true)) return@forEach
@@ -149,6 +152,7 @@ class ConfigService(private val plugin: JavaPlugin) {
             addAssignments(solarBuffs, ids(yaml, "functions.buffs", "functions.buff", "functions.增益", "buffs", "buff", "增益"), phase)
             addAssignments(solarAltars, ids(yaml, "functions.altars", "functions.祭坛", "altars", "祭坛"), phase)
             addAssignments(solarHotspots, ids(yaml, "functions.hotspots", "functions.热点", "hotspots", "热点"), phase)
+            addAssignments(solarMaterialDrops, ids(yaml, "functions.material-drops", "functions.material_drops", "functions.材料掉落", "material-drops", "材料掉落"), phase)
         }
 
         return PhaseAssignments(
@@ -157,11 +161,13 @@ class ConfigService(private val plugin: JavaPlugin) {
             moonBuffs = freeze(moonBuffs),
             moonAltars = freeze(moonAltars),
             moonHotspots = freeze(moonHotspots),
+            moonMaterialDrops = freeze(moonMaterialDrops),
             solarMonsters = freeze(solarMonsters),
             solarCrops = freeze(solarCrops),
             solarBuffs = freeze(solarBuffs),
             solarAltars = freeze(solarAltars),
-            solarHotspots = freeze(solarHotspots)
+            solarHotspots = freeze(solarHotspots),
+            solarMaterialDrops = freeze(solarMaterialDrops)
         )
     }
 
@@ -299,7 +305,8 @@ class ConfigService(private val plugin: JavaPlugin) {
                 "functions.crops", "functions.作物", "crops", "作物",
                 "functions.buffs", "functions.buff", "functions.增益", "buffs", "buff", "增益",
                 "functions.altars", "functions.祭坛", "altars", "祭坛",
-                "functions.hotspots", "functions.热点", "hotspots", "热点"
+                "functions.hotspots", "functions.热点", "hotspots", "热点",
+                "functions.material-drops", "functions.material_drops", "functions.材料掉落", "material-drops", "材料掉落"
             )
         }
         return PhaseMessageConfig(

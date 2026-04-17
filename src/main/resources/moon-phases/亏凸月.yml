@@ -1,32 +1,40 @@
-# 亏凸月：野外采集和河岸探索收益上浮。
+# 亏凸月：偏向野外采集、经验和轻掉落收益。
 enable: true
 # 显示名称。
 display-name: "亏凸月"
-# 该月相或日相启用的功能 ID 根节点。
+# 该月相启用的功能 ID 根节点。
 functions:
-  # 该相位启用的怪物规则 ID 列表。
+  # 亏凸月启用的怪物规则。
   monsters: []
-  # 祭坛配置根节点。
+  # 亏凸月启用的小型祭坛。
   altars: []
-  # 该相位启用的作物规则 ID 列表。
+  # 亏凸月启用的作物规则。
   crops: []
-  # 该相位启用的玩家状态规则 ID 列表。
+  # 亏凸月启用的玩家状态规则。
   buffs:
-    # 列表项：该列表中的一个配置值。
+    # 野外采集和打猎收益轻微上浮。
     - waning_gibbous_forager
-  # 生态热点配置根节点。
+  # 亏凸月启用的生态热点。
   hotspots:
-    # 列表项：该列表中的一个配置值。
-    - river_mist
+    # 林地小径适合野外采集。
+    - forest_trail
+    # 雨天河口适合河岸路线。
+    - river_mouth
+  # 亏凸月启用的材料掉落规则。
+  material-drops:
+    # 雨天河岸采集小概率获得月露种子。
+    - rain_riverside_moonlit_seed
 # 该月相切换时的提示文本配置。
 messages:
   # 月相变化广播提示。
-  broadcast: '<prefix><#DDD6FE>月相更替 ✦ <world> 的夜空进入 <#FFFFFF><phase></#FFFFFF>。'
+  broadcast: '<prefix><#DDD6FE>亏凸月升起 ✦ 野外采集和河岸路线略微更顺。'
   # 月相变化 ActionBar 提示。
-  actionbar: '<#DDD6FE>☾ 当前月相：<#FFFFFF><phase></#FFFFFF>'
+  actionbar: '<#DDD6FE>亏凸月</#DDD6FE> <#94A3B8>·</#94A3B8> <#F5F3FF>采集 / 跑图 / 河岸</#F5F3FF>'
   # 月相变化 Title 主标题。
   title: '<#DDD6FE>☾ <phase>'
   # 月相变化 Title 副标题。
-  subtitle: '<#F5F3FF>野外采集和河岸探索收益上浮'
+  subtitle: '<#F5F3FF>野外采集和经验收益轻微上浮'
   # 月相变化 BossBar 提示。
-  bossbar: '<#DDD6FE>月相 ☾ <#FFFFFF><phase></#FFFFFF>'
+  bossbar: '<#DDD6FE>亏凸月 ☾ <#FFFFFF><phase></#FFFFFF>'
+  # 附加功能提示，默认不额外广播，避免刷屏。
+  features: []

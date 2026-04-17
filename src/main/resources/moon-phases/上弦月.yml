@@ -1,32 +1,36 @@
-# 上弦月：地下挖掘和洞穴探索更稳定。
+# 上弦月：偏向洞穴探索和采矿节奏。
 enable: true
 # 显示名称。
 display-name: "上弦月"
-# 该月相或日相启用的功能 ID 根节点。
+# 该月相启用的功能 ID 根节点。
 functions:
-  # 该相位启用的怪物规则 ID 列表。
+  # 上弦月启用的怪物规则。
   monsters: []
-  # 祭坛配置根节点。
+  # 上弦月启用的小型祭坛。
   altars: []
-  # 该相位启用的作物规则 ID 列表。
+  # 上弦月启用的作物规则。
   crops: []
-  # 该相位启用的玩家状态规则 ID 列表。
+  # 上弦月启用的玩家状态规则。
   buffs:
-    # 列表项：该列表中的一个配置值。
+    # 地下挖掘稍微顺手。
     - first_quarter_miner
-  # 生态热点配置根节点。
+  # 上弦月启用的生态热点。
   hotspots:
-    # 列表项：该列表中的一个配置值。
-    - old_mine_echo
+    # 洞穴回声提示洞穴探索价值。
+    - cave_echo
+  # 上弦月启用的材料掉落规则。
+  material-drops: []
 # 该月相切换时的提示文本配置。
 messages:
   # 月相变化广播提示。
-  broadcast: '<prefix><#BFDBFE>月相更替 ✦ <world> 的夜空进入 <#FFFFFF><phase></#FFFFFF>。'
+  broadcast: '<prefix><#BFDBFE>上弦月升起 ✦ 今夜更适合整理矿道和下洞探索。'
   # 月相变化 ActionBar 提示。
-  actionbar: '<#BFDBFE>☾ 当前月相：<#FFFFFF><phase></#FFFFFF>'
+  actionbar: '<#BFDBFE>上弦月</#BFDBFE> <#94A3B8>·</#94A3B8> <#E0F2FE>洞穴与采矿轻收益</#E0F2FE>'
   # 月相变化 Title 主标题。
   title: '<#BFDBFE>☾ <phase>'
   # 月相变化 Title 副标题。
   subtitle: '<#E0F2FE>地下挖掘效率轻微提升'
   # 月相变化 BossBar 提示。
-  bossbar: '<#BFDBFE>月相 ☾ <#FFFFFF><phase></#FFFFFF>'
+  bossbar: '<#BFDBFE>上弦月 ☾ <#FFFFFF><phase></#FFFFFF>'
+  # 附加功能提示，默认不额外广播，避免刷屏。
+  features: []

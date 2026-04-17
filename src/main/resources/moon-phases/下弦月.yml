@@ -1,32 +1,36 @@
-# 下弦月：地下探索更加稳健。
+# 下弦月：偏向地下探索和生存续航。
 enable: true
 # 显示名称。
 display-name: "下弦月"
-# 该月相或日相启用的功能 ID 根节点。
+# 该月相启用的功能 ID 根节点。
 functions:
-  # 该相位启用的怪物规则 ID 列表。
+  # 下弦月启用的怪物规则。
   monsters: []
-  # 祭坛配置根节点。
+  # 下弦月启用的小型祭坛。
   altars: []
-  # 该相位启用的作物规则 ID 列表。
+  # 下弦月启用的作物规则。
   crops: []
-  # 该相位启用的玩家状态规则 ID 列表。
+  # 下弦月启用的玩家状态规则。
   buffs:
-    # 列表项：该列表中的一个配置值。
+    # 地下探索承伤略微降低。
     - last_quarter_resilience
-  # 生态热点配置根节点。
+  # 下弦月启用的生态热点。
   hotspots:
-    # 列表项：该列表中的一个配置值。
-    - old_mine_echo
+    # 洞穴回声提示地下探索价值。
+    - cave_echo
+  # 下弦月启用的材料掉落规则。
+  material-drops: []
 # 该月相切换时的提示文本配置。
 messages:
   # 月相变化广播提示。
-  broadcast: '<prefix><#93C5FD>月相更替 ✦ <world> 的夜空进入 <#FFFFFF><phase></#FFFFFF>。'
+  broadcast: '<prefix><#93C5FD>下弦月升起 ✦ 地下探索更适合稳扎稳打。'
   # 月相变化 ActionBar 提示。
-  actionbar: '<#93C5FD>☾ 当前月相：<#FFFFFF><phase></#FFFFFF>'
+  actionbar: '<#93C5FD>下弦月</#93C5FD> <#94A3B8>·</#94A3B8> <#DBEAFE>洞穴续航</#DBEAFE>'
   # 月相变化 Title 主标题。
   title: '<#93C5FD>☾ <phase>'
   # 月相变化 Title 副标题。
-  subtitle: '<#DBEAFE>地下承伤略微降低'
+  subtitle: '<#DBEAFE>地下探索承伤略微降低'
   # 月相变化 BossBar 提示。
-  bossbar: '<#93C5FD>月相 ☾ <#FFFFFF><phase></#FFFFFF>'
+  bossbar: '<#93C5FD>下弦月 ☾ <#FFFFFF><phase></#FFFFFF>'
+  # 附加功能提示，默认不额外广播，避免刷屏。
+  features: []

@@ -10,6 +10,7 @@ import org.bukkit.boss.BossBar
 import org.bukkit.block.data.Ageable
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.YamlConfiguration
+import org.bukkit.entity.Item
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
@@ -17,11 +18,15 @@ import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.entity.EntityDeathEvent
+import org.bukkit.event.player.PlayerFishEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.plugin.java.JavaPlugin
+import org.bukkit.potion.PotionEffect
+import ym.moonlife.buff.PotionBuff
 import ym.moonlife.buff.PlayerBuffService
 import ym.moonlife.config.ConfigService
+import ym.moonlife.core.AmountRange
 import ym.moonlife.core.EnvironmentSnapshotService
 import ym.moonlife.core.WeatherState
 import ym.moonlife.crop.CropGrowthService
@@ -35,7 +40,6 @@ import ym.moonlife.moon.MoonPhaseService
 import ym.moonlife.scheduler.ScheduledTaskHandle
 import ym.moonlife.scheduler.SchedulerFacade
 import ym.moonlife.solar.SolarPhase
-import ym.moonlife.solar.SolarPhaseChangeEvent
 import ym.moonlife.solar.SolarPhaseService
 import ym.moonlife.spawn.MythicSpawnTarget
 import ym.moonlife.spawn.SpawnRule
@@ -64,8 +68,7 @@ class EcologyFeatureService(
     private val configRef = AtomicReference(defaultConfig())
     private val activeEvents = ConcurrentHashMap<String, ActiveEcologyEvent>()
     private val stats = ConcurrentHashMap<String, MutableRuleStat>()
-    private val nightProgress = ConcurrentHashMap<java.util.UUID, NightProgress>()
-    private val exploredNightChunks = ConcurrentHashMap<java.util.UUID, MutableSet<String>>()
+    private val materialDropCooldowns = ConcurrentHashMap<String, Long>()
     private val biomeCheckCooldowns = ConcurrentHashMap<java.util.UUID, Long>()
     private val debugBossBarPlayers = ConcurrentHashMap.newKeySet<java.util.UUID>()
     private val debugBossBars = ConcurrentHashMap<java.util.UUID, BossBar>()
@@ -88,8 +91,7 @@ class EcologyFeatureService(
         debugBossBars.clear()
         debugBossBarPlayers.clear()
         activeEvents.clear()
-        nightProgress.clear()
-        exploredNightChunks.clear()
+        materialDropCooldowns.clear()
         biomeCheckCooldowns.clear()
     }
 
@@ -128,6 +130,7 @@ class EcologyFeatureService(
             "刷怪规则=${spawnRules.joinToString("、") { it.displayName }.ifEmpty { "无" }}",
             "作物规则=${cropRules.joinToString("、") { ruleDisplay(it.id) }.ifEmpty { "无" }}",
             "状态规则=${buffPlan.ruleIds.joinToString("、") { ruleDisplay(it) }.ifEmpty { "无" }}",
+            "材料规则=${activeMaterialDrops(player).joinToString("、") { it.displayName }.ifEmpty { "无" }}",
             "统计=${statsSummary(5).joinToString("｜").ifEmpty { "暂无" }}"
         )
     }
@@ -138,7 +141,7 @@ class EcologyFeatureService(
         val knownMythic = hookManager.mythicMobs.knownMobIds()
         val knownMythicLower = knownMythic.map { it.lowercase(Locale.ROOT) }.toSet()
         val mythicRules = bundle.spawnRules.filter { it.target is MythicSpawnTarget }
-        lines += "刷怪规则：${bundle.spawnRules.size} 条，作物规则：${bundle.cropRules.size} 条，状态规则：${bundle.buffRules.size} 条。"
+        lines += "刷怪规则：${bundle.spawnRules.size} 条，作物规则：${bundle.cropRules.size} 条，状态规则：${bundle.buffRules.size} 条，材料掉落：${config().materialDropRules.size} 条。"
         if (!hookManager.mythicMobs.available && mythicRules.isNotEmpty()) {
             lines += "警告：未检测到 MythicMobs，自定义怪物刷新规则会被跳过。"
         } else if (hookManager.mythicMobs.available && mythicRules.isNotEmpty() && knownMythic.isEmpty()) {
@@ -163,6 +166,14 @@ class EcologyFeatureService(
         config().bountyRules.forEach { bounty ->
             if (bounty.objective == BountyObjective.KILL_MYTHIC && bounty.targets.isEmpty() && bounty.mythicMobIds.isEmpty()) {
                 lines += "警告：悬赏「${bounty.displayName}」没有配置 MythicMobs 目标。"
+            }
+        }
+        config().materialDropRules.forEach { rule ->
+            if (rule.rewardMaterials.isEmpty()) lines += "警告：材料掉落「${rule.displayName}」没有配置 reward-materials。"
+            rule.rewardMaterials.forEach { materialId ->
+                if (config().materials.none { it.id.equals(materialId, ignoreCase = true) }) {
+                    lines += "警告：材料掉落「${rule.displayName}」引用了不存在的生态材料：$materialId。"
+                }
             }
         }
         return lines.ifEmpty { listOf("校验通过：没有发现配置警告。") }
@@ -240,12 +251,20 @@ class EcologyFeatureService(
         }
     }
 
+    fun activeMaterialDrops(player: Player): List<MaterialDropRule> {
+        val context = environment.context(player.location, player)
+        return config().materialDropRules
+            .filter { it.matchesContext(context) }
+            .sortedByDescending { it.priority }
+    }
+
     fun featuresText(player: Player): String =
         listOf(
             "危险=${dangerDisplay(dangerLevel(player))}",
             "刷怪=${spawnService.preview(player).joinToString("、") { it.displayName }.ifEmpty { "无" }}",
             "作物=${cropGrowthService.preview(player).joinToString("、") { ruleDisplay(it.id) }.ifEmpty { "无" }}",
             "状态=${playerBuffService.preview(player).ruleIds.joinToString("、") { ruleDisplay(it) }.ifEmpty { "无" }}",
+            "材料=${activeMaterialDrops(player).joinToString("、") { it.displayName }.ifEmpty { "无" }}",
             "热点=${activeHotspot(player)?.displayName ?: "无"}",
             "活动=${activeEvent()?.displayName ?: "无"}"
         ).joinToString(" ")
@@ -269,7 +288,7 @@ class EcologyFeatureService(
             .ifEmpty { listOf("暂未解锁生态图鉴。") }
 
     fun materialsLines(): List<String> =
-        config().materials.map { "${it.displayName}：物品=${materialDisplay(it.material)} 来源=${sourceDisplay(it.source)}" }
+        config().materials.map { "${it.displayName}：物品=${materialDisplay(it.material)} 来源=${sourceDisplay(it.source)} 用途=${it.usage.ifBlank { "轻量祭坛与自定义拓展" }}" }
 
     fun templateLines(name: String?): List<String> {
         val templates = config().worldTemplates
@@ -312,9 +331,6 @@ class EcologyFeatureService(
     fun onEntityDeath(event: EntityDeathEvent) {
         val killer = event.entity.killer ?: return
         val context = environment.context(killer.location, killer)
-        if (isNightPhase(context.snapshot.solarPhase)) {
-            nightProgress.computeIfAbsent(killer.uniqueId) { NightProgress() }.kills += 1
-        }
         val internalName = hookManager.mythicMobs.internalName(event.entity)
         val entityType = event.entity.type.name
         config().bountyRules
@@ -322,6 +338,7 @@ class EcologyFeatureService(
             .forEach { bounty ->
                 completeBounty(killer, bounty)
             }
+        triggerMaterialDrops(killer, context, MaterialDropObjective.KILL_ENTITY, entityType)
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -333,18 +350,19 @@ class EcologyFeatureService(
         config().bountyRules
             .filter { bounty -> bounty.matchesContext(context) && bounty.matchesBlock(event.block.type.name, matureCrop) }
             .forEach { bounty -> completeBounty(player, bounty) }
-        if (!matureCrop) return
-        if (isNightPhase(context.snapshot.solarPhase)) {
-            nightProgress.computeIfAbsent(player.uniqueId) { NightProgress() }.harvests += 1
+        triggerMaterialDrops(player, context, MaterialDropObjective.BREAK_BLOCK, event.block.type.name)
+        if (matureCrop) {
+            triggerMaterialDrops(player, context, MaterialDropObjective.HARVEST_CROP, event.block.type.name)
         }
-        val materialId = when (context.snapshot.moonPhase) {
-            MoonPhase.FULL_MOON -> "moonlit_seed"
-            MoonPhase.NEW_MOON -> "shadow_dust"
-            MoonPhase.WAXING_GIBBOUS -> "verdant_grain"
-            MoonPhase.WANING_CRESCENT -> "pale_fiber"
-            else -> null
-        } ?: return
-        if (Math.random() < 0.06) giveMaterial(player, materialId)
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    fun onFish(event: PlayerFishEvent) {
+        if (event.state != PlayerFishEvent.State.CAUGHT_FISH) return
+        val player = event.player
+        val context = environment.context(player.location, player)
+        val caughtType = ((event.caught as? Item)?.itemStack?.type?.name ?: "FISH")
+        triggerMaterialDrops(player, context, MaterialDropObjective.FISH, caughtType)
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -362,34 +380,6 @@ class EcologyFeatureService(
         config().bountyRules
             .filter { bounty -> bounty.matchesContext(context) && bounty.objective == BountyObjective.VISIT_BIOME && bounty.matchesTarget(biomeKey) }
             .forEach { bounty -> completeBounty(player, bounty) }
-        if (isNightPhase(context.snapshot.solarPhase)) {
-            val chunkKey = "${to.world?.name}:${to.blockX shr 4}:${to.blockZ shr 4}"
-            val chunks = exploredNightChunks.computeIfAbsent(player.uniqueId) { ConcurrentHashMap.newKeySet() }
-            if (chunks.add(chunkKey)) {
-                nightProgress.computeIfAbsent(player.uniqueId) { NightProgress() }.explores += 1
-            }
-        }
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    fun onSolarPhaseChange(event: SolarPhaseChangeEvent) {
-        if (event.newPhase == SolarPhase.NIGHT) {
-            Bukkit.getOnlinePlayers()
-                .filter { it.world == event.world }
-                .forEach { player ->
-                    nightProgress.remove(player.uniqueId)
-                    exploredNightChunks.remove(player.uniqueId)
-                }
-            return
-        }
-        if (event.newPhase != SolarPhase.DAWN || event.manual) return
-        Bukkit.getOnlinePlayers()
-            .filter { it.world == event.world }
-            .forEach { player ->
-                scheduler.entity.run(player) {
-                    settleNight(player)
-                }
-            }
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -420,8 +410,16 @@ class EcologyFeatureService(
         rule.codexEntry?.let { unlockCodex(event.player, it) }
         if (rule.rewardExp > 0) event.player.giveExp(rule.rewardExp)
         rule.rewardMaterials.forEach { materialId -> giveMaterial(event.player, materialId) }
-        block.world.strikeLightningEffect(block.location)
-        messages.send(event.player, "feature.altar.activated", mapOf("altar" to rule.displayName, "event" to (active?.displayName ?: "收集目标")))
+        rule.potionEffects.forEach { effect ->
+            val type = ConfigReaders.potionType(effect.type) ?: return@forEach
+            event.player.addPotionEffect(PotionEffect(type, effect.durationTicks, effect.amplifier, effect.ambient, effect.particles, effect.icon))
+        }
+        when (rule.visualEffect) {
+            AltarVisualEffect.NONE -> Unit
+            AltarVisualEffect.LIGHTNING -> block.world.strikeLightningEffect(block.location)
+            AltarVisualEffect.SMOKE -> Unit
+        }
+        messages.send(event.player, "feature.altar.activated", mapOf("altar" to rule.displayName, "event" to (active?.displayName ?: "轻量效果")))
     }
 
     private fun tickDebugBossBar() {
@@ -458,12 +456,30 @@ class EcologyFeatureService(
         }
     }
 
-    private fun giveMaterial(player: Player, materialId: String) {
+    private fun giveMaterial(player: Player, materialId: String, amount: Int = 1) {
         val material = config().materials.firstOrNull { it.id.equals(materialId, ignoreCase = true) } ?: return
-        val stack = material.item.create(plugin)
+        val stack = material.item.create(plugin, amount)
         player.inventory.addItem(stack).values.forEach { leftover ->
             player.world.dropItemNaturally(player.location, leftover)
         }
+    }
+
+    private fun triggerMaterialDrops(
+        player: Player,
+        context: ym.moonlife.core.EcologyContext,
+        objective: MaterialDropObjective,
+        target: String
+    ) {
+        config().materialDropRules
+            .asSequence()
+            .filter { rule -> rule.objective == objective && rule.matchesContext(context) && rule.matchesTarget(target) }
+            .sortedByDescending { it.priority }
+            .forEach { rule ->
+                if (rule.onCooldown(player)) return@forEach
+                if (Math.random() > rule.chance) return@forEach
+                rule.rewardMaterials.forEach { materialId -> giveMaterial(player, materialId, rule.amount.random()) }
+                rule.markCooldown(player)
+            }
     }
 
     private fun completeBounty(player: Player, bounty: BountyRule) {
@@ -495,27 +511,6 @@ class EcologyFeatureService(
         }
     }
 
-    private fun settleNight(player: Player) {
-        val progress = nightProgress.remove(player.uniqueId) ?: NightProgress()
-        exploredNightChunks.remove(player.uniqueId)
-        val score = progress.kills * 3 + progress.harvests + progress.explores * 2
-        if (score <= 0) return
-        val exp = score.coerceAtMost(80)
-        player.giveExp(exp)
-        if (score >= 12) giveMaterial(player, "dawn_dew")
-        unlockCodex(player, "dawn_settlement")
-        messages.send(
-            player,
-            "feature.dawn-settlement.summary",
-            mapOf(
-                "kills" to progress.kills.toString(),
-                "harvests" to progress.harvests.toString(),
-                "explores" to progress.explores.toString(),
-                "exp" to exp.toString()
-            )
-        )
-    }
-
     private fun matchesHotspotCenter(rule: HotspotRule, location: org.bukkit.Location): Boolean {
         val center = rule.center ?: return true
         val world = location.world ?: return false
@@ -528,9 +523,6 @@ class EcologyFeatureService(
         val dz = location.z - base.z
         return dx * dx + dy * dy + dz * dz <= rule.radius * rule.radius
     }
-
-    private fun isNightPhase(phase: SolarPhase): Boolean =
-        phase == SolarPhase.NIGHT || phase == SolarPhase.MIDNIGHT
 
     private fun BountyRule.matchesKill(internalName: String?, entityType: String): Boolean = when (objective) {
         BountyObjective.KILL_MYTHIC -> internalName != null && matchesTarget(internalName)
@@ -554,12 +546,42 @@ class EcologyFeatureService(
             (solarPhases.isEmpty() || context.snapshot.solarPhase in solarPhases) &&
             (weather.isEmpty() || context.snapshot.weather in weather)
 
+    private fun MaterialDropRule.matchesTarget(value: String): Boolean {
+        val normalized = value.uppercase(Locale.ROOT)
+        return targets.isEmpty() || normalized in targets
+    }
+
+    private fun MaterialDropRule.matchesContext(context: ym.moonlife.core.EcologyContext): Boolean =
+        (worlds.isEmpty() || context.snapshot.worldName.lowercase(Locale.ROOT) in worlds) &&
+            (biomes.isEmpty() || context.biome in biomes) &&
+            (moonPhases.isEmpty() || context.snapshot.moonPhase in moonPhases) &&
+            (solarPhases.isEmpty() || context.snapshot.solarPhase in solarPhases) &&
+            (weather.isEmpty() || context.snapshot.weather in weather) &&
+            (!wildernessOnly || context.wilderness) &&
+            (underground == null || underground == context.underground) &&
+            (inWater == null || inWater == context.inWater) &&
+            (sneaking == null || sneaking == context.sneaking)
+
+    private fun MaterialDropRule.onCooldown(player: Player): Boolean {
+        if (cooldownTicks <= 0L) return false
+        val key = "${player.uniqueId}:${id.lowercase(Locale.ROOT)}"
+        val last = materialDropCooldowns[key] ?: return false
+        return System.currentTimeMillis() - last < cooldownTicks * 50L
+    }
+
+    private fun MaterialDropRule.markCooldown(player: Player) {
+        if (cooldownTicks <= 0L) return
+        val key = "${player.uniqueId}:${id.lowercase(Locale.ROOT)}"
+        materialDropCooldowns[key] = System.currentTimeMillis()
+    }
+
     private fun phaseFeatureSummary(phase: MoonPhase): String {
         val bundle = configService.current
         val spawn = bundle.spawnRules.filter { phase in it.moonPhases }.take(3).joinToString("、") { it.displayName }
         val crop = bundle.cropRules.filter { phase in it.moonPhases }.take(3).joinToString("、") { ruleDisplay(it.id) }
         val buff = bundle.buffRules.filter { phase in it.moonPhases }.take(3).joinToString("、") { ruleDisplay(it.id) }
-        return "刷怪=${spawn.ifEmpty { "无" }} 作物=${crop.ifEmpty { "无" }} 状态=${buff.ifEmpty { "无" }}"
+        val drops = config().materialDropRules.filter { phase in it.moonPhases }.take(3).joinToString("、") { it.displayName }
+        return "刷怪=${spawn.ifEmpty { "无" }} 作物=${crop.ifEmpty { "无" }} 状态=${buff.ifEmpty { "无" }} 材料=${drops.ifEmpty { "无" }}"
     }
 
     private fun moonDisplay(phase: MoonPhase): String = messages.phaseName(phase.displayKey)
@@ -618,26 +640,32 @@ class EcologyFeatureService(
     private fun ruleDisplay(id: String): String = when (id.lowercase(Locale.ROOT)) {
         in configService.current.spawnRules.map { it.id.lowercase(Locale.ROOT) } ->
             configService.current.spawnRules.first { it.id.equals(id, ignoreCase = true) }.displayName
+        in config().materialDropRules.map { it.id.lowercase(Locale.ROOT) } ->
+            config().materialDropRules.first { it.id.equals(id, ignoreCase = true) }.displayName
         "fullmoon_zombie_pack" -> "满月僵尸群"
         "newmoon_night_spider" -> "新月夜蛛"
         "thunder_skeleton_patrol" -> "雷雨骷髅巡游"
-        "fullmoon_zombie_knight" -> "满月僵尸骑士"
-        "newmoon_shadow_beast" -> "新月影兽"
-        "thunder_night_raider" -> "雷雨夜袭击者"
-        "sunny_day_growth" -> "晴天白昼成长"
+        "clear_day_field_growth" -> "晴天田垄"
+        "rain_root_crop_growth" -> "雨润根茎"
+        "waxing_gibbous_field_care" -> "盈凸月农田"
         "fullmoon_nether_wart" -> "满月地狱疣"
+        "rain_angling_luck" -> "雨钓耐心"
         "dusk_forager" -> "黄昏采集者"
-        "thunder_night_danger" -> "雷雨夜危机"
+        "thunder_night_risk" -> "雷雨夜风险"
         "waxing_crescent_pathfinder" -> "峨眉月旅人"
         "first_quarter_miner" -> "上弦月矿工"
-        "waxing_gibbous_growth" -> "盈凸月丰壤"
+        "waxing_gibbous_field_hand" -> "盈凸月田间手"
         "waning_gibbous_forager" -> "亏凸月采集者"
         "last_quarter_resilience" -> "下弦月韧性"
         "waning_crescent_sneak" -> "残月潜行者"
-        "cycle_collection_basin" -> "月相收集盆"
-        "spawn_grove" -> "出生林地"
-        "river_mist" -> "河雾带"
-        "old_mine_echo" -> "旧矿回声"
+        "shadow_lantern" -> "影尘灯盏"
+        "moonlit_composter" -> "月露堆肥台"
+        "stormbone_rod" -> "雷骨避雷针"
+        "forest_trail" -> "林地小径"
+        "river_mouth" -> "河口湿地"
+        "dark_swamp_edge" -> "暗沼边缘"
+        "cave_echo" -> "洞穴回声"
+        "storm_ridge" -> "风暴山脊"
         "performance_guard" -> "性能保护"
         else -> id.replace('_', ' ')
     }
@@ -646,37 +674,40 @@ class EcologyFeatureService(
         "zombie" -> "原版僵尸"
         "spider" -> "原版蜘蛛"
         "skeleton" -> "原版骷髅"
+        "stray" -> "流浪者"
         "wheat" -> "小麦"
         "carrots" -> "胡萝卜"
         "potatoes" -> "马铃薯"
         "beetroots" -> "甜菜"
+        "brown_mushroom" -> "棕色蘑菇"
+        "red_mushroom" -> "红色蘑菇"
+        "sugar_cane" -> "甘蔗"
+        "kelp" -> "海带"
+        "seagrass" -> "海草"
+        "copper_ore" -> "铜矿石"
+        "deepslate_copper_ore" -> "深层铜矿石"
         "forest" -> "森林"
         "plains" -> "平原"
         "cherry_grove" -> "樱花林"
         "river" -> "河流"
         "swamp" -> "沼泽"
         "mangrove_swamp" -> "红树林沼泽"
+        "beach" -> "海滩"
+        "ocean" -> "海洋"
+        "deep_ocean" -> "深海"
         "dripstone_caves" -> "溶洞"
         "lush_caves" -> "繁茂洞穴"
-        "fullmoonzombieknight" -> "满月僵尸骑士"
-        "shadowbeast" -> "新月影兽"
-        "stormboneraider" -> "雷骨袭击者"
         else -> key
     }
 
     private fun codexDisplay(id: String): String = when (id.lowercase(Locale.ROOT)) {
-        "shadow_beast" -> "新月影兽"
-        "stormbone_raider" -> "雷骨袭击者"
-        "fullmoon_zombie_knight" -> "满月僵尸骑士"
-        "dawn_settlement" -> "黎明结算"
-        "sunny_harvest" -> "晴天丰收"
-        "grove_path" -> "林地踏查"
-        "river_walk" -> "河岸巡游"
+        "shadow_dust" -> "影尘"
+        "moonlit_seed" -> "月露种子"
+        "stormbone_fragment" -> "雷骨碎片"
         "cave_echo" -> "洞穴回声"
         "fullmoon_zombie_pack" -> "满月僵尸群"
         "newmoon_night_spider" -> "新月夜蛛"
         "thunder_skeleton_patrol" -> "雷雨骷髅巡游"
-        "cycle_basin" -> "月相收集盆"
         else -> id.replace('_', ' ')
     }
 
@@ -702,9 +733,9 @@ class EcologyFeatureService(
     }
 
     private fun sourceDisplay(source: String): String = source
-        .replace("FullMoonZombieKnight", "满月僵尸骑士")
-        .replace("ShadowBeast", "新月影兽")
-        .replace("StormboneRaider", "雷骨袭击者")
+        .replace("shadow_dust", "影尘")
+        .replace("moonlit_seed", "月露种子")
+        .replace("stormbone_fragment", "雷骨碎片")
 
     private fun achievementTag(id: String): String = ACHIEVEMENT_TAG_PREFIX + id.lowercase(Locale.ROOT)
 
@@ -716,6 +747,7 @@ class EcologyFeatureService(
             spawnProtectionRadius = yaml.getDouble("player-protection.spawn-radius", 96.0).coerceAtLeast(0.0),
             bountyRules = parseBounties(yaml.getConfigurationSection("bounties")),
             materials = parseMaterials(yaml.getConfigurationSection("materials")),
+            materialDropRules = parseMaterialDrops(yaml.getConfigurationSection("material-drops")),
             altarRules = parseAltars(yaml.getConfigurationSection("altars")),
             hotspotRules = parseHotspots(yaml.getConfigurationSection("hotspots")),
             achievementRules = parseAchievements(yaml.getConfigurationSection("achievements")),
@@ -736,6 +768,12 @@ class EcologyFeatureService(
                 rule.copy(
                     moonPhases = merge(rule.moonPhases, assignments.moonHotspots[rule.id.lowercase(Locale.ROOT)]),
                     solarPhases = merge(rule.solarPhases, assignments.solarHotspots[rule.id.lowercase(Locale.ROOT)])
+                )
+            },
+            materialDropRules = config.materialDropRules.map { rule ->
+                rule.copy(
+                    moonPhases = merge(rule.moonPhases, assignments.moonMaterialDrops[rule.id.lowercase(Locale.ROOT)]),
+                    solarPhases = merge(rule.solarPhases, assignments.solarMaterialDrops[rule.id.lowercase(Locale.ROOT)])
                 )
             }
         )
@@ -777,6 +815,7 @@ class EcologyFeatureService(
         return section.getKeys(false).mapNotNull { id ->
             val child = section.getConfigurationSection(id) ?: return@mapNotNull null
             val source = child.getString("source", "unknown") ?: "unknown"
+            val usage = child.getString("usage", "轻量祭坛与自定义拓展") ?: "轻量祭坛与自定义拓展"
             val displayName = child.getString("display-name", id) ?: id
             val material = Material.matchMaterial(child.getString("material", "AMETHYST_SHARD") ?: "AMETHYST_SHARD") ?: Material.AMETHYST_SHARD
             val itemSection = child.getConfigurationSection("item") ?: child
@@ -785,6 +824,7 @@ class EcologyFeatureService(
                 displayName = displayName,
                 material = material,
                 source = source,
+                usage = usage,
                 item = CustomItemSpec.parse(
                     itemSection,
                     defaultMaterial = material,
@@ -792,6 +832,40 @@ class EcologyFeatureService(
                     defaultLore = listOf("月息生态材料", "来源：${sourceDisplay(source)}"),
                     defaultTags = listOf(PersistentTagSpec("moonlife:item_id", PersistentTagType.STRING, id.lowercase(Locale.ROOT)))
                 )
+            )
+        }
+    }
+
+    private fun parseMaterialDrops(section: ConfigurationSection?): List<MaterialDropRule> {
+        section ?: return defaultConfig().materialDropRules
+        return section.getKeys(false).mapNotNull { id ->
+            val child = section.getConfigurationSection(id) ?: return@mapNotNull null
+            val objective = ConfigReaders.valueOfEnum<MaterialDropObjective>(child.getString("objective"))
+                ?: return@mapNotNull null
+            val targets = (child.getStringList("targets") + child.getStringList("target"))
+                .map { it.trim() }
+                .filter { it.isNotEmpty() }
+                .map { it.uppercase(Locale.ROOT) }
+                .toSet()
+            MaterialDropRule(
+                id = id,
+                displayName = child.getString("display-name", id) ?: id,
+                objective = objective,
+                targets = targets,
+                worlds = ConfigReaders.stringSet(child, "worlds"),
+                biomes = ConfigReaders.biomeSet(child, "biomes"),
+                moonPhases = ConfigReaders.enumSet(child, "moon-phases"),
+                solarPhases = ConfigReaders.enumSet(child, "solar-phases"),
+                weather = ConfigReaders.enumSet(child, "weather"),
+                wildernessOnly = child.getBoolean("wilderness-only", false),
+                underground = child.optionalBoolean("underground"),
+                inWater = child.optionalBoolean("in-water"),
+                sneaking = child.optionalBoolean("sneaking"),
+                chance = child.getDouble("chance", 0.0).coerceIn(0.0, 1.0),
+                amount = ConfigReaders.amountRange(child, "amount", AmountRange(1, 1)),
+                rewardMaterials = child.getStringList("reward-materials"),
+                cooldownTicks = child.getLong("cooldown", 0L).coerceAtLeast(0L),
+                priority = child.getInt("priority", 0)
             )
         }
     }
@@ -818,7 +892,25 @@ class EcologyFeatureService(
                 eventMultiplier = child.getDouble("event-multiplier", 1.25).coerceIn(0.1, 10.0),
                 rewardExp = child.getInt("reward-exp", 0).coerceAtLeast(0),
                 rewardMaterials = child.getStringList("reward-materials"),
-                codexEntry = child.getString("codex-entry")?.takeIf { it.isNotBlank() }
+                codexEntry = child.getString("codex-entry")?.takeIf { it.isNotBlank() },
+                potionEffects = parsePotionEffects(child.getConfigurationSection("potion-effects")),
+                visualEffect = ConfigReaders.valueOfEnum<AltarVisualEffect>(child.getString("visual-effect")) ?: AltarVisualEffect.NONE
+            )
+        }
+    }
+
+    private fun parsePotionEffects(section: ConfigurationSection?): List<PotionBuff> {
+        section ?: return emptyList()
+        return section.getKeys(false).mapNotNull { id ->
+            val child = section.getConfigurationSection(id) ?: return@mapNotNull null
+            val type = child.getString("type")?.takeIf { it.isNotBlank() } ?: return@mapNotNull null
+            PotionBuff(
+                type = type,
+                amplifier = child.getInt("amplifier", 0).coerceAtLeast(0),
+                durationTicks = child.getInt("duration-ticks", 200).coerceAtLeast(1),
+                ambient = child.getBoolean("ambient", true),
+                particles = child.getBoolean("particles", false),
+                icon = child.getBoolean("icon", true)
             )
         }
     }
@@ -892,6 +984,9 @@ class EcologyFeatureService(
         }
     }
 
+    private fun ConfigurationSection.optionalBoolean(path: String): Boolean? =
+        if (contains(path)) getBoolean(path) else null
+
     private fun bountyTag(id: String): String = BOUNTY_TAG_PREFIX + id.lowercase(Locale.ROOT)
 
     private data class MutableRuleStat(
@@ -911,12 +1006,6 @@ class EcologyFeatureService(
         }
     }
 
-    private data class NightProgress(
-        var kills: Int = 0,
-        var harvests: Int = 0,
-        var explores: Int = 0
-    )
-
     companion object {
         private const val CODEX_TAG_PREFIX = "moonlife_codex:"
         private const val BOUNTY_TAG_PREFIX = "moonlife_bounty:"
@@ -930,6 +1019,7 @@ class EcologyFeatureService(
                 spawnProtectionRadius = 96.0,
                 bountyRules = emptyList(),
                 materials = emptyList(),
+                materialDropRules = emptyList(),
                 altarRules = emptyList(),
                 hotspotRules = emptyList(),
                 achievementRules = emptyList(),

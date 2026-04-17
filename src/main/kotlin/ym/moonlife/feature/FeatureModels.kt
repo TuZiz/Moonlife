@@ -2,6 +2,8 @@ package ym.moonlife.feature
 
 import org.bukkit.Material
 import org.bukkit.block.Biome
+import ym.moonlife.buff.PotionBuff
+import ym.moonlife.core.AmountRange
 import ym.moonlife.core.WeatherState
 import ym.moonlife.item.CustomItemSpec
 import ym.moonlife.moon.MoonPhase
@@ -14,6 +16,7 @@ data class FeatureConfig(
     val spawnProtectionRadius: Double,
     val bountyRules: List<BountyRule>,
     val materials: List<EcologyMaterial>,
+    val materialDropRules: List<MaterialDropRule>,
     val altarRules: List<AltarRule>,
     val hotspotRules: List<HotspotRule>,
     val achievementRules: List<AchievementRule>,
@@ -43,11 +46,40 @@ enum class BountyObjective {
     VISIT_BIOME
 }
 
+data class MaterialDropRule(
+    val id: String,
+    val displayName: String,
+    val objective: MaterialDropObjective,
+    val targets: Set<String>,
+    val worlds: Set<String>,
+    val biomes: Set<Biome>,
+    val moonPhases: Set<MoonPhase>,
+    val solarPhases: Set<SolarPhase>,
+    val weather: Set<WeatherState>,
+    val wildernessOnly: Boolean,
+    val underground: Boolean?,
+    val inWater: Boolean?,
+    val sneaking: Boolean?,
+    val chance: Double,
+    val amount: AmountRange,
+    val rewardMaterials: List<String>,
+    val cooldownTicks: Long,
+    val priority: Int
+)
+
+enum class MaterialDropObjective {
+    FISH,
+    BREAK_BLOCK,
+    HARVEST_CROP,
+    KILL_ENTITY
+}
+
 data class EcologyMaterial(
     val id: String,
     val displayName: String,
     val material: Material,
     val source: String,
+    val usage: String,
     val item: CustomItemSpec
 )
 
@@ -65,8 +97,16 @@ data class AltarRule(
     val eventMultiplier: Double,
     val rewardExp: Int,
     val rewardMaterials: List<String>,
-    val codexEntry: String?
+    val codexEntry: String?,
+    val potionEffects: List<PotionBuff>,
+    val visualEffect: AltarVisualEffect
 )
+
+enum class AltarVisualEffect {
+    NONE,
+    LIGHTNING,
+    SMOKE
+}
 
 data class HotspotRule(
     val id: String,

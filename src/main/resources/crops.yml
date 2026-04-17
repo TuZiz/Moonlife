@@ -1,202 +1,173 @@
-# 作物生态配置：这里只定义作物规则本身，在哪些月相/日相启用写到对应相位文件。
+# 作物生态配置：这里只定义作物成长和收获差异，在哪些相位启用写到 moon-phases / solar-phases。
 rules:
-  # 晴天白昼作物成长加速：由 solar-phases/白昼.yml 启用。
-  sunny_day_growth:
+  # 晴天田垄：白昼晴天给基础农田轻微成长偏好。
+  clear_day_field_growth:
     # 规则唯一 ID。
-    id: sunny_day_growth
-    # 是否启用该规则或相位文件。
+    id: clear_day_field_growth
+    # 是否启用该规则。
     enable: true
-    # 受该规则影响的作物方块类型列表。
-    crop-types: [WHEAT, CARROTS, POTATOES, BEETROOTS, PUMPKIN_STEM, MELON_STEM, NETHER_WART]
-    # 规则生效的世界列表，留空表示不限制。
+    # 受影响的作物方块类型。
+    crop-types: [WHEAT, CARROTS, BEETROOTS]
+    # 生效世界。
     worlds: [world]
-    # 规则生效的群系列表，留空表示不限制。
+    # 生效群系，留空表示不限制。
     biomes: []
-    # 规则直接绑定的月相列表，通常建议在 moon-phases 目录中配置。
+    # 直接绑定月相，通常建议在月相文件中配置。
     moon-phases: []
-    # 规则直接绑定的日相列表，通常建议在 solar-phases 目录中配置。
+    # 直接绑定日相，通常建议在日相文件中配置。
     solar-phases: []
-    # 规则生效的天气列表。
+    # 生效天气。
     weather: [CLEAR]
-    # 允许刷怪或生效的光照范围。
+    # 光照范围。
     light-range: [9, 15]
-    # 允许的土壤或承载方块类型列表。
-    soil-types: [FARMLAND, SOUL_SAND]
+    # 可接受的土壤类型。
+    soil-types: [FARMLAND]
     # 耕地湿润度范围。
     moisture: [5, 7]
-    # 作物成长倍率。
-    growth-multiplier: 1.35
+    # 成长倍率，保守提高，不破坏原版农业节奏。
+    growth-multiplier: 1.14
     # 额外成长概率。
-    bonus-growth-chance: 0.12
-    # 额外收获概率。
-    extra-harvest-chance: 0.06
-    # 额外收获物品列表，配置后不再复制原版掉落，而是掉落下方自定义物品。
-    extra-harvest-items:
-      # 晴天丰收种子，自定义名字、lore 和 NBT。
-      sunny_harvest_seed:
-        # 掉落概率，会在 extra-harvest-chance 命中后再次判定。
-        chance: 1.0
-        # 单次掉落数量范围。
-        amount: [1, 1]
-        # 自定义掉落基础材质。
-        material: WHEAT_SEEDS
-        # 自定义掉落显示名，支持 MiniMessage。
-        display-name: "<#86EFAC>晴辉种子"
-        # 自定义掉落 lore，支持 MiniMessage。
-        lore:
-          # lore 第一行。
-          - "<#A7F3D0>月息生态作物产物"
-          # lore 第二行。
-          - "<#94A3B8>晴天白昼成熟作物偶然凝结"
-        # 自定义模型数据，材质包可用该值绑定模型。
-        custom-model-data: 2001
-        # 自定义 NBT / PDC 标签，完全无 NMS。
-        nbt:
-          # 作物额外掉落的物品 ID。
-          "moonlife:item_id": sunny_harvest_seed
-          # 作物额外掉落的来源标签。
-          "moonlife:source": sunny_day_growth
-    # 作物变异概率。
-    mutation-chance: 0.005
-    # 变异产物材质，留空表示不产出。
+    bonus-growth-chance: 0.06
+    # 额外复制原版收获的概率。
+    extra-harvest-chance: 0.02
+    # 自定义额外收获物，留空表示命中后复制原版掉落。
+    extra-harvest-items: {}
+    # 作物变异概率，默认不启用。
+    mutation-chance: 0.0
+    # 变异方块材质，留空表示不变异。
     mutation-material: ''
-    # 是否影响骨粉催熟。
+    # 是否允许骨粉交互。
     bone-meal-interaction: true
-    # 是否对自动化触发也生效。
+    # 是否对自动化成长也生效。
     automation-apply: true
-    # 规则优先级，数值越高越先匹配。
+    # 规则优先级。
     priority: 20
 
-  # 满月地狱疣：由 moon-phases/满月.yml 启用。
-  fullmoon_nether_wart:
+  # 雨润根茎：雨天让根茎类作物略微舒服。
+  rain_root_crop_growth:
     # 规则唯一 ID。
-    id: fullmoon_nether_wart
-    # 是否启用该规则或相位文件。
+    id: rain_root_crop_growth
+    # 是否启用该规则。
     enable: true
-    # 受该规则影响的作物方块类型列表。
-    crop-types: [NETHER_WART]
-    # 规则生效的世界列表，留空表示不限制。
-    worlds: [world_nether]
-    # 规则生效的群系列表，留空表示不限制。
-    biomes: []
-    # 规则直接绑定的月相列表，通常建议在 moon-phases 目录中配置。
-    moon-phases: []
-    # 规则直接绑定的日相列表，通常建议在 solar-phases 目录中配置。
-    solar-phases: []
-    # 规则生效的天气列表。
-    weather: []
-    # 允许刷怪或生效的光照范围。
-    light-range: [0, 15]
-    # 允许的土壤或承载方块类型列表。
-    soil-types: [SOUL_SAND]
-    # 耕地湿润度范围。
-    moisture: [0, 7]
-    # 作物成长倍率。
-    growth-multiplier: 1.15
-    # 额外成长概率。
-    bonus-growth-chance: 0.05
-    # 额外收获概率。
-    extra-harvest-chance: 0.04
-    # 额外收获物品列表，配置后不再复制原版掉落，而是掉落下方自定义物品。
-    extra-harvest-items:
-      # 满月地狱疣结晶，自定义名字、lore 和 NBT。
-      fullmoon_wart_crystal:
-        # 掉落概率，会在 extra-harvest-chance 命中后再次判定。
-        chance: 1.0
-        # 单次掉落数量范围。
-        amount: [1, 1]
-        # 自定义掉落基础材质。
-        material: NETHER_WART
-        # 自定义掉落显示名，支持 MiniMessage。
-        display-name: "<#F9A8D4>满月疣晶"
-        # 自定义掉落 lore，支持 MiniMessage。
-        lore:
-          # lore 第一行。
-          - "<#A7F3D0>月息生态作物产物"
-          # lore 第二行。
-          - "<#94A3B8>满月时分，下界疣块凝结出的微光结晶"
-        # 自定义模型数据，材质包可用该值绑定模型。
-        custom-model-data: 2002
-        # 自定义 NBT / PDC 标签，完全无 NMS。
-        nbt:
-          # 作物额外掉落的物品 ID。
-          "moonlife:item_id": fullmoon_wart_crystal
-          # 作物额外掉落的来源标签。
-          "moonlife:source": fullmoon_nether_wart
-    # 作物变异概率。
-    mutation-chance: 0.0
-    # 变异产物材质，留空表示不产出。
-    mutation-material: ''
-    # 是否影响骨粉催熟。
-    bone-meal-interaction: true
-    # 是否对自动化触发也生效。
-    automation-apply: true
-    # 规则优先级，数值越高越先匹配。
-    priority: 10
-
-  # 盈凸月丰壤：盈凸月让主世界成熟作物更容易产出轻生态材料。
-  waxing_gibbous_growth:
-    # 规则唯一 ID。
-    id: waxing_gibbous_growth
-    # 是否启用该规则或相位文件。
-    enable: true
-    # 受该规则影响的作物方块类型列表。
-    crop-types: [WHEAT, CARROTS, POTATOES, BEETROOTS, PUMPKIN_STEM, MELON_STEM]
-    # 规则生效的世界列表，留空表示不限制。
+    # 受影响的作物方块类型。
+    crop-types: [CARROTS, POTATOES, BEETROOTS]
+    # 生效世界。
     worlds: [world]
-    # 规则生效的群系列表，留空表示不限制。
+    # 生效群系，留空表示不限制。
     biomes: []
-    # 规则直接绑定的月相列表，通常建议在 moon-phases 目录中配置。
+    # 直接绑定月相，通常建议在月相文件中配置。
     moon-phases: []
-    # 规则直接绑定的日相列表，通常建议在 moon-phases 目录中配置。
+    # 直接绑定日相，通常建议在日相文件中配置。
     solar-phases: []
-    # 规则生效的天气列表。
-    weather: [CLEAR, RAIN]
-    # 允许刷怪或生效的光照范围。
-    light-range: [8, 15]
-    # 允许的土壤或承载方块类型列表。
+    # 生效天气。
+    weather: [RAIN]
+    # 光照范围。
+    light-range: [7, 15]
+    # 可接受的土壤类型。
     soil-types: [FARMLAND]
     # 耕地湿润度范围。
     moisture: [4, 7]
-    # 作物成长倍率。
-    growth-multiplier: 1.2
+    # 成长倍率。
+    growth-multiplier: 1.12
+    # 额外成长概率。
+    bonus-growth-chance: 0.05
+    # 额外复制原版收获的概率。
+    extra-harvest-chance: 0.018
+    # 自定义额外收获物，留空表示命中后复制原版掉落。
+    extra-harvest-items: {}
+    # 作物变异概率，默认不启用。
+    mutation-chance: 0.0
+    # 变异方块材质，留空表示不变异。
+    mutation-material: ''
+    # 是否允许骨粉交互。
+    bone-meal-interaction: true
+    # 是否对自动化成长也生效。
+    automation-apply: true
+    # 规则优先级。
+    priority: 22
+
+  # 盈凸月农田：盈凸月让常见农作物与瓜类茎略微更稳定。
+  waxing_gibbous_field_care:
+    # 规则唯一 ID。
+    id: waxing_gibbous_field_care
+    # 是否启用该规则。
+    enable: true
+    # 受影响的作物方块类型。
+    crop-types: [WHEAT, CARROTS, POTATOES, BEETROOTS, PUMPKIN_STEM, MELON_STEM]
+    # 生效世界。
+    worlds: [world]
+    # 生效群系，留空表示不限制。
+    biomes: []
+    # 直接绑定月相，通常建议在月相文件中配置。
+    moon-phases: []
+    # 直接绑定日相，通常建议在日相文件中配置。
+    solar-phases: []
+    # 生效天气。
+    weather: [CLEAR, RAIN]
+    # 光照范围。
+    light-range: [8, 15]
+    # 可接受的土壤类型。
+    soil-types: [FARMLAND]
+    # 耕地湿润度范围。
+    moisture: [4, 7]
+    # 成长倍率。
+    growth-multiplier: 1.18
     # 额外成长概率。
     bonus-growth-chance: 0.08
-    # 额外收获概率。
-    extra-harvest-chance: 0.05
-    # 额外收获物品列表，配置后不再复制原版掉落，而是掉落下方自定义物品。
-    extra-harvest-items:
-      # 丰壤谷粒，自定义名字、lore 和 NBT。
-      verdant_grain:
-        # 掉落概率，会在 extra-harvest-chance 命中后再次判定。
-        chance: 1.0
-        # 单次掉落数量范围。
-        amount: [1, 1]
-        # 自定义掉落基础材质。
-        material: WHEAT_SEEDS
-        # 自定义掉落显示名，支持 MiniMessage。
-        display-name: "<#BBF7D0>丰壤谷粒"
-        # 自定义掉落 lore，支持 MiniMessage。
-        lore:
-          # lore 第一行。
-          - "<#A7F3D0>月息生态作物产物"
-          # lore 第二行。
-          - "<#94A3B8>盈凸月成熟作物偶然留下的谷粒"
-        # 自定义模型数据，材质包可用该值绑定模型。
-        custom-model-data: 2003
-        # 自定义 NBT / PDC 标签，完全无 NMS。
-        nbt:
-          # 作物额外掉落的物品 ID。
-          "moonlife:item_id": verdant_grain
-          # 作物额外掉落的来源标签。
-          "moonlife:source": waxing_gibbous_growth
-    # 作物变异概率。
+    # 额外复制原版收获的概率。
+    extra-harvest-chance: 0.025
+    # 自定义额外收获物，留空表示命中后复制原版掉落。
+    extra-harvest-items: {}
+    # 作物变异概率，默认不启用。
     mutation-chance: 0.0
-    # 变异产物材质，留空表示不产出。
+    # 变异方块材质，留空表示不变异。
     mutation-material: ''
-    # 是否影响骨粉催熟。
+    # 是否允许骨粉交互。
     bone-meal-interaction: true
-    # 是否对自动化触发也生效。
+    # 是否对自动化成长也生效。
     automation-apply: true
-    # 规则优先级，数值越高越先匹配。
-    priority: 12
+    # 规则优先级。
+    priority: 30
+
+  # 满月下界疣：满月让下界疣有轻微成长偏好。
+  fullmoon_nether_wart:
+    # 规则唯一 ID。
+    id: fullmoon_nether_wart
+    # 是否启用该规则。
+    enable: true
+    # 受影响的作物方块类型。
+    crop-types: [NETHER_WART]
+    # 生效世界。
+    worlds: [world_nether]
+    # 生效群系，留空表示不限制。
+    biomes: []
+    # 直接绑定月相，通常建议在月相文件中配置。
+    moon-phases: []
+    # 直接绑定日相，通常建议在日相文件中配置。
+    solar-phases: []
+    # 生效天气，留空表示不限制。
+    weather: []
+    # 光照范围。
+    light-range: [0, 15]
+    # 可接受的土壤类型。
+    soil-types: [SOUL_SAND]
+    # 耕地湿润度范围。
+    moisture: [0, 7]
+    # 成长倍率。
+    growth-multiplier: 1.10
+    # 额外成长概率。
+    bonus-growth-chance: 0.04
+    # 额外复制原版收获的概率。
+    extra-harvest-chance: 0.02
+    # 自定义额外收获物，留空表示命中后复制原版掉落。
+    extra-harvest-items: {}
+    # 作物变异概率，默认不启用。
+    mutation-chance: 0.0
+    # 变异方块材质，留空表示不变异。
+    mutation-material: ''
+    # 是否允许骨粉交互。
+    bone-meal-interaction: true
+    # 是否对自动化成长也生效。
+    automation-apply: true
+    # 规则优先级。
+    priority: 15

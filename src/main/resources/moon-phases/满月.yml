@@ -1,38 +1,44 @@
-# 满月：原版僵尸群和下界作物轻量强化。
+# 满月：偏向夜战、钓鱼、成熟收获和小型农业祭坛。
 enable: true
 # 显示名称。
 display-name: "满月"
-# 该月相或日相启用的功能 ID 根节点。
+# 该月相启用的功能 ID 根节点。
 functions:
-  # 该相位启用的怪物规则 ID 列表。
+  # 满月启用的怪物规则。
   monsters:
-    # 列表项：该列表中的一个配置值。
+    # 满月夜晚少量僵尸群。
     - fullmoon_zombie_pack
-  # 祭坛配置根节点。
-  altars: []
-  # 该相位启用的作物规则 ID 列表。
+  # 满月启用的小型祭坛。
+  altars:
+    # 月露堆肥台可消耗月露种子。
+    - moonlit_composter
+  # 满月启用的作物规则。
   crops:
-    # 列表项：该列表中的一个配置值。
+    # 下界疣轻微成长偏好。
     - fullmoon_nether_wart
-  # 该相位启用的玩家状态规则 ID 列表。
+  # 满月启用的玩家状态规则。
   buffs: []
-  # 生态热点配置根节点。
-  hotspots: []
+  # 满月启用的生态热点。
+  hotspots:
+    # 雨天河口和海边钓鱼更有辨识度。
+    - river_mouth
+  # 满月启用的材料掉落规则。
+  material-drops:
+    # 成熟作物小概率产出月露种子。
+    - moonlit_harvest_seed
+    # 满月夜钓鱼小概率获得月露种子。
+    - fullmoon_fishing_moonlit_seed
 # 该月相切换时的提示文本配置。
 messages:
   # 月相变化广播提示。
-  broadcast: '<prefix><#F9A8D4>满月临空 ✦ <world> 的月辉正在强化荒野生态。'
+  broadcast: '<prefix><#F9A8D4>满月临空 ✦ 夜战、钓鱼和成熟收获略微更有价值。'
   # 月相变化 ActionBar 提示。
-  actionbar: '<#F9A8D4>☾ 当前月相：<#FFFFFF><phase></#FFFFFF>'
+  actionbar: '<#F9A8D4>满月</#F9A8D4> <#94A3B8>·</#94A3B8> <#FCE7F3>夜战 / 钓鱼 / 月露种子</#FCE7F3>'
   # 月相变化 Title 主标题。
   title: '<#F9A8D4>☾ <phase>'
   # 月相变化 Title 副标题。
-  subtitle: '<#FCE7F3>满月僵尸群与下界作物轻量活跃'
+  subtitle: '<#FCE7F3>满月夜战和钓鱼会出现轻量生态收益'
   # 月相变化 BossBar 提示。
-  bossbar: '<#F9A8D4>满月生态 ☾ <#FFFFFF><phase></#FFFFFF>'
-  # 功能提示列表，仅当本文件 functions 中配置了功能时发送。
-  features:
-    # 满月原版怪提示。
-    - '<prefix><#FCE7F3>满月功能 ✦ 夜晚与午夜会提高 <#FFFFFF>满月僵尸群</#FFFFFF> 的荒野出现概率。'
-    # 满月作物提示。
-    - '<prefix><#FCE7F3>满月功能 ✦ 下界疣获得轻微成长与收获加成。'
+  bossbar: '<#F9A8D4>满月 ☾ <#FFFFFF><phase></#FFFFFF>'
+  # 附加功能提示，默认不额外广播，避免刷屏。
+  features: []

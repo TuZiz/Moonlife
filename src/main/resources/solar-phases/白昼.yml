@@ -1,4 +1,4 @@
-# 白昼：晴天作物成长加速。
+# 白昼：服务农业、养殖、平稳采集和雨天钓鱼。
 enable: true
 # 显示名称。
 display-name: "白昼"
@@ -8,33 +8,51 @@ time:
   start: 1000
   # 日相结束时间，使用 Minecraft 世界 tick。
   end: 11500
-# 该月相或日相启用的功能 ID 根节点。
+# 该日相启用的功能 ID 根节点。
 functions:
-  # 该相位启用的怪物规则 ID 列表。
+  # 白昼启用的怪物规则。
   monsters: []
-  # 祭坛配置根节点。
-  altars: []
-  # 该相位启用的作物规则 ID 列表。
+  # 白昼启用的小型祭坛。
+  altars:
+    # 月露堆肥台可在白昼作为轻农业用途。
+    - moonlit_composter
+  # 白昼启用的作物规则。
   crops:
-    # 列表项：该列表中的一个配置值。
-    - sunny_day_growth
-  # 该相位启用的玩家状态规则 ID 列表。
-  buffs: []
-  # 生态热点配置根节点。
-  hotspots: []
+    # 晴天基础农田轻微成长。
+    - clear_day_field_growth
+    # 雨天根茎作物轻微成长。
+    - rain_root_crop_growth
+  # 白昼启用的玩家状态规则。
+  buffs:
+    # 雨天河海边钓鱼幸运。
+    - rain_angling_luck
+  # 白昼启用的生态热点。
+  hotspots:
+    # 林地小径适合平稳跑图。
+    - forest_trail
+    # 河口湿地适合雨天钓鱼采集。
+    - river_mouth
+  # 白昼启用的材料掉落规则。
+  material-drops:
+    # 雨天河岸采集获得月露种子。
+    - rain_riverside_moonlit_seed
+    # 雨天钓鱼获得月露种子。
+    - rain_fishing_moonlit_seed
+    # 满月或盈凸月成熟收获获得月露种子。
+    - moonlit_harvest_seed
 # 该日相切换时的提示文本配置。
 messages:
-  # 是否公告该相位，轻生态只公告白昼与夜晚。
+  # 是否公告该相位，默认只公告白昼和夜晚。
   announce: true
   # 日相变化广播提示。
-  broadcast: '<prefix><#86EFAC>白昼升起 ✦ <world> 今日生态：晴天促进作物成长，荒野危险降低。'
+  broadcast: '<prefix><#86EFAC>白昼升起 ✦ 农田、雨钓和日常采集进入平稳节奏。'
   # 日相变化 ActionBar 提示。
-  actionbar: '<#86EFAC>白昼</#86EFAC> <#94A3B8>·</#94A3B8> <#BBF7D0>晴天作物成长提升</#BBF7D0> <#94A3B8>·</#94A3B8> <#E0F2FE>/ecology info</#E0F2FE>'
+  actionbar: '<#86EFAC>白昼</#86EFAC> <#94A3B8>·</#94A3B8> <#BBF7D0>农业 / 雨钓 / 日常采集</#BBF7D0>'
   # 日相变化 Title 主标题。
   title: '<#86EFAC>☼ <phase>'
   # 日相变化 Title 副标题。
-  subtitle: '<#DCFCE7>晴天时作物成长加速'
+  subtitle: '<#DCFCE7>晴天农田和雨天钓鱼略有收益'
   # 日相变化 BossBar 提示。
-  bossbar: '<#86EFAC>白昼生态 ☼ <#FFFFFF><phase></#FFFFFF>'
-  # 功能提示列表，仅当本文件 functions 中配置了功能时发送。
+  bossbar: '<#86EFAC>白昼 ☼ <#FFFFFF><phase></#FFFFFF>'
+  # 附加功能提示，默认不额外广播。
   features: []

@@ -1,379 +1,431 @@
-# 轻生态扩展配置：材料、探索悬赏、热点小地点、成就线和收集目标集中在这里。
+# 轻生态扩展配置：这里集中定义生态材料、材料掉落、小型热点、轻量祭坛和可选扩展位。
 calendar:
-  # 日历向后预览的天数。
+  # 日历向后预览的天数，数值越大输出越长。
   days: 8
 
 # 调试 BossBar 配置根节点。
 debug-bossbar:
-  # 调试 BossBar 刷新间隔，单位为 tick。
+  # 调试 BossBar 刷新间隔，单位为 tick，生产服建议不低于 40。
   refresh-ticks: 40
 
 # 玩家生态保护配置根节点。
 player-protection:
-  # 新玩家在线保护时间，单位为 tick，轻生态默认不额外保护。
+  # 新玩家在线保护时间，单位为 tick，默认不额外保护。
   new-player-ticks: 0
-  # 出生点周围生态刷怪保护半径。
+  # 出生点周围生态刷怪保护半径，避免出生点附近额外刷怪过密。
   spawn-radius: 24.0
 
-# 生态材料定义根节点。
+# 生态材料定义根节点；默认只保留三种轻用途材料。
 materials:
-  # 黎明露珠：黎明结算和探索奖励使用的基础材料。
-  dawn_dew:
-    # 显示名称。
-    display-name: "黎明露珠"
-    # 使用的 Bukkit 物品或方块材质名。
-    material: GLOWSTONE_DUST
-    # 生成给玩家的自定义物品配置。
-    item:
-      # 自定义物品的基础材质。
-      material: GLOWSTONE_DUST
-      # 自定义物品的显示名，支持 MiniMessage。
-      display-name: "<#FDBA74>黎明露珠"
-      # 自定义物品的 lore，支持 MiniMessage。
-      lore:
-        # lore 第一行。
-        - "<#A7F3D0>月息轻生态材料"
-        # lore 第二行。
-        - "<#94A3B8>来源：黎明结算与探索悬赏"
-      # 自定义模型数据，材质包可用该值绑定模型。
-      custom-model-data: 1001
-      # 自定义 NBT / PDC 标签，完全无 NMS。
-      nbt:
-        # Moonlife 物品 ID 标签。
-        "moonlife:item_id": dawn_dew
-    # 材料来源说明文本。
-    source: "黎明结算与探索悬赏"
-  # 月露种子：满月成熟作物偶然获得的材料。
-  moonlit_seed:
-    # 显示名称。
-    display-name: "月露种子"
-    # 使用的 Bukkit 物品或方块材质名。
-    material: AMETHYST_SHARD
-    # 生成给玩家的自定义物品配置。
-    item:
-      # 自定义物品的基础材质。
-      material: AMETHYST_SHARD
-      # 自定义物品的显示名，支持 MiniMessage。
-      display-name: "<#C4B5FD>月露种子"
-      # 自定义物品的 lore，支持 MiniMessage。
-      lore:
-        # lore 第一行。
-        - "<#A7F3D0>月息轻生态材料"
-        # lore 第二行。
-        - "<#94A3B8>来源：满月成熟作物与满月夜战斗"
-      # 自定义模型数据，材质包可用该值绑定模型。
-      custom-model-data: 1002
-      # 自定义 NBT / PDC 标签，完全无 NMS。
-      nbt:
-        # Moonlife 物品 ID 标签。
-        "moonlife:item_id": moonlit_seed
-    # 材料来源说明文本。
-    source: "满月成熟作物与满月夜战斗"
-  # 影尘：新月生态中获得的轻量材料。
+  # 影尘：新月、暗处采集和夜行生物相关的轻量材料。
   shadow_dust:
-    # 显示名称。
+    # 服主和玩家看到的材料中文名。
     display-name: "影尘"
-    # 使用的 Bukkit 物品或方块材质名。
+    # 材料对应的基础 Bukkit 物品。
     material: GUNPOWDER
+    # 材料默认获取来源说明。
+    source: "新月夜蛛、暗色蘑菇、沼泽与黑森林夜间采集"
+    # 材料默认用途说明。
+    usage: "夜视小祭坛、潜行探索辅助、暗色装饰和自定义夜间配方"
     # 生成给玩家的自定义物品配置。
     item:
-      # 自定义物品的基础材质。
+      # 自定义物品基础材质。
       material: GUNPOWDER
-      # 自定义物品的显示名，支持 MiniMessage。
-      display-name: "<#6B7280>影尘"
-      # 自定义物品的 lore，支持 MiniMessage。
+      # 自定义物品显示名，支持 MiniMessage RGB。
+      display-name: "<#9CA3AF>影尘"
+      # 自定义物品 lore。
       lore:
         # lore 第一行。
-        - "<#A7F3D0>月息轻生态材料"
+        - "<#A7F3D0>Moonlife 轻生态材料"
         # lore 第二行。
-        - "<#94A3B8>来源：新月成熟作物与新月夜蛛"
-      # 自定义模型数据，材质包可用该值绑定模型。
-      custom-model-data: 1003
-      # 自定义 NBT / PDC 标签，完全无 NMS。
+        - "<#94A3B8>来源：新月夜行与暗处采集"
+        # lore 第三行。
+        - "<#64748B>用途：夜视小祭坛 / 潜行辅助 / 暗色装饰"
+      # 自定义模型数据，材质包可选使用。
+      custom-model-data: 1001
+      # Bukkit PDC 标签，无 NMS。
       nbt:
         # Moonlife 物品 ID 标签。
         "moonlife:item_id": shadow_dust
-    # 材料来源说明文本。
-    source: "新月成熟作物与新月夜蛛"
-  # 丰壤谷粒：盈凸月农田获得的材料。
-  verdant_grain:
-    # 显示名称。
-    display-name: "丰壤谷粒"
-    # 使用的 Bukkit 物品或方块材质名。
+  # 月露种子：农业、钓鱼和满月收获相关的轻量材料。
+  moonlit_seed:
+    # 服主和玩家看到的材料中文名。
+    display-name: "月露种子"
+    # 材料对应的基础 Bukkit 物品。
     material: WHEAT_SEEDS
+    # 材料默认获取来源说明。
+    source: "满月收获、盈凸月农田、雨天钓鱼与河岸采集"
+    # 材料默认用途说明。
+    usage: "轻农业祭坛、肥料感配方、生存食物和作物主题装饰"
     # 生成给玩家的自定义物品配置。
     item:
-      # 自定义物品的基础材质。
+      # 自定义物品基础材质。
       material: WHEAT_SEEDS
-      # 自定义物品的显示名，支持 MiniMessage。
-      display-name: "<#BBF7D0>丰壤谷粒"
-      # 自定义物品的 lore，支持 MiniMessage。
+      # 自定义物品显示名，支持 MiniMessage RGB。
+      display-name: "<#C4B5FD>月露种子"
+      # 自定义物品 lore。
       lore:
         # lore 第一行。
-        - "<#A7F3D0>月息轻生态材料"
+        - "<#A7F3D0>Moonlife 轻生态材料"
         # lore 第二行。
-        - "<#94A3B8>来源：盈凸月成熟作物"
-      # 自定义模型数据，材质包可用该值绑定模型。
-      custom-model-data: 1004
-      # 自定义 NBT / PDC 标签，完全无 NMS。
+        - "<#94A3B8>来源：满月收获、雨天钓鱼和农田照料"
+        # lore 第三行。
+        - "<#64748B>用途：轻农业祭坛 / 肥料感配方 / 食物拓展"
+      # 自定义模型数据，材质包可选使用。
+      custom-model-data: 1002
+      # Bukkit PDC 标签，无 NMS。
       nbt:
         # Moonlife 物品 ID 标签。
-        "moonlife:item_id": verdant_grain
-    # 材料来源说明文本。
-    source: "盈凸月成熟作物"
-  # 苍白纤维：残月潜行采集获得的材料。
-  pale_fiber:
-    # 显示名称。
-    display-name: "苍白纤维"
-    # 使用的 Bukkit 物品或方块材质名。
-    material: STRING
+        "moonlife:item_id": moonlit_seed
+  # 雷骨碎片：雷暴夜风险探索和骷髅系生态相关的轻量材料。
+  stormbone_fragment:
+    # 服主和玩家看到的材料中文名。
+    display-name: "雷骨碎片"
+    # 材料对应的基础 Bukkit 物品。
+    material: BONE
+    # 材料默认获取来源说明。
+    source: "雷雨夜骷髅、雷暴铜矿脉和山地雷雨热点"
+    # 材料默认用途说明。
+    usage: "雷暴夜辅助小祭坛、一次性风险探索道具和装饰配方"
     # 生成给玩家的自定义物品配置。
     item:
-      # 自定义物品的基础材质。
-      material: STRING
-      # 自定义物品的显示名，支持 MiniMessage。
-      display-name: "<#CBD5E1>苍白纤维"
-      # 自定义物品的 lore，支持 MiniMessage。
+      # 自定义物品基础材质。
+      material: BONE
+      # 自定义物品显示名，支持 MiniMessage RGB。
+      display-name: "<#93C5FD>雷骨碎片"
+      # 自定义物品 lore。
       lore:
         # lore 第一行。
-        - "<#A7F3D0>月息轻生态材料"
+        - "<#A7F3D0>Moonlife 轻生态材料"
         # lore 第二行。
-        - "<#94A3B8>来源：残月成熟作物与潜行探索"
-      # 自定义模型数据，材质包可用该值绑定模型。
-      custom-model-data: 1005
-      # 自定义 NBT / PDC 标签，完全无 NMS。
+        - "<#94A3B8>来源：雷暴夜战斗与铜矿脉探索"
+        # lore 第三行。
+        - "<#64748B>用途：雷暴小祭坛 / 风险探索辅助 / 装饰"
+      # 自定义模型数据，材质包可选使用。
+      custom-model-data: 1003
+      # Bukkit PDC 标签，无 NMS。
       nbt:
         # Moonlife 物品 ID 标签。
-        "moonlife:item_id": pale_fiber
-    # 材料来源说明文本。
-    source: "残月成熟作物与潜行探索"
-  # 雷雨棱晶：雷雨夜战斗获得的材料。
-  storm_shard:
-    # 显示名称。
-    display-name: "雷雨棱晶"
-    # 使用的 Bukkit 物品或方块材质名。
-    material: PRISMARINE_CRYSTALS
-    # 生成给玩家的自定义物品配置。
-    item:
-      # 自定义物品的基础材质。
-      material: PRISMARINE_CRYSTALS
-      # 自定义物品的显示名，支持 MiniMessage。
-      display-name: "<#93C5FD>雷雨棱晶"
-      # 自定义物品的 lore，支持 MiniMessage。
-      lore:
-        # lore 第一行。
-        - "<#A7F3D0>月息轻生态材料"
-        # lore 第二行。
-        - "<#94A3B8>来源：雷雨夜战斗悬赏"
-      # 自定义模型数据，材质包可用该值绑定模型。
-      custom-model-data: 1006
-      # 自定义 NBT / PDC 标签，完全无 NMS。
-      nbt:
-        # Moonlife 物品 ID 标签。
-        "moonlife:item_id": storm_shard
-    # 材料来源说明文本。
-    source: "雷雨夜战斗悬赏"
-  # 月相称号牌：成就线奖励展示品。
-  cycle_badge:
-    # 显示名称。
-    display-name: "月相称号牌"
-    # 使用的 Bukkit 物品或方块材质名。
-    material: PAPER
-    # 生成给玩家的自定义物品配置。
-    item:
-      # 自定义物品的基础材质。
-      material: PAPER
-      # 自定义物品的显示名，支持 MiniMessage。
-      display-name: "<#F9A8D4>月相称号牌"
-      # 自定义物品的 lore，支持 MiniMessage。
-      lore:
-        # lore 第一行。
-        - "<#A7F3D0>展示品"
-        # lore 第二行。
-        - "<#94A3B8>完成月相成就线后获得"
-      # 自定义模型数据，材质包可用该值绑定模型。
-      custom-model-data: 1007
-      # 自定义 NBT / PDC 标签，完全无 NMS。
-      nbt:
-        # Moonlife 物品 ID 标签。
-        "moonlife:item_id": cycle_badge
-    # 材料来源说明文本。
-    source: "月相成就线奖励"
+        "moonlife:item_id": stormbone_fragment
 
-# 生态悬赏配置根节点。
-bounties:
-  # 晴天丰收：白昼晴天收获成熟作物即可完成。
-  sunny_harvest:
-    # 显示名称。
-    display-name: "晴天丰收"
-    # 悬赏目标类型。
-    objective: HARVEST_CROP
-    # 悬赏匹配目标列表。
-    targets: [WHEAT, CARROTS, POTATOES, BEETROOTS]
-    # 悬赏生效的月相列表，留空表示不限制。
-    moon-phases: []
-    # 悬赏生效的日相列表。
-    solar-phases: [DAY]
-    # 悬赏生效的天气列表。
-    weather: [CLEAR]
-    # 完成悬赏奖励的经验值。
-    reward-exp: 24
-    # 完成悬赏奖励的生态材料 ID 列表。
-    reward-materials: [verdant_grain]
-    # 完成后解锁的生态图鉴条目 ID。
-    codex-entry: sunny_harvest
-  # 林地踏查：探索森林、平原或樱花林即可完成。
-  grove_path:
-    # 显示名称。
-    display-name: "林地踏查"
-    # 悬赏目标类型。
-    objective: VISIT_BIOME
-    # 悬赏匹配目标列表。
-    targets: [FOREST, PLAINS, CHERRY_GROVE]
-    # 悬赏生效的月相列表。
-    moon-phases: [WAXING_CRESCENT, WAXING_GIBBOUS]
-    # 悬赏生效的日相列表，留空表示不限制。
-    solar-phases: []
-    # 悬赏生效的天气列表，留空表示不限制。
-    weather: []
-    # 完成悬赏奖励的经验值。
-    reward-exp: 30
-    # 完成悬赏奖励的生态材料 ID 列表。
-    reward-materials: [dawn_dew]
-    # 完成后解锁的生态图鉴条目 ID。
-    codex-entry: grove_path
-  # 河岸巡游：亏凸月或残月探索河流和沼泽即可完成。
-  river_walk:
-    # 显示名称。
-    display-name: "河岸巡游"
-    # 悬赏目标类型。
-    objective: VISIT_BIOME
-    # 悬赏匹配目标列表。
-    targets: [RIVER, SWAMP, MANGROVE_SWAMP]
-    # 悬赏生效的月相列表。
-    moon-phases: [WANING_GIBBOUS, WANING_CRESCENT]
-    # 悬赏生效的日相列表，留空表示不限制。
-    solar-phases: []
-    # 悬赏生效的天气列表，留空表示不限制。
-    weather: []
-    # 完成悬赏奖励的经验值。
-    reward-exp: 30
-    # 完成悬赏奖励的生态材料 ID 列表。
-    reward-materials: [pale_fiber]
-    # 完成后解锁的生态图鉴条目 ID。
-    codex-entry: river_walk
-  # 洞穴回声：上弦月或下弦月探索洞穴群系即可完成。
-  cave_echo:
-    # 显示名称。
-    display-name: "洞穴回声"
-    # 悬赏目标类型。
-    objective: VISIT_BIOME
-    # 悬赏匹配目标列表。
-    targets: [DRIPSTONE_CAVES, LUSH_CAVES]
-    # 悬赏生效的月相列表。
-    moon-phases: [FIRST_QUARTER, LAST_QUARTER]
-    # 悬赏生效的日相列表，留空表示不限制。
-    solar-phases: []
-    # 悬赏生效的天气列表，留空表示不限制。
-    weather: []
-    # 完成悬赏奖励的经验值。
-    reward-exp: 36
-    # 完成悬赏奖励的生态材料 ID 列表。
-    reward-materials: [dawn_dew]
-    # 完成后解锁的生态图鉴条目 ID。
-    codex-entry: cave_echo
-  # 满月清剿：满月夜击败原版僵尸即可完成。
-  fullmoon_zombie_pack:
-    # 显示名称。
-    display-name: "满月清剿"
-    # 悬赏目标类型。
+# 材料掉落配置根节点；所有规则都是事件驱动，不做全图扫描。
+material-drops:
+  # 新月夜蛛会小概率掉落影尘。
+  newmoon_spider_shadow_dust:
+    # 规则显示名。
+    display-name: "新月夜蛛影尘"
+    # 触发类型：击杀原版实体。
     objective: KILL_ENTITY
-    # 悬赏匹配目标列表。
-    targets: [ZOMBIE]
-    # 悬赏生效的月相列表。
-    moon-phases: [FULL_MOON]
-    # 悬赏生效的日相列表。
-    solar-phases: [NIGHT, MIDNIGHT]
-    # 悬赏生效的天气列表，留空表示不限制。
-    weather: []
-    # 完成悬赏奖励的经验值。
-    reward-exp: 40
-    # 完成悬赏奖励的生态材料 ID 列表。
-    reward-materials: [moonlit_seed]
-    # 完成后解锁的生态图鉴条目 ID。
-    codex-entry: fullmoon_zombie_pack
-  # 新月蛛影：新月午夜击败蜘蛛即可完成。
-  newmoon_night_spider:
-    # 显示名称。
-    display-name: "新月蛛影"
-    # 悬赏目标类型。
-    objective: KILL_ENTITY
-    # 悬赏匹配目标列表。
-    targets: [SPIDER]
-    # 悬赏生效的月相列表。
+    # 匹配的实体类型。
+    targets: [SPIDER, CAVE_SPIDER]
+    # 生效世界。
+    worlds: [world]
+    # 生效群系，留空表示不限制。
+    biomes: []
+    # 生效月相。
     moon-phases: [NEW_MOON]
-    # 悬赏生效的日相列表。
-    solar-phases: [MIDNIGHT]
-    # 悬赏生效的天气列表，留空表示不限制。
-    weather: []
-    # 完成悬赏奖励的经验值。
-    reward-exp: 40
-    # 完成悬赏奖励的生态材料 ID 列表。
-    reward-materials: [shadow_dust]
-    # 完成后解锁的生态图鉴条目 ID。
-    codex-entry: newmoon_night_spider
-  # 雷雨巡猎：雷雨夜击败骷髅即可完成。
-  thunder_skeleton_patrol:
-    # 显示名称。
-    display-name: "雷雨巡猎"
-    # 悬赏目标类型。
-    objective: KILL_ENTITY
-    # 悬赏匹配目标列表。
-    targets: [SKELETON]
-    # 悬赏生效的月相列表，留空表示不限制。
-    moon-phases: []
-    # 悬赏生效的日相列表。
+    # 生效日相。
     solar-phases: [NIGHT, MIDNIGHT]
-    # 悬赏生效的天气列表。
+    # 生效天气。
+    weather: [CLEAR, RAIN, THUNDER]
+    # 是否必须在荒野。
+    wilderness-only: true
+    # 是否要求地下，留空表示不限制。
+    underground: false
+    # 是否要求在水中，留空表示不限制。
+    in-water: false
+    # 是否要求潜行，留空表示不限制。
+    sneaking: false
+    # 掉落概率，保守默认避免刷材料。
+    chance: 0.10
+    # 单次给出的材料数量范围。
+    amount: [1, 1]
+    # 掉落的生态材料 ID。
+    reward-materials: [shadow_dust]
+    # 同一玩家同一规则冷却 tick。
+    cooldown: 80
+    # 规则优先级。
+    priority: 40
+  # 新月或残月在暗色采集路线中产出影尘。
+  dark_forest_shadow_gather:
+    # 规则显示名。
+    display-name: "暗林影尘采集"
+    # 触发类型：破坏方块。
+    objective: BREAK_BLOCK
+    # 匹配的方块类型。
+    targets: [BROWN_MUSHROOM, RED_MUSHROOM, COBWEB, VINE, CAVE_VINES]
+    # 生效世界。
+    worlds: [world]
+    # 生效群系。
+    biomes: [DARK_FOREST, SWAMP, MANGROVE_SWAMP]
+    # 生效月相。
+    moon-phases: [NEW_MOON, WANING_CRESCENT]
+    # 生效日相。
+    solar-phases: [DUSK, NIGHT, MIDNIGHT]
+    # 生效天气。
+    weather: [CLEAR, RAIN, THUNDER]
+    # 是否必须在荒野。
+    wilderness-only: true
+    # 是否要求地下，留空表示不限制。
+    underground: false
+    # 是否要求在水中，留空表示不限制。
+    in-water: false
+    # 是否要求潜行，留空表示不限制。
+    sneaking: false
+    # 掉落概率。
+    chance: 0.06
+    # 单次给出的材料数量范围。
+    amount: [1, 1]
+    # 掉落的生态材料 ID。
+    reward-materials: [shadow_dust]
+    # 同一玩家同一规则冷却 tick。
+    cooldown: 100
+    # 规则优先级。
+    priority: 30
+  # 满月和盈凸月成熟作物小概率产出月露种子。
+  moonlit_harvest_seed:
+    # 规则显示名。
+    display-name: "月露成熟收获"
+    # 触发类型：收获成熟 Ageable 作物。
+    objective: HARVEST_CROP
+    # 匹配的作物方块类型。
+    targets: [WHEAT, CARROTS, POTATOES, BEETROOTS]
+    # 生效世界。
+    worlds: [world]
+    # 生效群系，留空表示不限制。
+    biomes: []
+    # 生效月相。
+    moon-phases: [FULL_MOON, WAXING_GIBBOUS]
+    # 生效日相。
+    solar-phases: [DAWN, DAY, DUSK, NIGHT]
+    # 生效天气。
+    weather: [CLEAR, RAIN]
+    # 是否必须在荒野。
+    wilderness-only: false
+    # 是否要求地下，留空表示不限制。
+    underground: false
+    # 是否要求在水中，留空表示不限制。
+    in-water: false
+    # 是否要求潜行，留空表示不限制。
+    sneaking: false
+    # 掉落概率。
+    chance: 0.045
+    # 单次给出的材料数量范围。
+    amount: [1, 1]
+    # 掉落的生态材料 ID。
+    reward-materials: [moonlit_seed]
+    # 同一玩家同一规则冷却 tick。
+    cooldown: 60
+    # 规则优先级。
+    priority: 35
+  # 雨天河岸采集甘蔗、蘑菇和海带时小概率获得月露种子。
+  rain_riverside_moonlit_seed:
+    # 规则显示名。
+    display-name: "雨天河岸月露"
+    # 触发类型：破坏方块。
+    objective: BREAK_BLOCK
+    # 匹配的方块类型。
+    targets: [SUGAR_CANE, BROWN_MUSHROOM, RED_MUSHROOM, KELP, SEAGRASS]
+    # 生效世界。
+    worlds: [world]
+    # 生效群系。
+    biomes: [RIVER, BEACH, SWAMP, MANGROVE_SWAMP, OCEAN, DEEP_OCEAN]
+    # 生效月相，留空表示不限制。
+    moon-phases: []
+    # 生效日相。
+    solar-phases: [DAY, DUSK]
+    # 生效天气。
+    weather: [RAIN]
+    # 是否必须在荒野。
+    wilderness-only: true
+    # 是否要求地下，留空表示不限制。
+    underground: false
+    # 是否要求潜行，留空表示不限制。
+    sneaking: false
+    # 掉落概率。
+    chance: 0.035
+    # 单次给出的材料数量范围。
+    amount: [1, 1]
+    # 掉落的生态材料 ID。
+    reward-materials: [moonlit_seed]
+    # 同一玩家同一规则冷却 tick。
+    cooldown: 120
+    # 规则优先级。
+    priority: 25
+  # 雨天钓鱼小概率获得月露种子，强化雨天原版钓鱼价值。
+  rain_fishing_moonlit_seed:
+    # 规则显示名。
+    display-name: "雨钓月露"
+    # 触发类型：钓鱼成功。
+    objective: FISH
+    # 匹配钓到的物品类型，留空表示任意有效钓获。
+    targets: []
+    # 生效世界。
+    worlds: [world]
+    # 生效群系。
+    biomes: [RIVER, BEACH, OCEAN, DEEP_OCEAN, COLD_OCEAN, LUKEWARM_OCEAN, WARM_OCEAN]
+    # 生效月相，留空表示不限制。
+    moon-phases: []
+    # 生效日相。
+    solar-phases: [DAY, DUSK, NIGHT]
+    # 生效天气。
+    weather: [RAIN]
+    # 是否必须在荒野。
+    wilderness-only: false
+    # 是否要求地下，留空表示不限制。
+    underground: false
+    # 是否要求潜行，留空表示不限制。
+    sneaking: false
+    # 掉落概率。
+    chance: 0.04
+    # 单次给出的材料数量范围。
+    amount: [1, 1]
+    # 掉落的生态材料 ID。
+    reward-materials: [moonlit_seed]
+    # 同一玩家同一规则冷却 tick。
+    cooldown: 220
+    # 规则优先级。
+    priority: 30
+  # 满月夜钓鱼小概率获得月露种子。
+  fullmoon_fishing_moonlit_seed:
+    # 规则显示名。
+    display-name: "满月夜钓月露"
+    # 触发类型：钓鱼成功。
+    objective: FISH
+    # 匹配钓到的物品类型，留空表示任意有效钓获。
+    targets: []
+    # 生效世界。
+    worlds: [world]
+    # 生效群系。
+    biomes: [RIVER, BEACH, OCEAN, DEEP_OCEAN, COLD_OCEAN, LUKEWARM_OCEAN, WARM_OCEAN]
+    # 生效月相。
+    moon-phases: [FULL_MOON]
+    # 生效日相。
+    solar-phases: [NIGHT, MIDNIGHT]
+    # 生效天气。
+    weather: [CLEAR, RAIN]
+    # 是否必须在荒野。
+    wilderness-only: false
+    # 是否要求地下，留空表示不限制。
+    underground: false
+    # 是否要求潜行，留空表示不限制。
+    sneaking: false
+    # 掉落概率。
+    chance: 0.035
+    # 单次给出的材料数量范围。
+    amount: [1, 1]
+    # 掉落的生态材料 ID。
+    reward-materials: [moonlit_seed]
+    # 同一玩家同一规则冷却 tick。
+    cooldown: 220
+    # 规则优先级。
+    priority: 32
+  # 雷雨夜骷髅小概率掉落雷骨碎片。
+  thunder_skeleton_stormbone:
+    # 规则显示名。
+    display-name: "雷雨骷髅雷骨"
+    # 触发类型：击杀原版实体。
+    objective: KILL_ENTITY
+    # 匹配的实体类型。
+    targets: [SKELETON, STRAY]
+    # 生效世界。
+    worlds: [world]
+    # 生效群系，留空表示不限制。
+    biomes: []
+    # 生效月相，留空表示不限制。
+    moon-phases: []
+    # 生效日相。
+    solar-phases: [NIGHT, MIDNIGHT]
+    # 生效天气。
     weather: [THUNDER]
-    # 完成悬赏奖励的经验值。
-    reward-exp: 45
-    # 完成悬赏奖励的生态材料 ID 列表。
-    reward-materials: [storm_shard]
-    # 完成后解锁的生态图鉴条目 ID。
-    codex-entry: thunder_skeleton_patrol
+    # 是否必须在荒野。
+    wilderness-only: true
+    # 是否要求地下，留空表示不限制。
+    underground: false
+    # 是否要求在水中，留空表示不限制。
+    in-water: false
+    # 是否要求潜行，留空表示不限制。
+    sneaking: false
+    # 掉落概率。
+    chance: 0.12
+    # 单次给出的材料数量范围。
+    amount: [1, 1]
+    # 掉落的生态材料 ID。
+    reward-materials: [stormbone_fragment]
+    # 同一玩家同一规则冷却 tick。
+    cooldown: 100
+    # 规则优先级。
+    priority: 45
+  # 雷雨时挖掘铜矿脉小概率获得雷骨碎片，给风暴下矿一点辨识度。
+  thunder_copper_stormbone:
+    # 规则显示名。
+    display-name: "雷雨铜脉雷骨"
+    # 触发类型：破坏方块。
+    objective: BREAK_BLOCK
+    # 匹配的矿石方块类型。
+    targets: [COPPER_ORE, DEEPSLATE_COPPER_ORE]
+    # 生效世界。
+    worlds: [world]
+    # 生效群系，留空表示不限制。
+    biomes: []
+    # 生效月相，留空表示不限制。
+    moon-phases: []
+    # 生效日相。
+    solar-phases: [DAY, DUSK, NIGHT, MIDNIGHT]
+    # 生效天气。
+    weather: [THUNDER]
+    # 是否必须在荒野。
+    wilderness-only: false
+    # 是否要求地下，留空表示不限制。
+    underground: true
+    # 是否要求在水中，留空表示不限制。
+    in-water: false
+    # 是否要求潜行，留空表示不限制。
+    sneaking: false
+    # 掉落概率。
+    chance: 0.025
+    # 单次给出的材料数量范围。
+    amount: [1, 1]
+    # 掉落的生态材料 ID。
+    reward-materials: [stormbone_fragment]
+    # 同一玩家同一规则冷却 tick。
+    cooldown: 160
+    # 规则优先级。
+    priority: 28
 
-# 祭坛收集目标配置根节点。
+# 轻量祭坛配置根节点；默认只提供一次性辅助用途，不做大型事件。
 altars:
-  # 月相收集盆：轻量收集目标，不启动大规模事件。
-  cycle_collection_basin:
-    # 显示名称。
-    display-name: "月相收集盆"
-    # 祭坛使用的方块材质。
-    block: AMETHYST_BLOCK
-    # 兼容旧版的消耗材质。
-    cost: GLOWSTONE_DUST
-    # 单次触发需要消耗的物品数量。
-    cost-amount: 3
-    # 启动祭坛需要匹配的自定义物品。
+  # 影尘灯盏：夜晚用影尘换取短时夜视，服务夜间跑图。
+  shadow_lantern:
+    # 祭坛显示名。
+    display-name: "影尘灯盏"
+    # 祭坛方块，玩家右键该方块触发。
+    block: SOUL_LANTERN
+    # 兼容旧配置的基础消耗材质。
+    cost: GUNPOWDER
+    # 单次触发消耗数量。
+    cost-amount: 1
+    # 需要匹配的自定义材料物品。
     cost-item:
-      # 祭坛消耗物的基础材质。
-      material: GLOWSTONE_DUST
-      # 祭坛消耗物的显示名。
-      display-name: "<#FDBA74>黎明露珠"
-      # 祭坛消耗物的 lore。
+      # 消耗物基础材质。
+      material: GUNPOWDER
+      # 消耗物显示名。
+      display-name: "<#9CA3AF>影尘"
+      # 消耗物 lore。
       lore:
         # lore 第一行。
-        - "<#A7F3D0>月息轻生态材料"
+        - "<#A7F3D0>Moonlife 轻生态材料"
         # lore 第二行。
-        - "<#94A3B8>来源：黎明结算与探索悬赏"
-      # 祭坛消耗物的 custom-model-data。
+        - "<#94A3B8>来源：新月夜行与暗处采集"
+        # lore 第三行。
+        - "<#64748B>用途：夜视小祭坛 / 潜行辅助 / 暗色装饰"
+      # 消耗物 custom-model-data。
       custom-model-data: 1001
-      # 祭坛消耗物必须拥有的 NBT / PDC 标签。
+      # 消耗物 NBT / PDC 标签。
       nbt:
         # 必须匹配的 Moonlife 物品 ID。
-        "moonlife:item_id": dawn_dew
-      # 祭坛消耗物匹配策略。
+        "moonlife:item_id": shadow_dust
+      # 消耗物匹配策略。
       match:
         # 是否匹配显示名。
         display-name: true
@@ -383,185 +435,350 @@ altars:
         custom-model-data: true
         # 是否匹配 NBT / PDC 标签。
         nbt: true
-        # 显示名匹配模式：EXACT、PLAIN_EQUALS、PLAIN_CONTAINS、DISABLED。
+        # 显示名匹配模式。
         name-mode: EXACT
-    # 规则直接绑定的月相列表，留空表示不限制。
-    moon-phases: []
-    # 规则直接绑定的日相列表。
-    solar-phases: [DAWN, DAY]
-    # 规则生效的天气列表，留空表示不限制。
+    # 生效月相。
+    moon-phases: [NEW_MOON, WANING_CRESCENT]
+    # 生效日相。
+    solar-phases: [NIGHT, MIDNIGHT]
+    # 生效天气，留空表示不限制。
     weather: []
-    # 触发的生态事件 ID，留空表示只做收集结算。
+    # 触发的临时生态事件，留空表示不触发事件。
     event-id: ''
-    # 祭坛事件持续时间，单位为分钟。
+    # 事件持续分钟，未使用事件时可保持默认。
     event-minutes: 1
-    # 祭坛事件倍率。
+    # 事件倍率，未使用事件时可保持 1.0。
     event-multiplier: 1.0
-    # 完成收集目标奖励的经验值。
-    reward-exp: 80
-    # 完成收集目标奖励的生态材料 ID 列表。
-    reward-materials: [cycle_badge]
-    # 完成后解锁的生态图鉴条目 ID。
-    codex-entry: cycle_basin
-
-# 生态热点小地点配置根节点。
-hotspots:
-  # 出生林地：围绕世界出生点的小型探索热点。
-  spawn_grove:
-    # 显示名称。
-    display-name: "出生林地"
-    # 规则生效的世界列表。
-    worlds: [world]
-    # 规则生效的群系列表，留空表示不限制。
-    biomes: [PLAINS, FOREST, CHERRY_GROVE]
-    # 热点中心配置。
-    center:
-      # 中心模式，SPAWN 表示使用世界出生点。
-      mode: SPAWN
-      # 坐标模式下使用的 X 坐标。
-      x: 0.0
-      # 坐标模式下使用的 Y 坐标。
-      y: 64.0
-      # 坐标模式下使用的 Z 坐标。
-      z: 0.0
-      # 是否把 Y 轴纳入距离计算。
-      use-y: false
-    # 热点半径。
-    radius: 128.0
-    # 规则直接绑定的月相列表。
-    moon-phases: [WAXING_CRESCENT, WAXING_GIBBOUS]
-    # 规则直接绑定的日相列表，留空表示不限制。
-    solar-phases: []
-    # 规则生效的天气列表，留空表示不限制。
-    weather: []
-    # 热点或事件倍率。
-    multiplier: 1.1
-  # 河雾带：河流和沼泽形成的采集热点。
-  river_mist:
-    # 显示名称。
-    display-name: "河雾带"
-    # 规则生效的世界列表。
-    worlds: [world]
-    # 规则生效的群系列表。
-    biomes: [RIVER, SWAMP, MANGROVE_SWAMP]
-    # 热点中心配置，留空表示按群系生效。
-    center: {}
-    # 热点半径，中心留空时该值不参与判断。
-    radius: 0.0
-    # 规则直接绑定的月相列表。
-    moon-phases: [WANING_GIBBOUS, WANING_CRESCENT]
-    # 规则直接绑定的日相列表，留空表示不限制。
-    solar-phases: []
-    # 规则生效的天气列表，留空表示不限制。
+    # 触发奖励经验。
+    reward-exp: 8
+    # 触发奖励材料。
+    reward-materials: []
+    # 可选图鉴条目，留空表示不写入图鉴。
+    codex-entry: ''
+    # 给予玩家的短时效果。
+    potion-effects:
+      # 夜视效果。
+      night_vision:
+        # 药水类型。
+        type: NIGHT_VISION
+        # 药水等级，从 0 开始。
+        amplifier: 0
+        # 持续 tick。
+        duration-ticks: 900
+        # 是否为环境效果。
+        ambient: true
+        # 是否显示粒子。
+        particles: false
+        # 是否显示图标。
+        icon: true
+    # 视觉效果，NONE / LIGHTNING / SMOKE。
+    visual-effect: NONE
+  # 月露堆肥台：用月露种子换取短时恢复，作为农业材料轻用途。
+  moonlit_composter:
+    # 祭坛显示名。
+    display-name: "月露堆肥台"
+    # 祭坛方块，玩家右键该方块触发。
+    block: COMPOSTER
+    # 兼容旧配置的基础消耗材质。
+    cost: WHEAT_SEEDS
+    # 单次触发消耗数量。
+    cost-amount: 2
+    # 需要匹配的自定义材料物品。
+    cost-item:
+      # 消耗物基础材质。
+      material: WHEAT_SEEDS
+      # 消耗物显示名。
+      display-name: "<#C4B5FD>月露种子"
+      # 消耗物 lore。
+      lore:
+        # lore 第一行。
+        - "<#A7F3D0>Moonlife 轻生态材料"
+        # lore 第二行。
+        - "<#94A3B8>来源：满月收获、雨天钓鱼和农田照料"
+        # lore 第三行。
+        - "<#64748B>用途：轻农业祭坛 / 肥料感配方 / 食物拓展"
+      # 消耗物 custom-model-data。
+      custom-model-data: 1002
+      # 消耗物 NBT / PDC 标签。
+      nbt:
+        # 必须匹配的 Moonlife 物品 ID。
+        "moonlife:item_id": moonlit_seed
+      # 消耗物匹配策略。
+      match:
+        # 是否匹配显示名。
+        display-name: true
+        # 是否匹配完整 lore。
+        lore: false
+        # 是否匹配 custom-model-data。
+        custom-model-data: true
+        # 是否匹配 NBT / PDC 标签。
+        nbt: true
+        # 显示名匹配模式。
+        name-mode: EXACT
+    # 生效月相，留空表示不限制。
+    moon-phases: []
+    # 生效日相。
+    solar-phases: [DAWN, DAY, DUSK]
+    # 生效天气，留空表示不限制。
     weather: [CLEAR, RAIN]
-    # 热点或事件倍率。
-    multiplier: 1.12
-  # 旧矿回声：洞穴群系中的探索热点。
-  old_mine_echo:
-    # 显示名称。
-    display-name: "旧矿回声"
-    # 规则生效的世界列表。
+    # 触发的临时生态事件，留空表示不触发事件。
+    event-id: ''
+    # 事件持续分钟，未使用事件时可保持默认。
+    event-minutes: 1
+    # 事件倍率，未使用事件时可保持 1.0。
+    event-multiplier: 1.0
+    # 触发奖励经验。
+    reward-exp: 12
+    # 触发奖励材料。
+    reward-materials: []
+    # 可选图鉴条目，留空表示不写入图鉴。
+    codex-entry: ''
+    # 给予玩家的短时效果。
+    potion-effects:
+      # 短时生命恢复。
+      regeneration:
+        # 药水类型。
+        type: REGENERATION
+        # 药水等级，从 0 开始。
+        amplifier: 0
+        # 持续 tick。
+        duration-ticks: 120
+        # 是否为环境效果。
+        ambient: true
+        # 是否显示粒子。
+        particles: false
+        # 是否显示图标。
+        icon: true
+    # 视觉效果，NONE / LIGHTNING / SMOKE。
+    visual-effect: NONE
+  # 雷骨避雷针：雷雨夜用雷骨碎片换取短时抗性，服务风险探索。
+  stormbone_rod:
+    # 祭坛显示名。
+    display-name: "雷骨避雷针"
+    # 祭坛方块，玩家右键该方块触发。
+    block: LIGHTNING_ROD
+    # 兼容旧配置的基础消耗材质。
+    cost: BONE
+    # 单次触发消耗数量。
+    cost-amount: 1
+    # 需要匹配的自定义材料物品。
+    cost-item:
+      # 消耗物基础材质。
+      material: BONE
+      # 消耗物显示名。
+      display-name: "<#93C5FD>雷骨碎片"
+      # 消耗物 lore。
+      lore:
+        # lore 第一行。
+        - "<#A7F3D0>Moonlife 轻生态材料"
+        # lore 第二行。
+        - "<#94A3B8>来源：雷暴夜战斗与铜矿脉探索"
+        # lore 第三行。
+        - "<#64748B>用途：雷暴小祭坛 / 风险探索辅助 / 装饰"
+      # 消耗物 custom-model-data。
+      custom-model-data: 1003
+      # 消耗物 NBT / PDC 标签。
+      nbt:
+        # 必须匹配的 Moonlife 物品 ID。
+        "moonlife:item_id": stormbone_fragment
+      # 消耗物匹配策略。
+      match:
+        # 是否匹配显示名。
+        display-name: true
+        # 是否匹配完整 lore。
+        lore: false
+        # 是否匹配 custom-model-data。
+        custom-model-data: true
+        # 是否匹配 NBT / PDC 标签。
+        nbt: true
+        # 显示名匹配模式。
+        name-mode: EXACT
+    # 生效月相，留空表示不限制。
+    moon-phases: []
+    # 生效日相。
+    solar-phases: [NIGHT, MIDNIGHT]
+    # 生效天气。
+    weather: [THUNDER]
+    # 触发的临时生态事件，留空表示不触发事件。
+    event-id: ''
+    # 事件持续分钟，未使用事件时可保持默认。
+    event-minutes: 1
+    # 事件倍率，未使用事件时可保持 1.0。
+    event-multiplier: 1.0
+    # 触发奖励经验。
+    reward-exp: 10
+    # 触发奖励材料。
+    reward-materials: []
+    # 可选图鉴条目，留空表示不写入图鉴。
+    codex-entry: ''
+    # 给予玩家的短时效果。
+    potion-effects:
+      # 短时抗性。
+      resistance:
+        # 药水类型。
+        type: RESISTANCE
+        # 药水等级，从 0 开始。
+        amplifier: 0
+        # 持续 tick。
+        duration-ticks: 400
+        # 是否为环境效果。
+        ambient: true
+        # 是否显示粒子。
+        particles: false
+        # 是否显示图标。
+        icon: true
+      # 短时移速。
+      speed:
+        # 药水类型。
+        type: SPEED
+        # 药水等级，从 0 开始。
+        amplifier: 0
+        # 持续 tick。
+        duration-ticks: 400
+        # 是否为环境效果。
+        ambient: true
+        # 是否显示粒子。
+        particles: false
+        # 是否显示图标。
+        icon: true
+    # 视觉效果，NONE / LIGHTNING / SMOKE。
+    visual-effect: LIGHTNING
+
+# 生态热点小地点配置根节点；热点只轻微影响危险感和信息展示。
+hotspots:
+  # 林地小径：适合峨眉月和亏凸月跑图采集。
+  forest_trail:
+    # 热点显示名。
+    display-name: "林地小径"
+    # 生效世界。
     worlds: [world]
-    # 规则生效的群系列表。
-    biomes: [DRIPSTONE_CAVES, LUSH_CAVES]
+    # 生效群系。
+    biomes: [FOREST, FLOWER_FOREST, BIRCH_FOREST, OLD_GROWTH_BIRCH_FOREST, CHERRY_GROVE]
     # 热点中心配置，留空表示按群系生效。
     center: {}
-    # 热点半径，中心留空时该值不参与判断。
+    # 热点半径，中心留空时不参与判断。
     radius: 0.0
-    # 规则直接绑定的月相列表。
+    # 生效月相。
+    moon-phases: [WAXING_CRESCENT, WANING_GIBBOUS]
+    # 生效日相。
+    solar-phases: [DAY, DUSK]
+    # 生效天气。
+    weather: [CLEAR, RAIN]
+    # 热点倍率，保守值只用于轻微危险和预览。
+    multiplier: 1.07
+  # 河口湿地：雨天钓鱼和河岸采集更有辨识度。
+  river_mouth:
+    # 热点显示名。
+    display-name: "河口湿地"
+    # 生效世界。
+    worlds: [world]
+    # 生效群系。
+    biomes: [RIVER, BEACH, SWAMP, MANGROVE_SWAMP, OCEAN, DEEP_OCEAN]
+    # 热点中心配置，留空表示按群系生效。
+    center: {}
+    # 热点半径，中心留空时不参与判断。
+    radius: 0.0
+    # 生效月相。
+    moon-phases: [FULL_MOON, WANING_GIBBOUS]
+    # 生效日相。
+    solar-phases: [DAY, DUSK, NIGHT]
+    # 生效天气。
+    weather: [RAIN]
+    # 热点倍率，保守值只用于轻微危险和预览。
+    multiplier: 1.08
+  # 暗沼边缘：新月和残月的夜间暗处采集热点。
+  dark_swamp_edge:
+    # 热点显示名。
+    display-name: "暗沼边缘"
+    # 生效世界。
+    worlds: [world]
+    # 生效群系。
+    biomes: [DARK_FOREST, SWAMP, MANGROVE_SWAMP]
+    # 热点中心配置，留空表示按群系生效。
+    center: {}
+    # 热点半径，中心留空时不参与判断。
+    radius: 0.0
+    # 生效月相。
+    moon-phases: [NEW_MOON, WANING_CRESCENT]
+    # 生效日相。
+    solar-phases: [DUSK, NIGHT, MIDNIGHT]
+    # 生效天气。
+    weather: [CLEAR, RAIN, THUNDER]
+    # 热点倍率，保守值只用于轻微危险和预览。
+    multiplier: 1.10
+  # 洞穴回声：上弦月和下弦月下矿的轻提示热点。
+  cave_echo:
+    # 热点显示名。
+    display-name: "洞穴回声"
+    # 生效世界。
+    worlds: [world]
+    # 生效群系。
+    biomes: [DRIPSTONE_CAVES, LUSH_CAVES, DEEP_DARK]
+    # 热点中心配置，留空表示按群系生效。
+    center: {}
+    # 热点半径，中心留空时不参与判断。
+    radius: 0.0
+    # 生效月相。
     moon-phases: [FIRST_QUARTER, LAST_QUARTER]
-    # 规则直接绑定的日相列表，留空表示不限制。
+    # 生效日相，留空表示不限制。
     solar-phases: []
-    # 规则生效的天气列表，留空表示不限制。
+    # 生效天气，留空表示不限制。
     weather: []
-    # 热点或事件倍率。
-    multiplier: 1.15
+    # 热点倍率，保守值只用于轻微危险和预览。
+    multiplier: 1.08
+  # 风暴山脊：雷雨夜山地风险热点。
+  storm_ridge:
+    # 热点显示名。
+    display-name: "风暴山脊"
+    # 生效世界。
+    worlds: [world]
+    # 生效群系。
+    biomes: [MEADOW, WINDSWEPT_HILLS, JAGGED_PEAKS, STONY_PEAKS]
+    # 热点中心配置，留空表示按群系生效。
+    center: {}
+    # 热点半径，中心留空时不参与判断。
+    radius: 0.0
+    # 生效月相，留空表示不限制。
+    moon-phases: []
+    # 生效日相。
+    solar-phases: [NIGHT, MIDNIGHT]
+    # 生效天气。
+    weather: [THUNDER]
+    # 热点倍率，保守值只用于轻微危险和预览。
+    multiplier: 1.12
 
-# 月相成就线配置根节点。
-achievements:
-  # 初识月息：完成一次黎明结算和一次晴天丰收。
-  first_cycle_steps:
-    # 显示名称。
-    display-name: "初识月息"
-    # 需要解锁的图鉴条目。
-    required-codex: [dawn_settlement, sunny_harvest]
-    # 成就奖励经验。
-    reward-exp: 60
-    # 成就奖励材料。
-    reward-materials: [dawn_dew]
-    # 成就对应称号文本。
-    title: "观月者"
-  # 荒野观察员：完成三类探索图鉴。
-  wilderness_observer:
-    # 显示名称。
-    display-name: "荒野观察员"
-    # 需要解锁的图鉴条目。
-    required-codex: [grove_path, river_walk, cave_echo]
-    # 成就奖励经验。
-    reward-exp: 100
-    # 成就奖励材料。
-    reward-materials: [cycle_badge]
-    # 成就对应称号文本。
-    title: "荒野观察员"
-  # 夜行生还者：完成三类夜间生态图鉴。
-  night_survivor:
-    # 显示名称。
-    display-name: "夜行生还者"
-    # 需要解锁的图鉴条目。
-    required-codex: [fullmoon_zombie_pack, newmoon_night_spider, thunder_skeleton_patrol]
-    # 成就奖励经验。
-    reward-exp: 140
-    # 成就奖励材料。
-    reward-materials: [cycle_badge]
-    # 成就对应称号文本。
-    title: "夜行生还者"
-  # 月相收集者：完成月相收集盆图鉴。
-  cycle_collector:
-    # 显示名称。
-    display-name: "月相收集者"
-    # 需要解锁的图鉴条目。
-    required-codex: [cycle_basin]
-    # 成就奖励经验。
-    reward-exp: 120
-    # 成就奖励材料。
-    reward-materials: [cycle_badge]
-    # 成就对应称号文本。
-    title: "月相收集者"
+# 悬赏配置根节点；默认不把悬赏作为主线，服主可自行添加。
+bounties: {}
 
-# 临时生态事件配置根节点，轻生态默认不主动启用。
+# 月相成就配置根节点；默认不启用复杂成就线。
+achievements: {}
+
+# 临时生态事件配置根节点；默认不主动启用大型事件。
 events: {}
 
-# 世界配置模板建议根节点。
+# 世界配置模板建议根节点，只作为 /ecology template 的说明文本。
 world-templates:
-  # 生存主世界轻生态建议。
+  # 生存主世界建议。
   survival:
-    # 列表项：该列表中的一个配置值。
-    - "world: 使用原版怪物、作物成长、轻量玩家状态和出生林地热点"
-    # 列表项：该列表中的一个配置值。
-    - "monsters: 满月僵尸群 / 新月夜蛛 / 雷雨骷髅巡游"
-    # 列表项：该列表中的一个配置值。
-    - "bounties: 支持原版击杀、作物收获和群系探索"
-  # 资源世界轻生态建议。
+    # 模板建议第一行。
+    - "主世界：保留原版怪物、轻作物偏好、雨钓、洞穴和野外采集热点。"
+    # 模板建议第二行。
+    - "推荐默认值：倍率不超过 1.25，材料掉落概率多数低于 5%。"
+  # 资源世界建议。
   resource:
-    # 列表项：该列表中的一个配置值。
-    - "resource_world: 可复制 survival 模板并提高资源群系热点倍率"
-    # 列表项：该列表中的一个配置值。
-    - "建议扩大 spawn.spawn-radius.max，但保留世界与区块上限"
-  # 下界轻生态建议。
-  nether:
-    # 列表项：该列表中的一个配置值。
-    - "world_nether: 默认只保留满月地狱疣作物规则"
-    # 列表项：该列表中的一个配置值。
-    - "如需下界怪物生态，可单独新增 VANILLA 规则并绑定下界世界"
-  # 农业服模板建议。
+    # 模板建议第一行。
+    - "资源世界：可以复制主世界规则，但提高材料冷却，避免刷资源。"
+    # 模板建议第二行。
+    - "建议扩大 spawn.spawn-radius.max，同时保持 world-limit 和 chunk-limit。"
+  # 农业服建议。
   farming:
-    # 列表项：该列表中的一个配置值。
-    - "提高 sunny_day_growth 与 waxing_gibbous_growth 的额外收获概率"
-    # 列表项：该列表中的一个配置值。
-    - "保留黎明结算，但降低夜间怪物权重"
-  # 探索服模板建议。
+    # 模板建议第一行。
+    - "农业服：优先调整 crops.yml 的作物差异，不建议直接大幅提高掉落。"
+    # 模板建议第二行。
+    - "月露种子可作为轻肥料和农产品兑换材料。"
+  # 探索服建议。
   exploration:
-    # 列表项：该列表中的一个配置值。
-    - "增加 VISIT_BIOME 类型悬赏，并给每个资源群系配置热点"
-    # 列表项：该列表中的一个配置值。
-    - "把 /ecology codex 作为长期探索目标入口"
+    # 模板建议第一行。
+    - "探索服：增加 hotspots 与 material-drops，而不是增加主线任务。"
+    # 模板建议第二行。
+    - "让森林、河口、洞穴、山地在不同天气和月相下略有差异。"

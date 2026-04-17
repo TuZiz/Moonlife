@@ -101,9 +101,11 @@ data class PhaseAssignments(
     val moonBuffs: Map<String, Set<MoonPhase>> = emptyMap(),
     val moonAltars: Map<String, Set<MoonPhase>> = emptyMap(),
     val moonHotspots: Map<String, Set<MoonPhase>> = emptyMap(),
+    val moonMaterialDrops: Map<String, Set<MoonPhase>> = emptyMap(),
     val solarMonsters: Map<String, Set<SolarPhase>> = emptyMap(),
     val solarCrops: Map<String, Set<SolarPhase>> = emptyMap(),
     val solarBuffs: Map<String, Set<SolarPhase>> = emptyMap(),
     val solarAltars: Map<String, Set<SolarPhase>> = emptyMap(),
-    val solarHotspots: Map<String, Set<SolarPhase>> = emptyMap()
+    val solarHotspots: Map<String, Set<SolarPhase>> = emptyMap(),
+    val solarMaterialDrops: Map<String, Set<SolarPhase>> = emptyMap()
 )

@@ -5,7 +5,7 @@ version: '${version}'
 # 插件主类入口。
 main: ym.moonlife.Moonlife
 # 插件描述。
-description: 面向生存服的月相、日相与野外生态玩法系统。
+description: 原版生存增强型月相、日相与天气轻生态插件。
 # 目标运行 API 版本，不能高于服务器实际 Paper 版本。
 api-version: '26.1.1'
 # 插件作者列表。

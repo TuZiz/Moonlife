@@ -1,4 +1,4 @@
-# 黄昏：玩家获得采集、移动、经验和掉落收益。
+# 黄昏：服务野外采集、轻探索和返程前收益。
 enable: true
 # 显示名称。
 display-name: "黄昏"
@@ -8,35 +8,51 @@ time:
   start: 11500
   # 日相结束时间，使用 Minecraft 世界 tick。
   end: 13500
-# 该月相或日相启用的功能 ID 根节点。
+# 该日相启用的功能 ID 根节点。
 functions:
-  # 该相位启用的怪物规则 ID 列表。
+  # 黄昏启用的怪物规则。
   monsters: []
-  # 祭坛配置根节点。
-  altars: []
-  # 该相位启用的作物规则 ID 列表。
+  # 黄昏启用的小型祭坛。
+  altars:
+    # 月露堆肥台可在黄昏作为轻农业用途。
+    - moonlit_composter
+  # 黄昏启用的作物规则。
   crops: []
-  # 该相位启用的玩家状态规则 ID 列表。
+  # 黄昏启用的玩家状态规则。
   buffs:
-    # 列表项：该列表中的一个配置值。
+    # 黄昏野外采集轻收益。
     - dusk_forager
-  # 生态热点配置根节点。
-  hotspots: []
+    # 雨天河海边钓鱼幸运。
+    - rain_angling_luck
+  # 黄昏启用的生态热点。
+  hotspots:
+    # 林地小径适合返程前采集。
+    - forest_trail
+    # 河口湿地适合雨天采集。
+    - river_mouth
+    # 暗沼边缘开始进入夜间状态。
+    - dark_swamp_edge
+  # 黄昏启用的材料掉落规则。
+  material-drops:
+    # 雨天河岸采集获得月露种子。
+    - rain_riverside_moonlit_seed
+    # 雨天钓鱼获得月露种子。
+    - rain_fishing_moonlit_seed
+    # 新月或残月暗处采集获得影尘。
+    - dark_forest_shadow_gather
 # 该日相切换时的提示文本配置。
 messages:
-  # 是否公告该相位，轻生态中黄昏静默，收益可通过 /ecology info 查看。
+  # 是否公告该相位，黄昏默认静默，避免一天多次刷屏。
   announce: false
   # 日相变化广播提示。
-  broadcast: '<prefix><#F0ABFC>黄昏降临 ✦ <world> 的荒野采集收益开始上浮。'
+  broadcast: '<prefix><#F0ABFC>黄昏降临 ✦ 返程前的野外采集略微更划算。'
   # 日相变化 ActionBar 提示。
-  actionbar: '<#F0ABFC>☼ 当前日相：<#FFFFFF><phase></#FFFFFF>'
+  actionbar: '<#F0ABFC>黄昏</#F0ABFC> <#94A3B8>·</#94A3B8> <#FAE8FF>采集 / 返程 / 轻探索</#FAE8FF>'
   # 日相变化 Title 主标题。
   title: '<#F0ABFC>☼ <phase>'
   # 日相变化 Title 副标题。
-  subtitle: '<#FAE8FF>野外采集、经验、掉落与移速获得加成'
+  subtitle: '<#FAE8FF>野外采集和跑图略微更顺'
   # 日相变化 BossBar 提示。
-  bossbar: '<#F0ABFC>黄昏生态 ☼ <#FFFFFF><phase></#FFFFFF>'
-  # 功能提示列表，仅当本文件 functions 中配置了功能时发送。
-  features:
-    # 黄昏采集者提示。
-    - '<prefix><#FAE8FF>黄昏功能 ✦ 野外玩家获得采集、移动、经验与掉落收益。'
+  bossbar: '<#F0ABFC>黄昏 ☼ <#FFFFFF><phase></#FFFFFF>'
+  # 附加功能提示，默认不额外广播。
+  features: []
