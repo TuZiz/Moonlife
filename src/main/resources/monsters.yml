@@ -14,8 +14,6 @@ rules:
     vanilla-entity: ZOMBIE
     # MythicMobs 内部怪物名。
     mythic-mob-id: FullMoonZombieKnight
-    # 玩家可见的 MythicMobs 怪物中文名，不影响 MythicMobs 内部名。
-    target-display-name: "满月僵尸骑士"
     # 规则生效的世界列表，留空表示不限制。
     worlds: [world]
     # 规则生效的群系列表，留空表示不限制。
@@ -77,8 +75,6 @@ rules:
     vanilla-entity: ZOMBIE
     # MythicMobs 内部怪物名。
     mythic-mob-id: ShadowBeast
-    # 玩家可见的 MythicMobs 怪物中文名，不影响 MythicMobs 内部名。
-    target-display-name: "新月影兽"
     # 规则生效的世界列表，留空表示不限制。
     worlds: [world]
     # 规则生效的群系列表，留空表示不限制。
@@ -136,8 +132,6 @@ rules:
     vanilla-entity: SKELETON
     # MythicMobs 内部怪物名。
     mythic-mob-id: StormboneRaider
-    # 玩家可见的 MythicMobs 怪物中文名，不影响 MythicMobs 内部名。
-    target-display-name: "雷骨袭击者"
     # 规则生效的世界列表，留空表示不限制。
     worlds: [world]
     # 规则生效的群系列表，留空表示不限制。

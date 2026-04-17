@@ -78,13 +78,13 @@ class MoonlifePlaceholderExpansion(
         spawnService.preview(this).joinToString("、") { it.displayName }
 
     private fun Player.spawnTargetsText(): String =
-        spawnService.preview(this).joinToString("、") { it.targetDisplayName }
+        spawnService.preview(this).joinToString("、") { it.target.key }
 
     private fun Player.spawnFeatureText(): String {
         val rules = spawnService.preview(this)
         if (rules.isEmpty()) return "无活跃野外刷新"
         return rules.joinToString("; ") { rule ->
-            "刷怪:${rule.targetDisplayName} x${rule.amount.min}-${rule.amount.max} 权重${rule.weight}"
+            "刷怪:${rule.displayName} x${rule.amount.min}-${rule.amount.max} 权重${rule.weight}"
         }
     }
 
@@ -143,10 +143,4 @@ class MoonlifePlaceholderExpansion(
         else -> id.replace('_', ' ')
     }
 
-    private fun targetDisplay(key: String): String = when (key.lowercase(Locale.ROOT)) {
-        "fullmoonzombieknight" -> "满月僵尸骑士"
-        "shadowbeast" -> "新月影兽"
-        "stormboneraider" -> "雷骨袭击者"
-        else -> key
-    }
 }

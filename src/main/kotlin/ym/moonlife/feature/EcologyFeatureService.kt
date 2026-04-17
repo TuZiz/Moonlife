@@ -139,7 +139,7 @@ class EcologyFeatureService(
             when (val target = rule.target) {
                 is MythicSpawnTarget -> {
                     if (hookManager.mythicMobs.available && knownMythic.isNotEmpty() && target.mobId.lowercase(Locale.ROOT) !in knownMythicLower) {
-                        lines += "警告：${rule.displayName} 的目标「${rule.targetDisplayName}」未出现在 MythicMobs 索引中。"
+                        lines += "警告：${rule.displayName} 的 MythicMobs 目标「${target.mobId}」未出现在索引中。"
                     }
                 }
                 is VanillaSpawnTarget -> {
@@ -230,7 +230,7 @@ class EcologyFeatureService(
     fun featuresText(player: Player): String =
         listOf(
             "危险=${dangerDisplay(dangerLevel(player))}",
-            "刷怪=${spawnService.preview(player).joinToString("、") { it.targetDisplayName }.ifEmpty { "无" }}",
+            "刷怪=${spawnService.preview(player).joinToString("、") { it.displayName }.ifEmpty { "无" }}",
             "作物=${cropGrowthService.preview(player).joinToString("、") { ruleDisplay(it.id) }.ifEmpty { "无" }}",
             "状态=${playerBuffService.preview(player).ruleIds.joinToString("、") { ruleDisplay(it) }.ifEmpty { "无" }}",
             "热点=${activeHotspot(player)?.displayName ?: "无"}",
@@ -457,8 +457,6 @@ class EcologyFeatureService(
     }
 
     private fun targetDisplay(key: String): String = when (key.lowercase(Locale.ROOT)) {
-        in configService.current.spawnRules.map { it.target.key.lowercase(Locale.ROOT) } ->
-            configService.current.spawnRules.first { it.target.key.equals(key, ignoreCase = true) }.targetDisplayName
         "fullmoonzombieknight" -> "满月僵尸骑士"
         "shadowbeast" -> "新月影兽"
         "stormboneraider" -> "雷骨袭击者"

@@ -381,9 +381,6 @@ class ConfigService(private val plugin: JavaPlugin) {
                 displayName = displayName,
                 enabled = section.getBoolean("enable", true),
                 target = target,
-                targetDisplayName = section.getString("target-display-name")
-                    ?: section.getString("mythic-display-name")
-                    ?: displayName,
                 worlds = ConfigReaders.stringSet(section, "worlds"),
                 biomes = ConfigReaders.biomeSet(section, "biomes"),
                 moonPhases = ConfigReaders.enumSet(section, "moon-phases"),

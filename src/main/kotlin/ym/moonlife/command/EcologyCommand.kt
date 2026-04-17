@@ -165,7 +165,8 @@ class EcologyCommand(
         val rules = spawnService.preview(player)
         messages.send(sender, "command.preview.header", mapOf("count" to rules.size.toString()))
         rules.take(12).forEach { rule ->
-            messages.send(sender, "command.preview.entry", mapOf("id" to rule.displayName, "target" to rule.targetDisplayName, "weight" to rule.weight.toString()))
+            val targetName = if (rule.target.backend.name == "MYTHIC_MOB") "由 MythicMobs 控制" else rule.target.key
+            messages.send(sender, "command.preview.entry", mapOf("id" to rule.displayName, "target" to targetName, "weight" to rule.weight.toString()))
         }
         return true
     }
@@ -362,10 +363,4 @@ class EcologyCommand(
         else -> id.replace('_', ' ')
     }
 
-    private fun targetDisplay(key: String): String = when (key.lowercase(Locale.ROOT)) {
-        "fullmoonzombieknight" -> "满月僵尸骑士"
-        "shadowbeast" -> "新月影兽"
-        "stormboneraider" -> "雷骨袭击者"
-        else -> key
-    }
 }

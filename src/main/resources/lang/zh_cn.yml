@@ -52,7 +52,7 @@ command:
     # 预览命中规则数量。
     header: '<prefix><#BAE6FD>灵能潮汐 ✦ 此处地脉交汇了 <#FFFFFF><count></#FFFFFF> 道潜在的生息法则：'
     # 预览命中规则条目。
-    entry: '<#94A3B8>  ✧ <#FFFFFF><id> <#94A3B8>| <#CBD5E1>目标: <target> <#94A3B8>| <#CBD5E1>权重: <#FFFFFF><weight>'
+    entry: '<#94A3B8>  ✧ <#FFFFFF><id> <#94A3B8>| <#CBD5E1>怪物名: <target> <#94A3B8>| <#CBD5E1>权重: <#FFFFFF><weight>'
   # 测试刷怪命令消息根节点。
   testspawn:
     # 测试刷怪已提交提示。

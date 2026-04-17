@@ -12,7 +12,6 @@ data class SpawnRule(
     val displayName: String,
     val enabled: Boolean,
     val target: SpawnTarget,
-    val targetDisplayName: String,
     val worlds: Set<String>,
     val biomes: Set<Biome>,
     val moonPhases: Set<MoonPhase>,
