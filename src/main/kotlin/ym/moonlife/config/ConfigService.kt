@@ -39,7 +39,6 @@ class ConfigService(private val plugin: JavaPlugin) {
         "altars.yml",
         "crops.yml",
         "buffs.yml",
-        "moon-phases/settings.yml",
         "moon-phases/新月.yml",
         "moon-phases/峨眉月.yml",
         "moon-phases/上弦月.yml",
@@ -48,7 +47,6 @@ class ConfigService(private val plugin: JavaPlugin) {
         "moon-phases/亏凸月.yml",
         "moon-phases/下弦月.yml",
         "moon-phases/残月.yml",
-        "solar-phases/settings.yml",
         "solar-phases/黎明.yml",
         "solar-phases/白昼.yml",
         "solar-phases/黄昏.yml",
@@ -70,8 +68,8 @@ class ConfigService(private val plugin: JavaPlugin) {
         val errors = mutableListOf<String>()
         val loaded = runCatching {
             val config = loadYamlPreferred("config.yml", "settings/config.yml")
-            val moon = loadYamlPreferred("moon-phases/settings.yml", "moon-phases.yml")
-            val solar = loadYamlPreferred("solar-phases/settings.yml", "solar-phases.yml")
+            val moon = config.getConfigurationSection("moon") ?: loadYamlPreferred("moon-phases/settings.yml", "moon-phases.yml")
+            val solar = config.getConfigurationSection("solar") ?: loadYamlPreferred("solar-phases/settings.yml", "solar-phases.yml")
             val spawn = loadYamlPreferred("monsters.yml", "spawn-rules.yml")
             val crop = loadYamlPreferred("crops.yml", "crop-rules.yml")
             val buff = loadYamlPreferred("buffs.yml", "buff-rules.yml")
@@ -257,7 +255,7 @@ class ConfigService(private val plugin: JavaPlugin) {
             )
         )
 
-    private fun parseMoon(config: YamlConfiguration, errors: MutableList<String>): MoonConfig =
+    private fun parseMoon(config: ConfigurationSection, errors: MutableList<String>): MoonConfig =
         MoonConfig(
             enabledWorlds = ConfigReaders.stringSet(config, "worlds.enabled"),
             disabledWorlds = ConfigReaders.stringSet(config, "worlds.disabled"),
@@ -274,7 +272,7 @@ class ConfigService(private val plugin: JavaPlugin) {
             }
         )
 
-    private fun parseSolar(config: YamlConfiguration, errors: MutableList<String>): SolarConfig {
+    private fun parseSolar(config: ConfigurationSection, errors: MutableList<String>): SolarConfig {
         val windows = loadSolarPhaseWindows(config, errors)
         return SolarConfig(
             enabledWorlds = ConfigReaders.stringSet(config, "worlds.enabled"),
@@ -321,7 +319,7 @@ class ConfigService(private val plugin: JavaPlugin) {
         )
     }
 
-    private fun loadSolarPhaseWindows(settings: YamlConfiguration, errors: MutableList<String>): List<SolarPhaseWindow> {
+    private fun loadSolarPhaseWindows(settings: ConfigurationSection, errors: MutableList<String>): List<SolarPhaseWindow> {
         val fromFiles = SolarPhase.entries.mapNotNull { phase ->
             val file = File(plugin.dataFolder, "solar-phases/${solarFileName(phase)}.yml")
             if (!file.exists()) return@mapNotNull null

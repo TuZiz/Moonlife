@@ -158,10 +158,20 @@ feature:
   altar:
     # 祭坛触发成功。
     activated: '<prefix><#C4B5FD>古老的回响 ✦ <altar></#C4B5FD> 已唤醒 <#FFFFFF><event></#FFFFFF>。'
+    # 祭坛材料不足。
+    insufficient: '<prefix><#FDE68A>收集未满 ✦ <#FFFFFF><altar></#FFFFFF> 需要至少 <#FFFFFF><amount></#FFFFFF> 个匹配材料。'
   # 悬赏消息根节点。
   bounty:
     # 悬赏完成提示。
     completed: '<prefix><#86EFAC>契约达成 ✦ 悬赏已被斩获：<#FFFFFF><bounty></#FFFFFF>。'
+  # 黎明结算消息根节点。
+  dawn-settlement:
+    # 黎明结算摘要。
+    summary: '<prefix><#FDBA74>黎明结算 ✦ 昨夜战斗 <#FFFFFF><kills></#FFFFFF> 次，收获 <#FFFFFF><harvests></#FFFFFF> 次，探索 <#FFFFFF><explores></#FFFFFF> 处，获得 <#FFFFFF><exp></#FFFFFF> 点经验。'
+  # 成就消息根节点。
+  achievement:
+    # 成就完成提示。
+    completed: '<prefix><#F9A8D4>月相成就 ✦ 完成 <#FFFFFF><achievement></#FFFFFF>，称号展示：<#FFFFFF><title></#FFFFFF>。'
   # 调试 BossBar / ActionBar 消息根节点。
   debug-bossbar:
     # 开启调试显示。

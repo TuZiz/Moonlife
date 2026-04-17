@@ -1,4 +1,4 @@
-# 黎明：默认不启用额外功能。
+# 黎明：静默执行昨夜个人结算。
 enable: true
 # 显示名称。
 display-name: "黎明"
@@ -31,6 +31,6 @@ messages:
   # 日相变化 Title 主标题。
   title: '<#FDBA74>☼ <phase>'
   # 日相变化 Title 副标题。
-  subtitle: '<#FFEDD5>当前日相暂无额外生态功能'
+  subtitle: '<#FFEDD5>昨夜行为会在黎明静默结算'
   # 日相变化 BossBar 提示。
   bossbar: '<#FDBA74>日相 ☼ <#FFFFFF><phase></#FFFFFF>'

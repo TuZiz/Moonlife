@@ -3,6 +3,46 @@ debug: false
 # 检查月相和日相变化的间隔 tick，低频世界级任务，不做每 tick 扫描。
 phase-check-interval-ticks: 1200
 
+# 月相系统通用设置根节点。
+moon:
+  # 月相启用世界配置根节点；留空表示所有普通世界启用。
+  worlds:
+    # 只启用月相系统的世界列表；留空表示不做白名单限制。
+    enabled: []
+    # 禁用月相系统的世界列表。
+    disabled: []
+  # 月相事件提示配置根节点。
+  events:
+    # 是否广播月相变化；轻生态默认由白昼/夜晚摘要统一提示。
+    broadcast: false
+    # 是否使用 ActionBar 提示月相变化；轻生态默认由日相 ActionBar 统一提示。
+    actionbar: false
+    # 是否使用 BossBar 提示月相变化。
+    bossbar: false
+    # 是否使用 Title 提示月相变化。
+    title: false
+    # 是否只在月亮可见时提示月相，避免白天出现月相提示。
+    visible-only: true
+
+# 日相系统通用设置根节点。
+solar:
+  # 日相启用世界配置根节点；留空表示所有普通世界启用。
+  worlds:
+    # 只启用日相系统的世界列表；留空表示不做白名单限制。
+    enabled: []
+    # 禁用日相系统的世界列表。
+    disabled: []
+  # 日相事件提示配置根节点。
+  events:
+    # 是否广播日相变化；轻生态默认只在白昼和夜晚发送摘要。
+    broadcast: true
+    # 是否使用 ActionBar 提示日相变化。
+    actionbar: true
+    # 是否使用 BossBar 提示日相变化。
+    bossbar: false
+    # 是否使用 Title 提示日相变化。
+    title: false
+
 # 性能保护配置根节点。
 performance:
   # 是否根据 TPS/MSPT 自动跳过高成本生态逻辑。

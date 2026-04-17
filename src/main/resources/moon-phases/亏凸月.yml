@@ -1,4 +1,4 @@
-# 亏凸月：默认不启用额外功能，可在下方列表加入规则 id。
+# 亏凸月：野外采集和河岸探索收益上浮。
 enable: true
 # 显示名称。
 display-name: "亏凸月"
@@ -11,9 +11,13 @@ functions:
   # 该相位启用的作物规则 ID 列表。
   crops: []
   # 该相位启用的玩家状态规则 ID 列表。
-  buffs: []
+  buffs:
+    # 列表项：该列表中的一个配置值。
+    - waning_gibbous_forager
   # 生态热点配置根节点。
-  hotspots: []
+  hotspots:
+    # 列表项：该列表中的一个配置值。
+    - river_mist
 # 该月相切换时的提示文本配置。
 messages:
   # 月相变化广播提示。
@@ -23,6 +27,6 @@ messages:
   # 月相变化 Title 主标题。
   title: '<#DDD6FE>☾ <phase>'
   # 月相变化 Title 副标题。
-  subtitle: '<#F5F3FF>当前月相暂无额外生态功能'
+  subtitle: '<#F5F3FF>野外采集和河岸探索收益上浮'
   # 月相变化 BossBar 提示。
   bossbar: '<#DDD6FE>月相 ☾ <#FFFFFF><phase></#FFFFFF>'

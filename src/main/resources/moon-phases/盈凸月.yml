@@ -1,4 +1,4 @@
-# 盈凸月：默认不启用额外功能，可在下方列表加入规则 id。
+# 盈凸月：农田、林地和成熟作物进入丰壤状态。
 enable: true
 # 显示名称。
 display-name: "盈凸月"
@@ -9,11 +9,15 @@ functions:
   # 祭坛配置根节点。
   altars: []
   # 该相位启用的作物规则 ID 列表。
-  crops: []
+  crops:
+    # 列表项：该列表中的一个配置值。
+    - waxing_gibbous_growth
   # 该相位启用的玩家状态规则 ID 列表。
   buffs: []
   # 生态热点配置根节点。
-  hotspots: []
+  hotspots:
+    # 列表项：该列表中的一个配置值。
+    - spawn_grove
 # 该月相切换时的提示文本配置。
 messages:
   # 月相变化广播提示。
@@ -23,6 +27,6 @@ messages:
   # 月相变化 Title 主标题。
   title: '<#C4B5FD>☾ <phase>'
   # 月相变化 Title 副标题。
-  subtitle: '<#EDE9FE>当前月相暂无额外生态功能'
+  subtitle: '<#EDE9FE>成熟作物更容易产出丰壤谷粒'
   # 月相变化 BossBar 提示。
   bossbar: '<#C4B5FD>月相 ☾ <#FFFFFF><phase></#FFFFFF>'

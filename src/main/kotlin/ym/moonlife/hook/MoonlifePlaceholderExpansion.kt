@@ -68,7 +68,9 @@ class MoonlifePlaceholderExpansion(
             "event_seconds" -> featureService.activeEvent()?.remainingSeconds()?.toString() ?: "0"
             "protected" -> onlinePlayer?.let { yesNo(featureService.isPlayerProtected(it)) }.orEmpty()
             "bounty_count" -> onlinePlayer?.let { featureService.bountyLines(it).size.toString() }.orEmpty()
+            "bounties", "bounty_lines" -> onlinePlayer?.let { featureService.bountyLines(it).joinToString("; ") }.orEmpty()
             "codex_count" -> onlinePlayer?.let { featureService.codexLines(it).count { line -> line != "暂未解锁生态图鉴。" }.toString() }.orEmpty()
+            "codex", "codex_lines", "achievements" -> onlinePlayer?.let { featureService.codexLines(it).joinToString("; ") }.orEmpty()
             "materials" -> featureService.materialsLines().joinToString("; ")
             else -> ""
         }
@@ -141,8 +143,18 @@ class MoonlifePlaceholderExpansion(
         "thunder_night_raider" -> "雷雨夜袭击者"
         "sunny_day_growth" -> "晴天白昼成长"
         "fullmoon_nether_wart" -> "满月地狱疣"
+        "waxing_gibbous_growth" -> "盈凸月丰壤"
         "dusk_forager" -> "黄昏采集者"
         "thunder_night_danger" -> "雷雨夜危机"
+        "waxing_crescent_pathfinder" -> "峨眉月旅人"
+        "first_quarter_miner" -> "上弦月矿工"
+        "waning_gibbous_forager" -> "亏凸月采集者"
+        "last_quarter_resilience" -> "下弦月韧性"
+        "waning_crescent_sneak" -> "残月潜行者"
+        "cycle_collection_basin" -> "月相收集盆"
+        "spawn_grove" -> "出生林地"
+        "river_mist" -> "河雾带"
+        "old_mine_echo" -> "旧矿回声"
         else -> id.replace('_', ' ')
     }
 

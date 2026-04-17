@@ -119,3 +119,278 @@ rules:
     conflict-strategy: STACK
     # 规则优先级，数值越高越先匹配。
     priority: 10
+
+  # 峨眉月旅人：峨眉月时鼓励野外移动和探索。
+  waxing_crescent_pathfinder:
+    # 规则唯一 ID。
+    id: waxing_crescent_pathfinder
+    # 是否启用该规则或相位文件。
+    enable: true
+    # 规则生效的世界列表，留空表示不限制。
+    worlds: [world]
+    # 规则生效的群系列表，留空表示不限制。
+    biomes: []
+    # 规则直接绑定的月相列表，通常建议在 moon-phases 目录中配置。
+    moon-phases: []
+    # 规则直接绑定的日相列表，通常建议在 solar-phases 目录中配置。
+    solar-phases: []
+    # 规则生效的天气列表。
+    weather: [CLEAR, RAIN]
+    # 是否只在荒野区域生效。
+    wilderness-only: true
+    # 是否要求玩家位于地下。
+    underground: false
+    # 是否要求玩家在水中。
+    in-water: false
+    # 是否要求玩家潜行。
+    sneaking: false
+    # 需要的权限，留空表示不需要。
+    permission: ''
+    # 药水效果配置根节点。
+    potion-effects: {}
+    # 属性修饰器配置根节点。
+    attribute-modifiers:
+      # 峨眉月移动修饰。
+      crescent_walk:
+        # 要修改的 Bukkit 属性名。
+        attribute: MOVEMENT_SPEED
+        # 属性修饰量。
+        amount: 0.025
+        # 属性计算方式。
+        operation: ADD_SCALAR
+    # 玩家造成伤害倍率。
+    damage-multiplier: 1.0
+    # 经验获取倍率。
+    experience-multiplier: 1.05
+    # 掉落收益倍率。
+    drop-multiplier: 1.03
+    # 移动速度额外修正。
+    movement-speed-modifier: 0.01
+    # 攻击能力额外修正。
+    attack-modifier: 0.0
+    # 承伤抗性额外修正。
+    resistance-modifier: 0.0
+    # 玩家自定义状态标签列表。
+    custom-tags: [waxing_crescent_pathfinder]
+    # Buff 冲突处理策略。
+    conflict-strategy: STACK
+    # 规则优先级，数值越高越先匹配。
+    priority: 12
+
+  # 上弦月矿工：上弦月地下挖掘效率轻微提升。
+  first_quarter_miner:
+    # 规则唯一 ID。
+    id: first_quarter_miner
+    # 是否启用该规则或相位文件。
+    enable: true
+    # 规则生效的世界列表，留空表示不限制。
+    worlds: [world]
+    # 规则生效的群系列表，留空表示不限制。
+    biomes: []
+    # 规则直接绑定的月相列表，通常建议在 moon-phases 目录中配置。
+    moon-phases: []
+    # 规则直接绑定的日相列表，通常建议在 solar-phases 目录中配置。
+    solar-phases: []
+    # 规则生效的天气列表。
+    weather: []
+    # 是否只在荒野区域生效。
+    wilderness-only: false
+    # 是否要求玩家位于地下。
+    underground: true
+    # 是否要求玩家在水中。
+    in-water: false
+    # 是否要求玩家潜行。
+    sneaking: false
+    # 需要的权限，留空表示不需要。
+    permission: ''
+    # 药水效果配置根节点。
+    potion-effects:
+      # 上弦月挖掘加速。
+      quarter_haste:
+        # 药水效果类型。
+        type: FAST_DIGGING
+        # 药水等级，从 0 开始。
+        amplifier: 0
+        # 药水持续时间，单位为 tick。
+        duration-ticks: 220
+        # 是否标记为环境效果。
+        ambient: true
+        # 是否显示药水粒子。
+        particles: false
+        # 是否显示药水图标。
+        icon: true
+    # 属性修饰器配置根节点。
+    attribute-modifiers: {}
+    # 玩家造成伤害倍率。
+    damage-multiplier: 1.0
+    # 经验获取倍率。
+    experience-multiplier: 1.04
+    # 掉落收益倍率。
+    drop-multiplier: 1.0
+    # 移动速度额外修正。
+    movement-speed-modifier: 0.0
+    # 攻击能力额外修正。
+    attack-modifier: 0.0
+    # 承伤抗性额外修正。
+    resistance-modifier: 0.0
+    # 玩家自定义状态标签列表。
+    custom-tags: [first_quarter_miner]
+    # Buff 冲突处理策略。
+    conflict-strategy: STACK
+    # 规则优先级，数值越高越先匹配。
+    priority: 12
+
+  # 亏凸月采集者：亏凸月提高野外采集和收获收益。
+  waning_gibbous_forager:
+    # 规则唯一 ID。
+    id: waning_gibbous_forager
+    # 是否启用该规则或相位文件。
+    enable: true
+    # 规则生效的世界列表，留空表示不限制。
+    worlds: [world]
+    # 规则生效的群系列表，留空表示不限制。
+    biomes: []
+    # 规则直接绑定的月相列表，通常建议在 moon-phases 目录中配置。
+    moon-phases: []
+    # 规则直接绑定的日相列表，通常建议在 solar-phases 目录中配置。
+    solar-phases: []
+    # 规则生效的天气列表。
+    weather: [CLEAR, RAIN]
+    # 是否只在荒野区域生效。
+    wilderness-only: true
+    # 是否要求玩家位于地下。
+    underground: false
+    # 是否要求玩家在水中。
+    in-water: false
+    # 是否要求玩家潜行。
+    sneaking: false
+    # 需要的权限，留空表示不需要。
+    permission: ''
+    # 药水效果配置根节点。
+    potion-effects: {}
+    # 属性修饰器配置根节点。
+    attribute-modifiers: {}
+    # 玩家造成伤害倍率。
+    damage-multiplier: 1.0
+    # 经验获取倍率。
+    experience-multiplier: 1.08
+    # 掉落收益倍率。
+    drop-multiplier: 1.08
+    # 移动速度额外修正。
+    movement-speed-modifier: 0.0
+    # 攻击能力额外修正。
+    attack-modifier: 0.0
+    # 承伤抗性额外修正。
+    resistance-modifier: 0.0
+    # 玩家自定义状态标签列表。
+    custom-tags: [waning_gibbous_forager]
+    # Buff 冲突处理策略。
+    conflict-strategy: STACK
+    # 规则优先级，数值越高越先匹配。
+    priority: 12
+
+  # 下弦月韧性：下弦月地下探索承伤略微降低。
+  last_quarter_resilience:
+    # 规则唯一 ID。
+    id: last_quarter_resilience
+    # 是否启用该规则或相位文件。
+    enable: true
+    # 规则生效的世界列表，留空表示不限制。
+    worlds: [world]
+    # 规则生效的群系列表，留空表示不限制。
+    biomes: []
+    # 规则直接绑定的月相列表，通常建议在 moon-phases 目录中配置。
+    moon-phases: []
+    # 规则直接绑定的日相列表，通常建议在 solar-phases 目录中配置。
+    solar-phases: []
+    # 规则生效的天气列表。
+    weather: []
+    # 是否只在荒野区域生效。
+    wilderness-only: false
+    # 是否要求玩家位于地下。
+    underground: true
+    # 是否要求玩家在水中。
+    in-water: false
+    # 是否要求玩家潜行。
+    sneaking: false
+    # 需要的权限，留空表示不需要。
+    permission: ''
+    # 药水效果配置根节点。
+    potion-effects: {}
+    # 属性修饰器配置根节点。
+    attribute-modifiers: {}
+    # 玩家造成伤害倍率。
+    damage-multiplier: 1.0
+    # 经验获取倍率。
+    experience-multiplier: 1.0
+    # 掉落收益倍率。
+    drop-multiplier: 1.0
+    # 移动速度额外修正。
+    movement-speed-modifier: 0.0
+    # 攻击能力额外修正。
+    attack-modifier: 0.0
+    # 承伤抗性额外修正，负数表示减少受到的伤害倍率。
+    resistance-modifier: -0.06
+    # 玩家自定义状态标签列表。
+    custom-tags: [last_quarter_resilience]
+    # Buff 冲突处理策略。
+    conflict-strategy: STACK
+    # 规则优先级，数值越高越先匹配。
+    priority: 12
+
+  # 残月潜行者：残月潜行时更适合绕开危险。
+  waning_crescent_sneak:
+    # 规则唯一 ID。
+    id: waning_crescent_sneak
+    # 是否启用该规则或相位文件。
+    enable: true
+    # 规则生效的世界列表，留空表示不限制。
+    worlds: [world]
+    # 规则生效的群系列表，留空表示不限制。
+    biomes: []
+    # 规则直接绑定的月相列表，通常建议在 moon-phases 目录中配置。
+    moon-phases: []
+    # 规则直接绑定的日相列表，通常建议在 solar-phases 目录中配置。
+    solar-phases: []
+    # 规则生效的天气列表。
+    weather: [CLEAR, RAIN]
+    # 是否只在荒野区域生效。
+    wilderness-only: true
+    # 是否要求玩家位于地下。
+    underground: false
+    # 是否要求玩家在水中。
+    in-water: false
+    # 是否要求玩家潜行。
+    sneaking: true
+    # 需要的权限，留空表示不需要。
+    permission: ''
+    # 药水效果配置根节点。
+    potion-effects: {}
+    # 属性修饰器配置根节点。
+    attribute-modifiers:
+      # 残月潜行移动修饰。
+      crescent_sneak:
+        # 要修改的 Bukkit 属性名。
+        attribute: MOVEMENT_SPEED
+        # 属性修饰量。
+        amount: 0.03
+        # 属性计算方式。
+        operation: ADD_SCALAR
+    # 玩家造成伤害倍率。
+    damage-multiplier: 1.0
+    # 经验获取倍率。
+    experience-multiplier: 1.0
+    # 掉落收益倍率。
+    drop-multiplier: 1.04
+    # 移动速度额外修正。
+    movement-speed-modifier: 0.02
+    # 攻击能力额外修正。
+    attack-modifier: 0.0
+    # 承伤抗性额外修正。
+    resistance-modifier: 0.0
+    # 玩家自定义状态标签列表。
+    custom-tags: [waning_crescent_sneak]
+    # Buff 冲突处理策略。
+    conflict-strategy: STACK
+    # 规则优先级，数值越高越先匹配。
+    priority: 12

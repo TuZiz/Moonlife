@@ -134,11 +134,21 @@ class SolarPhaseService(
         "thunder_skeleton_patrol" -> "雷雨骷髅巡游"
         "sunny_day_growth" -> "晴天白昼成长"
         "fullmoon_nether_wart" -> "满月地狱疣"
+        "waxing_gibbous_growth" -> "盈凸月丰壤"
         "dusk_forager" -> "黄昏采集者"
         "thunder_night_danger" -> "雷雨夜危机"
+        "waxing_crescent_pathfinder" -> "峨眉月旅人"
+        "first_quarter_miner" -> "上弦月矿工"
+        "waning_gibbous_forager" -> "亏凸月采集者"
+        "last_quarter_resilience" -> "下弦月韧性"
+        "waning_crescent_sneak" -> "残月潜行者"
         "fullmoon_altar" -> "满月祭坛"
+        "cycle_collection_basin" -> "月相收集盆"
         "newmoon_shadow_hotspot" -> "新月暗影热点"
         "thunder_night_hotspot" -> "雷雨夜热点"
+        "spawn_grove" -> "出生林地"
+        "river_mist" -> "河雾带"
+        "old_mine_echo" -> "旧矿回声"
         else -> id.replace('_', ' ')
     }
 

@@ -16,6 +16,7 @@ data class FeatureConfig(
     val materials: List<EcologyMaterial>,
     val altarRules: List<AltarRule>,
     val hotspotRules: List<HotspotRule>,
+    val achievementRules: List<AchievementRule>,
     val eventPresets: List<EventPreset>,
     val worldTemplates: Map<String, List<String>>
 )
@@ -23,11 +24,24 @@ data class FeatureConfig(
 data class BountyRule(
     val id: String,
     val displayName: String,
+    val objective: BountyObjective,
+    val targets: Set<String>,
+    val moonPhases: Set<MoonPhase>,
+    val solarPhases: Set<SolarPhase>,
+    val weather: Set<WeatherState>,
     val mythicMobIds: Set<String>,
     val rewardExp: Int,
     val rewardMaterials: List<String>,
     val codexEntry: String
 )
+
+enum class BountyObjective {
+    KILL_MYTHIC,
+    KILL_ENTITY,
+    BREAK_BLOCK,
+    HARVEST_CROP,
+    VISIT_BIOME
+}
 
 data class EcologyMaterial(
     val id: String,
@@ -42,22 +56,51 @@ data class AltarRule(
     val displayName: String,
     val block: Material,
     val cost: CustomItemSpec,
+    val costAmount: Int,
     val moonPhases: Set<MoonPhase>,
     val solarPhases: Set<SolarPhase>,
     val weather: Set<WeatherState>,
     val eventId: String,
     val eventMinutes: Int,
-    val eventMultiplier: Double
+    val eventMultiplier: Double,
+    val rewardExp: Int,
+    val rewardMaterials: List<String>,
+    val codexEntry: String?
 )
 
 data class HotspotRule(
     val id: String,
     val displayName: String,
+    val worlds: Set<String>,
     val biomes: Set<Biome>,
+    val center: HotspotCenter?,
+    val radius: Double,
     val moonPhases: Set<MoonPhase>,
     val solarPhases: Set<SolarPhase>,
     val weather: Set<WeatherState>,
     val multiplier: Double
+)
+
+data class HotspotCenter(
+    val mode: HotspotCenterMode,
+    val x: Double,
+    val y: Double,
+    val z: Double,
+    val useY: Boolean
+)
+
+enum class HotspotCenterMode {
+    SPAWN,
+    COORDINATE
+}
+
+data class AchievementRule(
+    val id: String,
+    val displayName: String,
+    val requiredCodex: Set<String>,
+    val rewardExp: Int,
+    val rewardMaterials: List<String>,
+    val title: String
 )
 
 data class EventPreset(
